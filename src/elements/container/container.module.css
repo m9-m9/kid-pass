@@ -4,3 +4,19 @@
     
     border : 1px solid black;
   }
+
+.infoContainer {
+  border-radius : var(--border-radius-20);
+  padding: 0 16px;
+}
+
+
+.profileContainer {
+
+  background-color: #FFEBEB;
+}
+
+.statusContainer {
+  background-color: #F4F4F4;
+}
+

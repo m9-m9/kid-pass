@@ -1,7 +1,7 @@
 import React from "react";
 import css from "./Container.module.css";  
 
-interface ContainerProps {
+export interface ContainerProps {
   children: React.ReactNode; 
 }
 
