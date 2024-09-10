@@ -3,11 +3,12 @@ import Home from "./pages/home/App";
 import Schdl from "./pages/schdl/App";
 import Rpt from "./pages/rpt/App";
 import { SCREEN } from "./constants/screenUrl";
+import Container from "./elements/container/Container";
 
 const RootRoutes: React.FC = () => {
   return (
     <Router>
-      <div>
+      <Container>
         <nav>
           <ul>
             <li>
@@ -27,7 +28,7 @@ const RootRoutes: React.FC = () => {
           <Route path={SCREEN.SCHDL} element={<Schdl />} />
           <Route path={SCREEN.RPT} element={<Rpt />} />
         </Routes>
-      </div>
+      </Container>
     </Router>
   );
 };

@@ -9,4 +9,17 @@
   --spacing-small: 0.5rem;
   --spacing-medium: 1rem;
   --spacing-large: 1.5rem;
+
+  --font-size-14 : 14px;
+  --font-size-18 : 18px;
+  --font-size-20 : 20px;
+  --font-size-28 : 28px;
+  
+
+
+  --font-weight-bold : bold;
+  --border-radius-20 : 20px;
+
 }
+
+

@@ -10,11 +10,14 @@
 
 /* Base styles */
 body {
+  margin: 0;
   font-family: "Arial", sans-serif;
   font-size: var(--font-size-medium);
   line-height: 1.6;
   color: var(--text-color);
   background-color: var(--background-color);
+  
+  
 }
 
 /* Typography */
