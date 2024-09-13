@@ -1,25 +1,24 @@
 :root {
-  --primary-color: #007bff;
-  --secondary-color: #6c757d;
-  --background-color: #f8f9fa;
-  --text-color: #333333;
-  --font-size-small: 0.8rem;
-  --font-size-medium: 1rem;
-  --font-size-large: 1.2rem;
-  --spacing-small: 0.5rem;
-  --spacing-medium: 1rem;
-  --spacing-large: 1.5rem;
+    --primary-color: #007bff;
+    --secondary-color: #6c757d;
+    --background-color: #f8f9fa;
+    --text-color: #333333;
+    --font-size-small: 0.8rem;
+    --font-size-medium: 1rem;
+    --font-size-large: 1.2rem;
+    --spacing-small: 0.5rem;
+    --spacing-medium: 1rem;
+    --spacing-large: 1.5rem;
 
-  --font-size-14 : 14px;
-  --font-size-18 : 18px;
-  --font-size-20 : 20px;
-  --font-size-28 : 28px;
-  
+    --font-size-12: 12px;
+    --font-size-14: 14px;
+    --font-size-18: 18px;
+    --font-size-20: 20px;
+    --font-size-24: 24px;
+    --font-size-28: 28px;
 
-
-  --font-weight-bold : bold;
-  --border-radius-20 : 20px;
-
+    --font-weight-regular: 400;
+    --font-weight-semiBold: 600;
+    --font-weight-bold: 700;
+    --border-radius-20: 20px;
 }
-
-
