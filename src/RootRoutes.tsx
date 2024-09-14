@@ -6,31 +6,31 @@ import { SCREEN } from "./constants/screenUrl";
 import Container from "./elements/container/Container";
 
 const RootRoutes: React.FC = () => {
-  return (
-    <Router>
-      <Container>
-        <nav>
-          <ul>
-            <li>
-              <Link to={SCREEN.HOME}>홈</Link>
-            </li>
-            <li>
-              <Link to={SCREEN.SCHDL}>일정</Link>
-            </li>
-            <li>
-              <Link to={SCREEN.RPT}>보고서</Link>
-            </li>
-          </ul>
-        </nav>
+    return (
+        <Router>
+            <Container css="container">
+                <nav>
+                    <ul>
+                        <li>
+                            <Link to={SCREEN.HOME}>홈</Link>
+                        </li>
+                        <li>
+                            <Link to={SCREEN.SCHDL}>일정</Link>
+                        </li>
+                        <li>
+                            <Link to={SCREEN.RPT}>보고서</Link>
+                        </li>
+                    </ul>
+                </nav>
 
-        <Routes>
-          <Route path={SCREEN.HOME} element={<Home />} />
-          <Route path={SCREEN.SCHDL} element={<Schdl />} />
-          <Route path={SCREEN.RPT} element={<Rpt />} />
-        </Routes>
-      </Container>
-    </Router>
-  );
+                <Routes>
+                    <Route path={SCREEN.HOME} element={<Home />} />
+                    <Route path={SCREEN.SCHDL} element={<Schdl />} />
+                    <Route path={SCREEN.RPT} element={<Rpt />} />
+                </Routes>
+            </Container>
+        </Router>
+    );
 };
 
 export default RootRoutes;
