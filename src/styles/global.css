@@ -3,21 +3,19 @@
 
 /* Reset default styles */
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 /* Base styles */
 body {
-  margin: 0;
-  font-family: "Arial", sans-serif;
-  font-size: var(--font-size-medium);
-  line-height: 1.6;
-  color: var(--text-color);
-  background-color: var(--background-color);
-  
-  
+    margin: 0;
+    font-family: "Arial", sans-serif;
+    font-size: var(--font-size-medium);
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--background-color);
 }
 
 /* Typography */
@@ -27,95 +25,95 @@ h3,
 h4,
 h5,
 h6 {
-  margin-bottom: var(--spacing-medium);
-  font-weight: bold;
-  line-height: 1.2;
+    margin-bottom: var(--spacing-medium);
+    font-weight: bold;
+    line-height: 1.2;
 }
 
 h1 {
-  font-size: 2.5rem;
+    font-size: 2.5rem;
 }
 h2 {
-  font-size: 2rem;
+    font-size: 2rem;
 }
 h3 {
-  font-size: 1.75rem;
+    font-size: 1.75rem;
 }
 h4 {
-  font-size: 1.5rem;
+    font-size: 1.5rem;
 }
 h5 {
-  font-size: 1.25rem;
+    font-size: 1.25rem;
 }
 h6 {
-  font-size: 1rem;
+    font-size: 1rem;
 }
 
-p {
+/* p {
   margin-bottom: var(--spacing-medium);
-}
+} */
 
 /* Links */
 a {
-  color: var(--primary-color);
-  text-decoration: none;
-  transition: color 0.3s ease;
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
 }
 
 a:hover {
-  color: var(--secondary-color);
-  text-decoration: underline;
+    color: var(--secondary-color);
+    text-decoration: underline;
 }
 
 /* Lists */
 ul,
 ol {
-  margin-bottom: var(--spacing-medium);
-  padding-left: var(--spacing-large);
+    margin-bottom: var(--spacing-medium);
+    padding-left: var(--spacing-large);
 }
 
 /* Images */
 img {
-  max-width: 100%;
-  height: auto;
+    max-width: 100%;
+    height: auto;
 }
 
 /* Forms */
 input,
 textarea,
 select {
-  font-family: inherit;
-  font-size: inherit;
-  line-height: inherit;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
 }
 
 /* Utility classes */
 .text-center {
-  text-align: center;
+    text-align: center;
 }
 .text-right {
-  text-align: right;
+    text-align: right;
 }
 .text-left {
-  text-align: left;
+    text-align: left;
 }
 
 .mt-1 {
-  margin-top: var(--spacing-small);
+    margin-top: var(--spacing-small);
 }
 .mt-2 {
-  margin-top: var(--spacing-medium);
+    margin-top: var(--spacing-medium);
 }
 .mt-3 {
-  margin-top: var(--spacing-large);
+    margin-top: var(--spacing-large);
 }
 
 .mb-1 {
-  margin-bottom: var(--spacing-small);
+    margin-bottom: var(--spacing-small);
 }
 .mb-2 {
-  margin-bottom: var(--spacing-medium);
+    margin-bottom: var(--spacing-medium);
 }
 .mb-3 {
-  margin-bottom: var(--spacing-large);
+    margin-bottom: var(--spacing-large);
 }

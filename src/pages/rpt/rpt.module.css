@@ -1,0 +1,98 @@
+.containerBase {
+    border-radius: var(--border-radius-20);
+}
+
+.profileContainer {
+    background-color: #ffebeb;
+    font-size: var(--font-size-20);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 24px;
+    margin: 40px auto;
+}
+
+.metricsArea {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.symptomContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 40px;
+}
+
+.symptoms {
+    display: flex;
+    gap: 8px;
+}
+
+.metricsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 48px;
+}
+
+.metircsTitle {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.metircsTitle svg {
+    cursor: pointer;
+}
+
+.metricsDetail {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.metrics {
+    background-color: #f4f4f4;
+    display: flex;
+    flex-direction: column;
+
+    padding: 24px;
+}
+
+.metricsArea {
+    overflow: hidden;
+    transition: max-height, opacity 0.2s ease-in-out;
+    max-height: 500px; /* 기본 펼쳐진 상태의 최대 높이 설정 */
+    opacity: 1;
+}
+
+.metricsArea.closed {
+    max-height: 0; /* 접혀 있을 때의 높이 */
+    opacity: 0;
+}
+
+.vaccineContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 50px;
+}
+
+.vaccine {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.commentsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.comments {
+    display: flex;
+    gap: 8px;
+}
