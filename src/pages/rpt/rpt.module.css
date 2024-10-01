@@ -73,6 +73,26 @@
     opacity: 0;
 }
 
+.prescriptionContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.hospitalPrescription {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
+    background-color: #f4f4f4;
+}
+
+.hospitalPrescription_detail {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+}
+
 .vaccineContainer {
     display: flex;
     flex-direction: column;
@@ -95,4 +115,8 @@
 .comments {
     display: flex;
     gap: 8px;
+}
+
+.tearLine {
+    border: 1px dashed #bdbdbd;
 }

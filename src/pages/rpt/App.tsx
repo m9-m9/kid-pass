@@ -37,24 +37,24 @@ const App: React.FC = () => {
                     <Label text="2024. 10. 31" css="profileDate" />
                     <div>
                         <Label text="2024.09.28 출생" css="metricsType" />
-                        <Label text="김아기" css="metricsValue" />
+                        <Label text="김아기" css="profileMetrics" />
                     </div>
                     <div>
                         <Label text="나이 (만)" css="metricsType" />
-                        <Label text="36일, 5주 1일" css="metricsValue" />
+                        <Label text="36일, 5주 1일" css="profileMetrics" />
                     </div>
                     <div className={styles.metricsArea}>
                         <div>
                             <Label text="몸무게" css="metricsType" />
-                            <Label text="5.1kg" css="metricsValue" />
+                            <Label text="5.1kg" css="profileMetrics" />
                         </div>
                         <div>
                             <Label text="키" css="metricsType" />
-                            <Label text="51.0cm" css="metricsValue" />
+                            <Label text="51.0cm" css="profileMetrics" />
                         </div>
                         <div>
                             <Label text="머리 둘레" css="metricsType" />
-                            <Label text="36.9cm" css="metricsValue" />
+                            <Label text="36.9cm" css="profileMetrics" />
                         </div>
                     </div>
                 </div>
@@ -156,11 +156,11 @@ const App: React.FC = () => {
                         >
                             <div className={styles.metricsDetail}>
                                 <Label text="간격" css="metricsType" />
-                                <Label text="3회" css="metricsValue" />
+                                <Label text="3회" css="profileMetrics" />
                             </div>
                             <div className={styles.metricsDetail}>
                                 <Label text="횟수" css="metricsType" />
-                                <Label text="6회" css="metricsValue" />
+                                <Label text="6회" css="profileMetrics" />
                             </div>
                         </div>
                     </div>
@@ -197,11 +197,11 @@ const App: React.FC = () => {
                         >
                             <div className={styles.metricsDetail}>
                                 <Label text="간격" css="metricsType" />
-                                <Label text="2시간" css="metricsValue" />
+                                <Label text="2시간" css="profileMetrics" />
                             </div>
                             <div className={styles.metricsDetail}>
                                 <Label text="횟수" css="metricsType" />
-                                <Label text="6회" css="metricsValue" />
+                                <Label text="6회" css="profileMetrics" />
                             </div>
                         </div>
                     </div>
@@ -240,16 +240,39 @@ const App: React.FC = () => {
                         >
                             <div className={styles.metricsDetail}>
                                 <Label text="대변" css="metricsType" />
-                                <Label text="6회" css="metricsValue" />
+                                <Label text="6회" css="profileMetrics" />
                             </div>
                             <div className={styles.metricsDetail}>
                                 <Label text="소변" css="metricsType" />
-                                <Label text="6회" css="metricsValue" />
+                                <Label text="6회" css="profileMetrics" />
                             </div>
                             <div className={styles.metricsDetail}>
                                 <Label text="대변색깔" css="metricsType" />
-                                <Label text="묽은 변" css="metricsValue" />
+                                <Label text="묽은 변" css="profileMetrics" />
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div className={`${styles.prescriptionContainer}`}>
+                    <Label text="아기가 치료받은 기록이에요" css="category" />
+                    <div
+                        className={`${styles.hospitalPrescription} ${styles.containerBase}`}
+                    >
+                        <div className={styles.hospitalPrescription_detail}>
+                            <Label text="2024.10.05" css="metricsDate" />
+                            <Label
+                                text="땡땡땡 산부인과"
+                                css="prescriptionMetrics"
+                            />
+                        </div>
+
+                        <div className={styles.hospitalPrescription_detail}>
+                            <Label text="신생아 검진" css="metrics" />
+                            <Label text="병명 없음" css="noData" />
+                        </div>
+                        <div className={styles.tearLine} />
+                        <div className={styles.hospitalPrescription_detail}>
+                            <Label text="의사소견 없음" css="noData" />
                         </div>
                     </div>
                 </div>
