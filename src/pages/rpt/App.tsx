@@ -4,27 +4,27 @@ import BodyTemp from "../../elements/charts/BodyTemp";
 import Label from "../../elements/label/Label";
 import styles from "./rpt.module.css";
 
+type OpenStates = {
+    sleep: boolean;
+    meal: boolean;
+    urination: boolean;
+    temp: boolean;
+};
+
 const App: React.FC = () => {
-    const [isSleepOpen, setIsSleepOpen] = useState(true);
-    const [isMealOpen, setIsMealOpen] = useState(true);
-    const [isUrinationOpen, setIsUrinationOpen] = useState(true);
-    const [isTempOpen, setIsTempOpen] = useState(true);
+    const [openStates, setOpenStates] = useState<OpenStates>({
+        sleep: true,
+        meal: true,
+        urination: true,
+        temp: true,
+    });
 
-    // 각각의 상태를 토글하는 함수들
-    const toggleSleepMetricsArea = () => {
-        setIsSleepOpen(!isSleepOpen);
-    };
-
-    const toggleMealMetricsArea = () => {
-        setIsMealOpen(!isMealOpen);
-    };
-
-    const toggleUrinationArea = () => {
-        setIsUrinationOpen(!isUrinationOpen);
-    };
-
-    const toggleTempArea = () => {
-        setIsTempOpen(!isTempOpen);
+    // 상태를 토글하는 공통 함수
+    const toggleMetricsArea = (type: keyof OpenStates) => {
+        setOpenStates((prevState) => ({
+            ...prevState,
+            [type]: !prevState[type],
+        }));
     };
 
     return (
@@ -94,17 +94,19 @@ const App: React.FC = () => {
                                 <Label text="체온기록" css="metrics" />
                                 <svg
                                     width="22"
-                                    height={isTempOpen ? "10" : "9"}
+                                    height={openStates.temp ? "10" : "9"}
                                     viewBox={
-                                        isTempOpen ? "0 0 22 10" : "0 0 22 9"
+                                        openStates.temp
+                                            ? "0 0 22 10"
+                                            : "0 0 22 9"
                                     }
                                     fill="none"
-                                    onClick={toggleTempArea}
+                                    onClick={() => toggleMetricsArea("temp")}
                                     xmlns="http://www.w3.org/2000/svg"
                                 >
                                     <path
                                         d={
-                                            isTempOpen
+                                            openStates.temp
                                                 ? "M1 1L10.5 8.5L21 1"
                                                 : "M21 8.5L11.5 0.999999L1 8.5"
                                         }
@@ -114,7 +116,7 @@ const App: React.FC = () => {
                             </div>
                             <div
                                 className={`${styles.metricsArea} ${
-                                    !isTempOpen && styles.closed
+                                    !openStates.temp && styles.closed
                                 }`}
                             >
                                 <BodyTemp />
@@ -129,15 +131,17 @@ const App: React.FC = () => {
                             <Label text="수면패턴" css="metrics" />
                             <svg
                                 width="22"
-                                height={isSleepOpen ? "10" : "9"}
-                                viewBox={isSleepOpen ? "0 0 22 10" : "0 0 22 9"}
+                                height={openStates.sleep ? "10" : "9"}
+                                viewBox={
+                                    openStates.sleep ? "0 0 22 10" : "0 0 22 9"
+                                }
                                 fill="none"
-                                onClick={toggleSleepMetricsArea}
+                                onClick={() => toggleMetricsArea("sleep")}
                                 xmlns="http://www.w3.org/2000/svg"
                             >
                                 <path
                                     d={
-                                        isSleepOpen
+                                        openStates.sleep
                                             ? "M1 1L10.5 8.5L21 1"
                                             : "M21 8.5L11.5 0.999999L1 8.5"
                                     }
@@ -147,7 +151,7 @@ const App: React.FC = () => {
                         </div>
                         <div
                             className={`${styles.metricsArea} ${
-                                !isSleepOpen && styles.closed
+                                !openStates.sleep && styles.closed
                             }`}
                         >
                             <div className={styles.metricsDetail}>
@@ -160,6 +164,7 @@ const App: React.FC = () => {
                             </div>
                         </div>
                     </div>
+
                     <div
                         className={`${styles.metrics} ${styles.containerBase}`}
                     >
@@ -167,15 +172,17 @@ const App: React.FC = () => {
                             <Label text="식사패턴" css="metrics" />
                             <svg
                                 width="22"
-                                height={isMealOpen ? "10" : "9"}
-                                viewBox={isMealOpen ? "0 0 22 10" : "0 0 22 9"}
+                                height={openStates.meal ? "10" : "9"}
+                                viewBox={
+                                    openStates.meal ? "0 0 22 10" : "0 0 22 9"
+                                }
                                 fill="none"
-                                onClick={toggleMealMetricsArea}
+                                onClick={() => toggleMetricsArea("meal")}
                                 xmlns="http://www.w3.org/2000/svg"
                             >
                                 <path
                                     d={
-                                        isMealOpen
+                                        openStates.meal
                                             ? "M1 1L10.5 8.5L21 1"
                                             : "M21 8.5L11.5 0.999999L1 8.5"
                                     }
@@ -185,7 +192,7 @@ const App: React.FC = () => {
                         </div>
                         <div
                             className={`${styles.metricsArea} ${
-                                !isMealOpen && styles.closed
+                                !openStates.meal && styles.closed
                             }`}
                         >
                             <div className={styles.metricsDetail}>
@@ -198,6 +205,7 @@ const App: React.FC = () => {
                             </div>
                         </div>
                     </div>
+
                     <div
                         className={`${styles.metrics} ${styles.containerBase}`}
                     >
@@ -205,17 +213,19 @@ const App: React.FC = () => {
                             <Label text="배뇨 횟수" css="metrics" />
                             <svg
                                 width="22"
-                                height={isUrinationOpen ? "10" : "9"}
+                                height={openStates.urination ? "10" : "9"}
                                 viewBox={
-                                    isUrinationOpen ? "0 0 22 10" : "0 0 22 9"
+                                    openStates.urination
+                                        ? "0 0 22 10"
+                                        : "0 0 22 9"
                                 }
                                 fill="none"
-                                onClick={toggleUrinationArea}
+                                onClick={() => toggleMetricsArea("urination")}
                                 xmlns="http://www.w3.org/2000/svg"
                             >
                                 <path
                                     d={
-                                        isUrinationOpen
+                                        openStates.urination
                                             ? "M1 1L10.5 8.5L21 1"
                                             : "M21 8.5L11.5 0.999999L1 8.5"
                                     }
@@ -225,7 +235,7 @@ const App: React.FC = () => {
                         </div>
                         <div
                             className={`${styles.metricsArea} ${
-                                !isUrinationOpen && styles.closed
+                                !openStates.urination && styles.closed
                             }`}
                         >
                             <div className={styles.metricsDetail}>
