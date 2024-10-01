@@ -80,16 +80,11 @@ const App: React.FC = () => {
                     </div>
                 </div>
                 <div className={styles.metricsContainer}>
+                    <Label text="지난 3일 동안의 아기의 상태" css="category" />
                     <div
                         className={`${styles.metrics} ${styles.containerBase}`}
                     >
-                        <Label
-                            text="지난 3일 동안의 아기의 상태"
-                            css="category"
-                        />
-                        <div
-                            className={`${styles.metrics} ${styles.containerBase}`}
-                        >
+                        <div className={`${styles.metrics}`}>
                             <div className={styles.metircsTitle}>
                                 <Label text="체온기록" css="metrics" />
                                 <svg
@@ -253,12 +248,12 @@ const App: React.FC = () => {
                         </div>
                     </div>
                 </div>
-                <div className={`${styles.prescriptionContainer}`}>
+                <div className={styles.prescriptionContainer}>
                     <Label text="아기가 치료받은 기록이에요" css="category" />
                     <div
-                        className={`${styles.hospitalPrescription} ${styles.containerBase}`}
+                        className={`${styles.metrics} ${styles.containerBase}`}
                     >
-                        <div className={styles.hospitalPrescription_detail}>
+                        <div className={styles.metricsArea}>
                             <Label text="2024.10.05" css="metricsDate" />
                             <Label
                                 text="땡땡땡 산부인과"
@@ -266,41 +261,63 @@ const App: React.FC = () => {
                             />
                         </div>
 
-                        <div className={styles.hospitalPrescription_detail}>
+                        <div className={styles.metricsArea}>
                             <Label text="신생아 검진" css="metrics" />
                             <Label text="병명 없음" css="noData" />
                         </div>
                         <div className={styles.tearLine} />
-                        <div className={styles.hospitalPrescription_detail}>
+                        <div className={styles.metricsArea}>
                             <Label text="의사소견 없음" css="noData" />
                         </div>
                     </div>
+                    <div
+                        className={`${styles.metrics} ${styles.containerBase}`}
+                    >
+                        <div className={styles.metricsArea}>
+                            <Label text="2024.10.05" css="metricsDate" />
+                            <Label
+                                text="땡땡땡 약국"
+                                css="prescriptionMetrics"
+                            />
+                        </div>
+                        <div className={styles.metricsArea}>
+                            <Label text="땡땡정(20ml)" css="metrics" />
+                            <Label text="땡땡약(30ml)" css="metrics" />
+                        </div>
+                        <div className={styles.tearLine} />
+                        <div className={styles.metricsArea}>
+                            <img
+                                className={styles.prescriptionImg}
+                                src="//ecimg.cafe24img.com/pg541b69650982094/nash888/web/wholesum/open/lemon/PD_m_KV_01.jpg"
+                            />
+                        </div>
+                    </div>
                 </div>
-                <div className={styles.vaccineContainer}>
-                    <Label text="아기의 예방접종 이력이에요" css="category" />
-                    <div className={styles.vaccine}>
-                        <Label text="2024.10.03" css="metricsDate" />
-                        <Label text="BCG" css="vaccine" />
-                    </div>
-                    <div className={styles.vaccine}>
-                        <Label text="2024.10.03" css="metricsDate" />
-                        <Label text="B형 간염(1차)" css="vaccine" />
-                    </div>
+            </div>
+            <div className={styles.vaccineContainer}>
+                <Label text="아기의 예방접종 이력이에요" css="category" />
+                <div className={styles.vaccine}>
+                    <Label text="2024.10.03" css="metricsDate" />
+                    <Label text="BCG" css="vaccine" />
                 </div>
-                <div className={styles.commentsContainer}>
-                    <Label text="특이사항" css="category" />
-                    <div className={styles.comments}>
-                        <Button
-                            css="commentsButton"
-                            label="출산 시 합병증"
-                            onClick={() => {}}
-                        />
-                        <Button
-                            css="commentsButton"
-                            label="가족력 있음"
-                            onClick={() => {}}
-                        />
-                    </div>
+                <div className={styles.vaccine}>
+                    <Label text="2024.10.03" css="metricsDate" />
+                    <Label text="B형 간염(1차)" css="vaccine" />
+                </div>
+            </div>
+            <div className={styles.commentsContainer}>
+                <Label text="특이사항" css="category" />
+                <div className={styles.comments}>
+                    <Button
+                        css="commentsButton"
+                        label="출산 시 합병증"
+                        onClick={() => {}}
+                    />
+                    <Button
+                        css="commentsButton"
+                        label="가족력 있음"
+                        onClick={() => {}}
+                    />
                 </div>
             </div>
         </>
