@@ -61,7 +61,7 @@ const App: React.FC = () => {
 
                 <div className={styles.symptomContainer}>
                     <Label text="지금 아기의 증상은요" css="category" />
-                    <div className={styles.symptoms}>
+                    <div className="horizonFlexbox_8">
                         <Button
                             css="symptomButton"
                             label="고열"
@@ -307,7 +307,7 @@ const App: React.FC = () => {
             </div>
             <div className={styles.commentsContainer}>
                 <Label text="특이사항" css="category" />
-                <div className={styles.comments}>
+                <div className="horizonFlexbox_8">
                     <Button
                         css="commentsButton"
                         label="출산 시 합병증"

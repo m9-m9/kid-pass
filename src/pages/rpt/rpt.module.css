@@ -104,11 +104,6 @@
     gap: 8px;
 }
 
-.comments {
-    display: flex;
-    gap: 8px;
-}
-
 .tearLine {
     border: 1px dashed #bdbdbd;
 }
