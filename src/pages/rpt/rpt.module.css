@@ -57,7 +57,7 @@
     background-color: #f4f4f4;
     display: flex;
     flex-direction: column;
-
+    gap: 24px;
     padding: 24px;
 }
 
@@ -71,6 +71,18 @@
 .metricsArea.closed {
     max-height: 0; /* 접혀 있을 때의 높이 */
     opacity: 0;
+}
+
+.prescriptionContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 32px;
+}
+
+.prescriptionImg {
+    width: 100%;
+    height: auto;
 }
 
 .vaccineContainer {
@@ -92,7 +104,6 @@
     gap: 8px;
 }
 
-.comments {
-    display: flex;
-    gap: 8px;
+.tearLine {
+    border: 1px dashed #bdbdbd;
 }

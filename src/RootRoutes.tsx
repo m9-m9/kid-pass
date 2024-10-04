@@ -3,36 +3,41 @@ import Home from "./pages/home/App";
 import Schdl from "./pages/schdl/App";
 import Rpt from "./pages/rpt/App";
 import Auth from "./pages/auth/App";
+import Record from "./pages/record/App";
 import { SCREEN } from "./constants/screenUrl";
 import Container from "./elements/container/Container";
 
 const RootRoutes: React.FC = () => {
-  return (
-    <Router>
-      <Container css="container">
-        <nav>
-          <ul>
-            <li>
-              <Link to={SCREEN.HOME}>홈</Link>
-            </li>
-            <li>
-              <Link to={SCREEN.SCHDL}>일정</Link>
-            </li>
-            <li>
-              <Link to={SCREEN.RPT}>보고서</Link>
-            </li>
-          </ul>
-        </nav>
+    return (
+        <Router>
+            <Container css="container">
+                <nav>
+                    <ul>
+                        <li>
+                            <Link to={SCREEN.HOME}>홈</Link>
+                        </li>
+                        <li>
+                            <Link to={SCREEN.SCHDL}>일정</Link>
+                        </li>
+                        <li>
+                            <Link to={SCREEN.RPT}>보고서</Link>
+                        </li>
+                        <li>
+                            <Link to={SCREEN.RECORD}>기록</Link>
+                        </li>
+                    </ul>
+                </nav>
 
-        <Routes>
-          <Route path={SCREEN.HOME} element={<Home />} />
-          <Route path={SCREEN.SCHDL} element={<Schdl />} />
-          <Route path={SCREEN.RPT} element={<Rpt />} />
-          <Route path={SCREEN.AUTH} element={<Auth />} />
-        </Routes>
-      </Container>
-    </Router>
-  );
+                <Routes>
+                    <Route path={SCREEN.HOME} element={<Home />} />
+                    <Route path={SCREEN.SCHDL} element={<Schdl />} />
+                    <Route path={SCREEN.RPT} element={<Rpt />} />
+                    <Route path={SCREEN.AUTH} element={<Auth />} />
+                    <Route path={SCREEN.RECORD} element={<Record />} />
+                </Routes>
+            </Container>
+        </Router>
+    );
 };
 
 export default RootRoutes;
