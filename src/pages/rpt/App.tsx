@@ -61,7 +61,7 @@ const App: React.FC = () => {
 
                 <div className={styles.symptomContainer}>
                     <Label text="지금 아기의 증상은요" css="category" />
-                    <div className="horizonFlexbox_8">
+                    <div className="horizonFlexbox gap_8">
                         <Button
                             css="symptomButton"
                             label="고열"
@@ -263,11 +263,14 @@ const App: React.FC = () => {
 
                         <div className={styles.metricsArea}>
                             <Label text="신생아 검진" css="metrics" />
-                            <Label text="병명 없음" css="noData" />
+                            <Label text="병명 없음" css="diagnosisMetrics" />
                         </div>
                         <div className={styles.tearLine} />
                         <div className={styles.metricsArea}>
-                            <Label text="의사소견 없음" css="noData" />
+                            <Label
+                                text="의사소견 없음"
+                                css="diagnosisMetrics"
+                            />
                         </div>
                     </div>
                     <div
@@ -307,7 +310,7 @@ const App: React.FC = () => {
             </div>
             <div className={styles.commentsContainer}>
                 <Label text="특이사항" css="category" />
-                <div className="horizonFlexbox_8">
+                <div className="horizonFlexbox gap_8">
                     <Button
                         css="commentsButton"
                         label="출산 시 합병증"
