@@ -49,9 +49,9 @@ h6 {
     font-size: 1rem;
 }
 
-/* p {
-  margin-bottom: var(--spacing-medium);
-} */
+p {
+    line-height: 1;
+}
 
 /* Links */
 a {
