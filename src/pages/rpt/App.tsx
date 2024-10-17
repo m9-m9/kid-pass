@@ -1,8 +1,11 @@
 import { useState } from "react";
 import Button from "../../elements/button/Button";
 import BodyTemp from "../../elements/charts/BodyTemp";
-import Label from "../../elements/label/Label";
+import {DateLabel, Label} from "../../elements/label/Label";
 import styles from "./rpt.module.css";
+import { MetricsDetailItem, MetricsItem } from "./rptMetrics";
+import Container from "../../elements/container/Container";
+import ProfileMetrics from "./ProfileMetrics";
 
 type OpenStates = {
     sleep: boolean;
@@ -31,37 +34,20 @@ const App: React.FC = () => {
         <>
             <div>
                 <Button css="button" label="Report" onClick={() => {}} />
-                <div
-                    className={`${styles.profileContainer} ${styles.containerBase}`}
-                >
-                    <Label text="2024. 10. 31" css="profileDate" />
-                    <div>
-                        <Label text="2024.09.28 출생" css="metricsType" />
-                        <Label text="김아기" css="profileMetrics" />
+                <Container className="profileContainer">
+                    <DateLabel text="2024. 10. 31" className={styles.profileDate} />
+                        <ProfileMetrics label="2024.09.28 출생" value="김아기" />
+                        <ProfileMetrics label="나이 (만)" value="36일, 5주 1일" />
+                    <div className="horizonFlexbox gap-16">
+                        <ProfileMetrics label="몸무게" value="5.1kg" />
+                        <ProfileMetrics label="키" value="51.0cm" />
+                        <ProfileMetrics label="머리 둘레" value="36.9cm" />
                     </div>
-                    <div>
-                        <Label text="나이 (만)" css="metricsType" />
-                        <Label text="36일, 5주 1일" css="profileMetrics" />
-                    </div>
-                    <div className={styles.metricsArea}>
-                        <div>
-                            <Label text="몸무게" css="metricsType" />
-                            <Label text="5.1kg" css="profileMetrics" />
-                        </div>
-                        <div>
-                            <Label text="키" css="metricsType" />
-                            <Label text="51.0cm" css="profileMetrics" />
-                        </div>
-                        <div>
-                            <Label text="머리 둘레" css="metricsType" />
-                            <Label text="36.9cm" css="profileMetrics" />
-                        </div>
-                    </div>
-                </div>
+                </Container>
 
-                <div className={styles.symptomContainer}>
+                <div className={styles.sectionContainer}>
                     <Label text="지금 아기의 증상은요" css="category" />
-                    <div className="horizonFlexbox gap_8">
+                    <div className="horizonFlexbox gap-8">
                         <Button
                             css="symptomButton"
                             label="고열"
@@ -79,238 +65,103 @@ const App: React.FC = () => {
                         />
                     </div>
                 </div>
-                <div className={styles.metricsContainer}>
-                    <Label text="지난 3일 동안의 아기의 상태" css="category" />
-                    <div
-                        className={`${styles.metrics} ${styles.containerBase}`}
+                <div className={styles.sectionContainer}>
+                            <Label text="지난 3일 동안의 아기의 상태" css="category" />
+                            <MetricsItem
+                        title="체온기록"
+                        isOpen={openStates.temp}
+                        onToggle={() => toggleMetricsArea("temp")}
                     >
-                        <div className={`${styles.metrics}`}>
-                            <div className={styles.metircsTitle}>
-                                <Label text="체온기록" css="metrics" />
-                                <svg
-                                    width="22"
-                                    height={openStates.temp ? "10" : "9"}
-                                    viewBox={
-                                        openStates.temp
-                                            ? "0 0 22 10"
-                                            : "0 0 22 9"
-                                    }
-                                    fill="none"
-                                    onClick={() => toggleMetricsArea("temp")}
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    <path
-                                        d={
-                                            openStates.temp
-                                                ? "M1 1L10.5 8.5L21 1"
-                                                : "M21 8.5L11.5 0.999999L1 8.5"
-                                        }
-                                        stroke="black"
-                                    />
-                                </svg>
-                            </div>
-                            <div
-                                className={`${styles.metricsArea} ${
-                                    !openStates.temp && styles.closed
-                                }`}
-                            >
-                                <BodyTemp />
-                            </div>
-                        </div>
-                    </div>
+                        <BodyTemp />
+                    </MetricsItem>
 
-                    <div
-                        className={`${styles.metrics} ${styles.containerBase}`}
+                    <MetricsItem
+                        title="수면패턴"
+                        isOpen={openStates.sleep}
+                        onToggle={() => toggleMetricsArea("sleep")}
                     >
-                        <div className={styles.metircsTitle}>
-                            <Label text="수면패턴" css="metrics" />
-                            <svg
-                                width="22"
-                                height={openStates.sleep ? "10" : "9"}
-                                viewBox={
-                                    openStates.sleep ? "0 0 22 10" : "0 0 22 9"
-                                }
-                                fill="none"
-                                onClick={() => toggleMetricsArea("sleep")}
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <path
-                                    d={
-                                        openStates.sleep
-                                            ? "M1 1L10.5 8.5L21 1"
-                                            : "M21 8.5L11.5 0.999999L1 8.5"
-                                    }
-                                    stroke="black"
-                                />
-                            </svg>
-                        </div>
-                        <div
-                            className={`${styles.metricsArea} ${
-                                !openStates.sleep && styles.closed
-                            }`}
-                        >
-                            <div className={styles.metricsDetail}>
-                                <Label text="간격" css="metricsType" />
-                                <Label text="3회" css="profileMetrics" />
-                            </div>
-                            <div className={styles.metricsDetail}>
-                                <Label text="횟수" css="metricsType" />
-                                <Label text="6회" css="profileMetrics" />
-                            </div>
-                        </div>
-                    </div>
-
-                    <div
-                        className={`${styles.metrics} ${styles.containerBase}`}
+                        <MetricsDetailItem label="간격" value="3회" />
+                        <MetricsDetailItem label="횟수" value="6회" />
+                    </MetricsItem>
+                    <MetricsItem
+                        title="식사패턴"
+                        isOpen={openStates.meal}
+                        onToggle={() => toggleMetricsArea("meal")}
                     >
-                        <div className={styles.metircsTitle}>
-                            <Label text="식사패턴" css="metrics" />
-                            <svg
-                                width="22"
-                                height={openStates.meal ? "10" : "9"}
-                                viewBox={
-                                    openStates.meal ? "0 0 22 10" : "0 0 22 9"
-                                }
-                                fill="none"
-                                onClick={() => toggleMetricsArea("meal")}
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <path
-                                    d={
-                                        openStates.meal
-                                            ? "M1 1L10.5 8.5L21 1"
-                                            : "M21 8.5L11.5 0.999999L1 8.5"
-                                    }
-                                    stroke="black"
-                                />
-                            </svg>
-                        </div>
-                        <div
-                            className={`${styles.metricsArea} ${
-                                !openStates.meal && styles.closed
-                            }`}
-                        >
-                            <div className={styles.metricsDetail}>
-                                <Label text="간격" css="metricsType" />
-                                <Label text="2시간" css="profileMetrics" />
-                            </div>
-                            <div className={styles.metricsDetail}>
-                                <Label text="횟수" css="metricsType" />
-                                <Label text="6회" css="profileMetrics" />
-                            </div>
-                        </div>
-                    </div>
-
-                    <div
-                        className={`${styles.metrics} ${styles.containerBase}`}
+                        <MetricsDetailItem label="간격" value="2시간" />
+                        <MetricsDetailItem label="횟수" value="6회" />
+                    </MetricsItem>
+                    <MetricsItem
+                        title="식사패턴"
+                        isOpen={openStates.urination}
+                        onToggle={() => toggleMetricsArea("urination")}
                     >
-                        <div className={styles.metircsTitle}>
-                            <Label text="배뇨 횟수" css="metrics" />
-                            <svg
-                                width="22"
-                                height={openStates.urination ? "10" : "9"}
-                                viewBox={
-                                    openStates.urination
-                                        ? "0 0 22 10"
-                                        : "0 0 22 9"
-                                }
-                                fill="none"
-                                onClick={() => toggleMetricsArea("urination")}
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <path
-                                    d={
-                                        openStates.urination
-                                            ? "M1 1L10.5 8.5L21 1"
-                                            : "M21 8.5L11.5 0.999999L1 8.5"
-                                    }
-                                    stroke="black"
-                                />
-                            </svg>
-                        </div>
-                        <div
-                            className={`${styles.metricsArea} ${
-                                !openStates.urination && styles.closed
-                            }`}
-                        >
-                            <div className={styles.metricsDetail}>
-                                <Label text="대변" css="metricsType" />
-                                <Label text="6회" css="profileMetrics" />
-                            </div>
-                            <div className={styles.metricsDetail}>
-                                <Label text="소변" css="metricsType" />
-                                <Label text="6회" css="profileMetrics" />
-                            </div>
-                            <div className={styles.metricsDetail}>
-                                <Label text="대변색깔" css="metricsType" />
-                                <Label text="묽은 변" css="profileMetrics" />
-                            </div>
-                        </div>
-                    </div>
+                        <MetricsDetailItem label="대변" value="6회" />
+                        <MetricsDetailItem label="소변" value="6회" />
+                        <MetricsDetailItem label="대변색깔" value="묽은 변" />
+                    </MetricsItem>        
+                    
+          
                 </div>
-                <div className={styles.prescriptionContainer}>
+                <div className={styles.sectionContainer}>
                     <Label text="아기가 치료받은 기록이에요" css="category" />
-                    <div
-                        className={`${styles.metrics} ${styles.containerBase}`}
-                    >
-                        <div className={styles.metricsArea}>
-                            <Label text="2024.10.05" css="metricsDate" />
+                    <Container className="rptContainer prescriptionContainer" backgroundColor="#f4f4f4">
+                        <div className="horizonFlexbox gap-24">
+                            <DateLabel text="2024.10.05" className={styles.prescriptionDate} />
                             <Label
                                 text="땡땡땡 산부인과"
-                                css="prescriptionMetrics"
+                                css="facilityName"
                             />
                         </div>
 
-                        <div className={styles.metricsArea}>
-                            <Label text="신생아 검진" css="metrics" />
-                            <Label text="병명 없음" css="diagnosisMetrics" />
+                        <div className="horizonFlexbox gap-24">
+                            <Label text="신생아 검진" css="treatmentType" />
+                            <Label text="병명 없음" css="diagnosisResult" />
                         </div>
                         <div className={styles.tearLine} />
-                        <div className={styles.metricsArea}>
+                        <div>
                             <Label
                                 text="의사소견 없음"
-                                css="diagnosisMetrics"
+                                css="diagnosisResult"
                             />
                         </div>
-                    </div>
-                    <div
-                        className={`${styles.metrics} ${styles.containerBase}`}
-                    >
-                        <div className={styles.metricsArea}>
-                            <Label text="2024.10.05" css="metricsDate" />
+                    </Container>
+                    <Container className="rptContainer" backgroundColor="#f4f4f4">
+                        <div className="horizonFlexbox gap-24">
+                        <DateLabel text="2024.10.05" className={styles.prescriptionDate} />
                             <Label
                                 text="땡땡땡 약국"
-                                css="prescriptionMetrics"
+                                css="facilityName"
                             />
                         </div>
-                        <div className={styles.metricsArea}>
-                            <Label text="땡땡정(20ml)" css="metrics" />
-                            <Label text="땡땡약(30ml)" css="metrics" />
+                        <div className="horizonFlexbox gap-8">
+                            <Label text="땡땡정(20ml)" css="drugName" />
+                            <Label text="땡땡약(30ml)" css="drugName" />
                         </div>
                         <div className={styles.tearLine} />
-                        <div className={styles.metricsArea}>
+                        <div>
                             <img
                                 className={styles.prescriptionImg}
                                 src="//ecimg.cafe24img.com/pg541b69650982094/nash888/web/wholesum/open/lemon/PD_m_KV_01.jpg"
                             />
                         </div>
-                    </div>
+                    </Container>
                 </div>
             </div>
-            <div className={styles.vaccineContainer}>
+            <div className={styles.sectionContainer}>
                 <Label text="아기의 예방접종 이력이에요" css="category" />
-                <div className={styles.vaccine}>
+                <div className="verticalFlexbox gap-8">
                     <Label text="2024.10.03" css="metricsDate" />
                     <Label text="BCG" css="vaccine" />
                 </div>
-                <div className={styles.vaccine}>
+                <div className="verticalFlexbox gap-8">
                     <Label text="2024.10.03" css="metricsDate" />
                     <Label text="B형 간염(1차)" css="vaccine" />
                 </div>
             </div>
-            <div className={styles.commentsContainer}>
+            <div className={styles.sectionContainer}>
                 <Label text="특이사항" css="category" />
-                <div className="horizonFlexbox gap_8">
+                <div className="horizonFlexbox gap-8">
                     <Button
                         css="commentsButton"
                         label="출산 시 합병증"

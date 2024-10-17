@@ -8,11 +8,17 @@
     box-sizing: border-box;
 }
 
+
+html {
+
+    font-size: 2px;
+}
+
 /* Base styles */
 body {
     margin: 0;
     font-family: "Arial", sans-serif;
-    font-size: var(--font-size-medium);
+    font-size: 8rem;
     line-height: 1.6;
     color: var(--text-color);
     background-color: var(--background-color);
@@ -118,6 +124,9 @@ select {
     margin-bottom: var(--spacing-large);
 }
 
+
+/* flex Css*/
+
 .horizonFlexbox {
     display: flex;
     align-items: center;
@@ -134,20 +143,35 @@ select {
     justify-content: center;
 }
 
-.gap_8 {
+
+
+/* 간격 CSS*/
+
+.gap-8 {
     gap: 8px;
 }
 
-.gap_16 {
+.gap-16 {
     gap: 16px;
 }
-.divider {
-    display: inline-block;
-    border-left: 2px solid #9e9e9e;
-    height: 15px;
-    vertical-align: middle;
+
+.gap-24 {
+    gap: 24px;
 }
 
 .mb-24 {
     margin-bottom: 24px;
+}
+
+.mb-48 {
+    margin-bottom: 48px;
+}
+
+/* 구분선 CSS */
+
+.divider {
+    display: inline-block;
+    border-left: 2px solid #9e9e9e;
+    height: 16px;
+    vertical-align: middle;
 }

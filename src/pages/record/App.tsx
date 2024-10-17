@@ -1,26 +1,26 @@
-import Label from "../../elements/label/Label";
+import {Label} from "../../elements/label/Label";
 import styles from "./record.module.css";
 
 const App: React.FC = () => {
     return (
         <>
-            <div className="horizonFlexbox gap_16 mb-24">
+            <div className="horizonFlexbox gap-16 mb-24">
                 <Label text="2024.10.31.(목)" css="recordDate_black" />
                 <div className="divider"></div>
                 <Label text="D+32" css="recordDate_gray" />
             </div>
             <div className={styles.metrics}>
-                <div className="verticalFlexbox gap_8">
+                <div className="verticalFlexbox gap-8">
                     <Label text="배변" css="metrics" />
                     <Label text="두 번째" css="symptomOrder" />
                     <Label text="1시간 전" css="eventTimeAgo" />
                 </div>
-                <div className="verticalFlexbox gap_8">
+                <div className="verticalFlexbox gap-8">
                     <Label text="배변" css="metrics" />
                     <Label text="두 번째" css="symptomOrder" />
                     <Label text="1시간 전" css="eventTimeAgo" />
                 </div>
-                <div className="verticalFlexbox gap_8">
+                <div className="verticalFlexbox gap-8">
                     <Label text="배변" css="metrics" />
                     <Label text="두 번째" css="symptomOrder" />
                     <Label text="1시간 전" css="eventTimeAgo" />
@@ -31,7 +31,7 @@ const App: React.FC = () => {
                     <Label text="특이 증상" css="metrics" />
                     <Label text="리포트에 추가" css="addReport" />
                 </div>
-                <div className="horizonFlexbox gap_8">
+                <div className="horizonFlexbox gap-8">
                     <Label text="영아산통" css="eventTimeAgo" />
                     <Label text="설사" css="eventTimeAgo" />
                 </div>

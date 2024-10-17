@@ -1,34 +1,43 @@
 /* 레포트 페이지 */
 
-.metrics {
-    font-size: var(--font-size-18);
-    font-weight: var(--font-weight-bold);
-    color: #000000;
-    line-height: 1;
-}
 
-.metricsType {
+.metricsLabel {
     font-size: var(--font-size-14);
     font-weight: var(--font-weight-regular);
     color: #222222;
 }
 
-.profileMetrics {
+.metricsValue {
     font-size: var(--font-size-20);
     font-weight: var(--font-weight-semiBold);
     color: #222222;
 }
 
-.prescriptionMetrics {
+.symtomLabel {
+    font-size: var(--font-size-18);
+    font-weight: var(--font-weight-bold);
+    color: #000000;
+}
+
+
+.facilityName {
     font-size: var(--font-size-16);
     font-weight: var(--font-weight-medium);
     color: #222222;
 }
 
-.diagnosisMetrics {
+.diagnosisResult {
     font-size: var(--font-size-18);
     font-weight: var(--font-weight-semiBold);
     color: #9e9e9e;
+}
+
+.treatmentType, .drugName , .vaccine{
+
+    font-size: var(--font-size-18);
+    font-weight: var(--font-weight-semiBold);
+    color: #000000;
+
 }
 
 .opinion {
@@ -37,18 +46,6 @@
     color: #9e9e9e;
 }
 
-.profileDate {
-    font-size: var(--font-size-12);
-    font-weight: var(--font-weight-regular);
-    color: #646464;
-}
-
-.metricsDate {
-    font-size: var(--font-size-16);
-    font-weight: var(--font-weight-regular);
-    color: #9e9e9e;
-    line-height: 1;
-}
 
 .category {
     font-size: var(--font-size-24);
@@ -56,12 +53,7 @@
     color: #222222;
 }
 
-.vaccine {
-    font-size: var(--font-size-20);
-    font-weight: var(--font-weight-semiBold);
-    color: #000000;
-    line-height: 1;
-}
+
 
 /* 기록 메인페이지*/
 
