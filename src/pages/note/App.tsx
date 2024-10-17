@@ -1,9 +1,9 @@
-import Label from "../../elements/label/Label";
+import {Label} from "../../elements/label/Label";
 
 const Note = () => {
     return (
         <>
-            <div className="horizonFlexbox gap_8">
+            <div className="horizonFlexbox gap-8">
                 <Label text="김아기" css="" />
             </div>
         </>
