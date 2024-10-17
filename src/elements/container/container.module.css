@@ -4,3 +4,34 @@
     padding: 24px;
     border: 1px solid black;
 }
+
+
+/* 레포트 페이지 */
+
+.profileContainer {
+    background-color: var(--profile-color);
+    border-radius: var(--border-radius-20);
+    font-size: var(--font-size-20);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 24px;
+    margin: 40px auto;
+}
+
+.rptContainer {
+    
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 24px;
+    border-radius: 24px;
+}
+
+
+.prescriptionContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 32px;
+}
