@@ -8,9 +8,7 @@
     box-sizing: border-box;
 }
 
-
 html {
-
     font-size: 2px;
 }
 
@@ -124,7 +122,6 @@ select {
     margin-bottom: var(--spacing-large);
 }
 
-
 /* flex Css*/
 
 .horizonFlexbox {
@@ -143,8 +140,6 @@ select {
     justify-content: center;
 }
 
-
-
 /* 간격 CSS*/
 
 .gap-8 {
@@ -161,6 +156,10 @@ select {
 
 .mb-24 {
     margin-bottom: 24px;
+}
+
+.mb-32 {
+    margin-bottom: 32px;
 }
 
 .mb-48 {
