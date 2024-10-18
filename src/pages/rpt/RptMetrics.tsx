@@ -1,5 +1,5 @@
 import React from "react";
-import {Label} from "../../elements/label/Label";
+import { Label } from "../../elements/label/Label";
 import styles from "./rpt.module.css";
 import Container from "../../elements/container/Container";
 
@@ -9,7 +9,6 @@ type MetricsDetailItemProps = {
     value: string;
 };
 
-
 // MetricsItem 컴포넌트
 type MetricsItemProps = {
     title: string;
@@ -18,11 +17,15 @@ type MetricsItemProps = {
     children: React.ReactNode;
 };
 
-
 // MetricsContainer
 
-const MetricsItem: React.FC<MetricsItemProps> = ({ title, isOpen, onToggle, children }) => (
-    <Container className="rptContainer" backgroundColor="#f4f4f4">
+const MetricsItem: React.FC<MetricsItemProps> = ({
+    title,
+    isOpen,
+    onToggle,
+    children,
+}) => (
+    <Container className="report" backgroundColor="#f4f4f4">
         <div className="horizonFlexbox gap-24">
             <Label text={title} css="symtomLabel" />
             <svg
@@ -35,7 +38,11 @@ const MetricsItem: React.FC<MetricsItemProps> = ({ title, isOpen, onToggle, chil
                 className={styles.toggleIcon}
             >
                 <path
-                    d={isOpen ? "M1 1L10.5 8.5L21 1" : "M21 8.5L11.5 0.999999L1 8.5"}
+                    d={
+                        isOpen
+                            ? "M1 1L10.5 8.5L21 1"
+                            : "M21 8.5L11.5 0.999999L1 8.5"
+                    }
                     stroke="black"
                 />
             </svg>
@@ -46,10 +53,12 @@ const MetricsItem: React.FC<MetricsItemProps> = ({ title, isOpen, onToggle, chil
     </Container>
 );
 
-
 // Metrics
 
-const MetricsDetailItem: React.FC<MetricsDetailItemProps> = ({ label, value }) => (
+const MetricsDetailItem: React.FC<MetricsDetailItemProps> = ({
+    label,
+    value,
+}) => (
     <div className="horizonFlexbox gap-8">
         <Label text={label} css="metricsLabel" />
         <Label text={value} css="metricsValue" />

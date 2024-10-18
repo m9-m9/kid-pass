@@ -1,9 +1,9 @@
 import { useState } from "react";
 import Button from "../../elements/button/Button";
 import BodyTemp from "../../elements/charts/BodyTemp";
-import {DateLabel, Label} from "../../elements/label/Label";
+import { Label } from "../../elements/label/Label";
 import styles from "./rpt.module.css";
-import { MetricsDetailItem, MetricsItem } from "./rptMetrics";
+import { MetricsDetailItem, MetricsItem } from "./RptMetrics";
 import Container from "../../elements/container/Container";
 import ProfileMetrics from "./ProfileMetrics";
 
@@ -34,10 +34,10 @@ const App: React.FC = () => {
         <>
             <div>
                 <Button css="button" label="Report" onClick={() => {}} />
-                <Container className="profileContainer">
-                    <DateLabel text="2024. 10. 31" className={styles.profileDate} />
-                        <ProfileMetrics label="2024.09.28 출생" value="김아기" />
-                        <ProfileMetrics label="나이 (만)" value="36일, 5주 1일" />
+                <Container className="profile">
+                    <Label text="2024. 10. 31" css="profileDate" />
+                    <ProfileMetrics label="2024.09.28 출생" value="김아기" />
+                    <ProfileMetrics label="나이 (만)" value="36일, 5주 1일" />
                     <div className="horizonFlexbox gap-16">
                         <ProfileMetrics label="몸무게" value="5.1kg" />
                         <ProfileMetrics label="키" value="51.0cm" />
@@ -66,8 +66,8 @@ const App: React.FC = () => {
                     </div>
                 </div>
                 <div className={styles.sectionContainer}>
-                            <Label text="지난 3일 동안의 아기의 상태" css="category" />
-                            <MetricsItem
+                    <Label text="지난 3일 동안의 아기의 상태" css="category" />
+                    <MetricsItem
                         title="체온기록"
                         isOpen={openStates.temp}
                         onToggle={() => toggleMetricsArea("temp")}
@@ -99,19 +99,17 @@ const App: React.FC = () => {
                         <MetricsDetailItem label="대변" value="6회" />
                         <MetricsDetailItem label="소변" value="6회" />
                         <MetricsDetailItem label="대변색깔" value="묽은 변" />
-                    </MetricsItem>        
-                    
-          
+                    </MetricsItem>
                 </div>
                 <div className={styles.sectionContainer}>
                     <Label text="아기가 치료받은 기록이에요" css="category" />
-                    <Container className="rptContainer prescriptionContainer" backgroundColor="#f4f4f4">
+                    <Container
+                        className="report prescription"
+                        backgroundColor="#f4f4f4"
+                    >
                         <div className="horizonFlexbox gap-24">
-                            <DateLabel text="2024.10.05" className={styles.prescriptionDate} />
-                            <Label
-                                text="땡땡땡 산부인과"
-                                css="facilityName"
-                            />
+                            <Label text="2024.10.05" css="prescriptionDate" />
+                            <Label text="땡땡땡 산부인과" css="facilityName" />
                         </div>
 
                         <div className="horizonFlexbox gap-24">
@@ -120,19 +118,13 @@ const App: React.FC = () => {
                         </div>
                         <div className={styles.tearLine} />
                         <div>
-                            <Label
-                                text="의사소견 없음"
-                                css="diagnosisResult"
-                            />
+                            <Label text="의사소견 없음" css="diagnosisResult" />
                         </div>
                     </Container>
-                    <Container className="rptContainer" backgroundColor="#f4f4f4">
+                    <Container className="report" backgroundColor="#f4f4f4">
                         <div className="horizonFlexbox gap-24">
-                        <DateLabel text="2024.10.05" className={styles.prescriptionDate} />
-                            <Label
-                                text="땡땡땡 약국"
-                                css="facilityName"
-                            />
+                            <Label text="2024.10.05" css="prescriptionDate" />
+                            <Label text="땡땡땡 약국" css="facilityName" />
                         </div>
                         <div className="horizonFlexbox gap-8">
                             <Label text="땡땡정(20ml)" css="drugName" />

@@ -1,6 +1,5 @@
 /* 레포트 페이지 */
 
-
 .metricsLabel {
     font-size: var(--font-size-14);
     font-weight: var(--font-weight-regular);
@@ -19,7 +18,6 @@
     color: #000000;
 }
 
-
 .facilityName {
     font-size: var(--font-size-16);
     font-weight: var(--font-weight-medium);
@@ -32,20 +30,13 @@
     color: #9e9e9e;
 }
 
-.treatmentType, .drugName , .vaccine{
-
+.treatmentType,
+.drugName,
+.vaccine {
     font-size: var(--font-size-18);
     font-weight: var(--font-weight-semiBold);
     color: #000000;
-
 }
-
-.opinion {
-    font-size: var(--font-size-18);
-    font-weight: var(--font-weight-medium);
-    color: #9e9e9e;
-}
-
 
 .category {
     font-size: var(--font-size-24);
@@ -53,18 +44,28 @@
     color: #222222;
 }
 
+.profileDate {
+    font-size: var(--font-size-12);
+    font-weight: var(--font-weight-regular);
+    color: #646464;
+}
 
+.prescriptionDate {
+    font-size: var(--font-size-16);
+    font-weight: var(--font-weight-regular);
+    color: #9e9e9e;
+}
 
 /* 기록 메인페이지*/
 
-.symptomOrder {
+.frequency {
     font-size: var(--font-size-16);
     font-weight: var(--font-weight-semiBold);
     color: #d9d9d9;
     line-height: 0.5;
 }
 
-.eventTimeAgo {
+.metricsRecord {
     font-size: var(--font-size-18);
     font-weight: var(--font-weight-regular);
     color: #000000;
@@ -76,27 +77,45 @@
     color: #ffffff;
 }
 
-.symptomTitleLabel {
-    font-size: var(--font-size-15);
+.symtomMetrics {
+    font-size: var(--font-size-18);
     font-weight: var(--font-weight-semiBold);
     color: #000000;
 }
 
-.symptomContent {
+.symtompValue {
+    font-size: var(--font-size-18);
+    font-weight: var(--font-weight-regular);
+    color: #000000;
+}
+
+.symtompPlaceholder {
+    font-size: var(--font-size-20);
+    font-weight: var(--font-weight-semiBold);
+    color: #d9d9d9;
+}
+
+.symtompAdd {
+    font-size: var(--font-size-16);
+    font-weight: var(--font-weight-semiBold);
+    color: #000000;
+}
+
+.symtompList {
     font-size: var(--font-size-12);
     font-weight: var(--font-weight-semiBold);
-    color: #222222;
+    color: #000000;
 }
 
 /* 기록 상세페이지*/
 
-.recordDate_black {
+.recordDate {
     font-size: var(--font-size-20);
     font-weight: var(--font-weight-semiBold);
     color: #222222;
 }
 
-.recordDate_gray {
+.visitDay {
     font-size: var(--font-size-16);
     font-weight: var(--font-weight-semiBold);
     color: #9e9e9e;
