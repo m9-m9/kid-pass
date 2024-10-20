@@ -5,6 +5,7 @@ const SCREEN = {
   AUTH: "/auth",
   RECORD: "/record",
   SIGNUP: "/signup",
+  NOTE: "note",
 };
 
 export { SCREEN };

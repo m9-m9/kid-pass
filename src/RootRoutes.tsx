@@ -5,6 +5,7 @@ import Rpt from "./pages/rpt/App";
 import Auth from "./pages/auth/App";
 import SignUp from "./pages/auth/signup/App";
 import Record from "./pages/record/App";
+import Note from "./pages/note/App";
 import { SCREEN } from "./constants/screenUrl";
 import Container from "./elements/container/Container";
 
@@ -26,6 +27,9 @@ const RootRoutes: React.FC = () => {
             <li>
               <Link to={SCREEN.RECORD}>기록</Link>
             </li>
+            <li>
+              <Link to={SCREEN.NOTE}>아기수첩</Link>
+            </li>
           </ul>
         </nav>
 
@@ -34,8 +38,9 @@ const RootRoutes: React.FC = () => {
           <Route path={SCREEN.SCHDL} element={<Schdl />} />
           <Route path={SCREEN.RPT} element={<Rpt />} />
           <Route path={SCREEN.AUTH} element={<Auth />} />
-          <Route path={SCREEN.SIGNUP} element={<SignUp />} />
           <Route path={SCREEN.RECORD} element={<Record />} />
+          <Route path={SCREEN.NOTE} element={<Note />} />
+          <Route path={SCREEN.SIGNUP} element={<SignUp />} />
         </Routes>
       </Container>
     </Router>

@@ -4,7 +4,7 @@ import styles from "./record.module.css";
 const App: React.FC = () => {
     return (
         <>
-            <div className="horizonFlexbox gap_16">
+            <div className="horizonFlexbox gap_16 mb-24">
                 <Label text="2024.10.31.(목)" css="recordDate_black" />
                 <div className="divider"></div>
                 <Label text="D+32" css="recordDate_gray" />
