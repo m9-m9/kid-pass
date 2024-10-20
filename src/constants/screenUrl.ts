@@ -4,6 +4,7 @@ const SCREEN = {
     RPT: "/rpt",
     AUTH: "/auth",
     RECORD: "/record",
+    SIGNUP: "/signup",
     NOTE: "note",
 };
 

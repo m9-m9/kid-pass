@@ -1,4 +1,4 @@
-import {Label} from "../../elements/label/Label";
+import { Label } from "../../elements/label/Label";
 
 const Note = () => {
     return (

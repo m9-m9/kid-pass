@@ -3,6 +3,7 @@ import Home from "./pages/home/App";
 import Schdl from "./pages/schdl/App";
 import Rpt from "./pages/rpt/App";
 import Auth from "./pages/auth/App";
+import SignUp from "./pages/auth/signup/App";
 import Record from "./pages/record/App";
 import Note from "./pages/note/App";
 import { SCREEN } from "./constants/screenUrl";
@@ -39,6 +40,7 @@ const RootRoutes: React.FC = () => {
                     <Route path={SCREEN.AUTH} element={<Auth />} />
                     <Route path={SCREEN.RECORD} element={<Record />} />
                     <Route path={SCREEN.NOTE} element={<Note />} />
+                    <Route path={SCREEN.SIGNUP} element={<SignUp />} />
                 </Routes>
             </Container>
         </Router>
