@@ -12,7 +12,7 @@ import Container from "./elements/container/Container";
 const RootRoutes: React.FC = () => {
   return (
     <Router>
-      <Container css="container">
+      <Container className="container">
         <nav>
           <ul>
             <li>
