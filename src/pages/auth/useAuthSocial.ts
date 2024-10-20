@@ -3,15 +3,16 @@ import { GoogleLoginProvider } from "./google";
 import { KakaoLoginProvider } from "./kakao";
 import { SocialLoginResult, SocialType } from "./model";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyD6RnrVgwMaQaC9GbVdaxqGeP9srXf6Jd4",
-  authDomain: "kidpass-b2e15.firebaseapp.com",
-  projectId: "kidpass-b2e15",
-  storageBucket: "kidpass-b2e15.appspot.com",
-  messagingSenderId: "829184695617",
-  appId: "1:829184695617:web:64ff946769042666d495c0",
+export const firebaseConfig = {
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
-const kakaoClientId = "1bf8beb8e963a381f6cdf1639d02f616";
+
+export const kakaoClientId = import.meta.env.VITE_KAKAO_CLIENT_ID;
 
 const googleLogin = new GoogleLoginProvider(firebaseConfig);
 const kakaoLogin = new KakaoLoginProvider(kakaoClientId);
