@@ -96,3 +96,23 @@
     align-items: center;
     margin-bottom: 32px;
 }
+
+/* 아기수첩 페이지 */
+
+.dueDate {
+    background-color: #ff5555;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    border-radius: var(--border-radius-20);
+}
+
+.vaccination {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #ffacac;
+    padding: 36px;
+    border-radius: var(--border-radius-20);
+}

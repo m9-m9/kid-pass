@@ -78,7 +78,8 @@
     color: #ffffff;
 }
 
-.symtompValue {
+.symtompValue,
+.babyAge {
     font-size: var(--font-size-18);
     font-weight: var(--font-weight-regular);
     color: #000000;
@@ -127,4 +128,24 @@
     font-size: var(--font-size-16);
     font-weight: var(--font-weight-semiBold);
     color: #222222;
+}
+
+/* 아기수첩 페이지 */
+
+.babyName {
+    font-size: var(--font-size-32);
+    font-weight: var(--font-weight-semiBold);
+    color: #222222;
+}
+
+.dueDate {
+    font-size: var(--font-size-18);
+    font-weight: var(--font-weight-bold);
+    color: #ffffff;
+}
+
+.vaccination {
+    font-size: var(--font-size-24);
+    font-weight: var(--font-weight-regular);
+    color: #000000;
 }
