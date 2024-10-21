@@ -3,13 +3,13 @@
 .metricsLabel {
     font-size: var(--font-size-14);
     font-weight: var(--font-weight-regular);
-    color: #222222;
+    color: #000000;
 }
 
 .metricsValue {
     font-size: var(--font-size-20);
     font-weight: var(--font-weight-semiBold);
-    color: #222222;
+    color: #000000;
 }
 
 .symtomLabel {
@@ -18,10 +18,11 @@
     color: #000000;
 }
 
-.facilityName {
+.facilityName,
+.vaccinationResult {
     font-size: var(--font-size-16);
     font-weight: var(--font-weight-medium);
-    color: #222222;
+    color: #000000;
 }
 
 .diagnosisResult {
@@ -42,7 +43,7 @@
 .category {
     font-size: var(--font-size-24);
     font-weight: var(--font-weight-bold);
-    color: #222222;
+    color: #000000;
 }
 
 .profileDate {
@@ -66,12 +67,6 @@
     line-height: 0.5;
 }
 
-.metricsRecord {
-    font-size: var(--font-size-18);
-    font-weight: var(--font-weight-regular);
-    color: #000000;
-}
-
 .addReport {
     font-size: var(--font-size-14);
     font-weight: var(--font-weight-semiBold);
@@ -79,7 +74,8 @@
 }
 
 .symtompValue,
-.babyAge {
+.babyAge,
+.metricsRecord {
     font-size: var(--font-size-18);
     font-weight: var(--font-weight-regular);
     color: #000000;
@@ -108,7 +104,7 @@
 .recordDate {
     font-size: var(--font-size-20);
     font-weight: var(--font-weight-semiBold);
-    color: #222222;
+    color: #000000;
 }
 
 .visitDay {
@@ -127,7 +123,7 @@
 .detailTime {
     font-size: var(--font-size-16);
     font-weight: var(--font-weight-semiBold);
-    color: #222222;
+    color: #000000;
 }
 
 /* 아기수첩 페이지 */
@@ -135,7 +131,7 @@
 .babyName {
     font-size: var(--font-size-32);
     font-weight: var(--font-weight-semiBold);
-    color: #222222;
+    color: #000000;
 }
 
 .dueDate {
@@ -147,5 +143,11 @@
 .vaccination {
     font-size: var(--font-size-24);
     font-weight: var(--font-weight-regular);
+    color: #000000;
+}
+
+.vaccinationRate {
+    font-size: var(--font-size-28);
+    font-weight: var(--font-weight-bold);
     color: #000000;
 }
