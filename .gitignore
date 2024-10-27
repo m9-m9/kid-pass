@@ -68,3 +68,4 @@ dist
 
 # Windows files
 Thumbs.db
+.vercel
