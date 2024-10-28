@@ -1,5 +1,6 @@
 import Button from "../../elements/button/Button";
-import {Label} from "../../elements/label/Label";
+import Container from "../../elements/container/Container";
+import { Label } from "../../elements/label/Label";
 import styles from "./record.module.css";
 
 const App: React.FC = () => {
@@ -7,7 +8,7 @@ const App: React.FC = () => {
 
     return (
         <>
-            <div className={styles.recordHeader}>
+            <Container className="recordMetrics">
                 <div className="horizonFlexbox gap-8">
                     {["수면", "식사", "배변", "운동", "기타"].map(
                         (label, index) => (
@@ -28,37 +29,37 @@ const App: React.FC = () => {
                     label="그래프로 보기"
                     onClick={() => {}}
                 />
-            </div>
+            </Container>
             <div className="horizonFlexbox mb-24 gap-16">
-                <Label text="오늘" css="metrics" />
-                <Label text="2024.10.31.(목)" css="recordDate_gray" />
+                <Label text="오늘" css="recordDate" />
+                <Label text="2024.10.31.(목)" css="visitDay" />
                 <div className="divider"></div>
-                <Label text="D+32" css="recordDate_gray" />
+                <Label text="D+32" css="visitDay" />
             </div>
             <div className="horizonFlexbox gap-16">
                 <div className="horizonFlexbox gap-8">
-                    <Label text="수면" css="recordDate_gray" />
+                    <Label text="수면" css="visitDay" />
                     <Label text="7시간 4회" css="metricsDate" />
                 </div>
                 <div className="horizonFlexbox gap-8">
-                    <Label text="식사" css="recordDate_gray" />
+                    <Label text="식사" css="visitDay" />
                     <Label text="7시간 4회" css="metricsDate" />
                 </div>
             </div>
             <div className={styles.recordContainer}>
                 <div className={styles.record}>
                     <div className="horizonFlexbox gap-8">
-                        <Label text="11:47" css="metrics" />
+                        <Label text="11:47" css="detailTime" />
                         <Label text="AM" css="metricsDate" />
                     </div>
-                    <Label text="2시간 32분" css="metrics" />
+                    <Label text="2시간 32분" css="detailTime" />
                 </div>
                 <div className={styles.record}>
                     <div className="horizonFlexbox gap-8">
-                        <Label text="11:47" css="metrics" />
+                        <Label text="11:47" css="detailTime" />
                         <Label text="AM" css="metricsDate" />
                     </div>
-                    <Label text="2시간 32분" css="metrics" />
+                    <Label text="2시간 32분" css="detailTime" />
                 </div>
             </div>
         </>

@@ -1,0 +1,13 @@
+.circle {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.dosesCompleted {
+    background-color: #ff8181;
+}
+
+.dosesRemaining {
+    background-color: #d9d9d9;
+}

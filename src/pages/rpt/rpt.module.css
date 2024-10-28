@@ -17,14 +17,12 @@
     height: auto;
 }
 
-
 .closed {
     max-height: 0; /* 접혀 있을 때의 높이 */
     opacity: 0;
 }
 
-
-.bg-profile { 
+.bg-profile {
     background-color: (var(--profile-color));
 }
 
@@ -32,26 +30,6 @@
     cursor: pointer;
 }
 
-
 .tearLine {
     border: 1px dashed #bdbdbd;
 }
-
-/* Label CSS */
-
-.profileDate {
-    font-size: var(--font-size-12);
-    font-weight: var(--font-weight-regular);
-    color: #646464;
-
-}
-
-.prescriptionDate{
-
-    font-size: var(--font-size-16);
-    font-weight: var(--font-weight-regular);
-    color: #9e9e9e;
-
-}
-
-

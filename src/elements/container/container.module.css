@@ -5,10 +5,9 @@
     border: 1px solid black;
 }
 
-
 /* 레포트 페이지 */
 
-.profileContainer {
+.profile {
     background-color: var(--profile-color);
     border-radius: var(--border-radius-20);
     font-size: var(--font-size-20);
@@ -19,8 +18,7 @@
     margin: 40px auto;
 }
 
-.rptContainer {
-    
+.report {
     display: flex;
     flex-direction: column;
     gap: 24px;
@@ -28,10 +26,106 @@
     border-radius: 24px;
 }
 
-
-.prescriptionContainer {
+.prescription {
     display: flex;
     flex-direction: column;
     gap: 10px;
     margin-bottom: 32px;
+}
+
+/* 기록 페이지 */
+
+.record {
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    width: 100%;
+    justify-content: space-around;
+}
+
+.addRecord {
+    display: flex;
+    flex-direction: column;
+    background-color: #ff8888;
+    padding: 16px;
+    gap: 8px;
+    width: 100%;
+    margin: 24px 0 48px 0;
+    border-radius: 20px;
+}
+
+.addSymptom {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.addSymptom_record {
+    padding: 16px;
+    border: 1px solid #d9d9d9;
+    border-radius: 20px;
+    display: flex;
+    justify-content: space-around;
+
+    align-items: center;
+}
+
+.symptomArea {
+    display: flex;
+    flex-wrap: wrap; /* 요소가 여러 줄로 배치될 수 있도록 설정 */
+    justify-content: space-between; /* 요소 간의 간격을 균일하게 설정 */
+    gap: 8px; /* 요소 사이의 간격 설정 (옵션) */
+}
+
+.symptomList {
+    width: calc(33.33% - 20px);
+    padding: 10% 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #d9d9d9;
+    border-radius: 20px;
+}
+
+.recordMetrics {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+}
+
+/* 아기수첩 페이지 */
+
+.dueDate {
+    background-color: #ff5555;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    border-radius: var(--border-radius-20);
+}
+
+.vaccination {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #ffacac;
+    padding: 36px;
+    border-radius: var(--border-radius-20);
+}
+
+.vaccinationRate {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px;
+    align-items: center;
+}
+
+.vaccineCount {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
 }

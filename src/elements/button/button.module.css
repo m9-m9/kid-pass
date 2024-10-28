@@ -53,3 +53,17 @@
     border: none;
     cursor: pointer;
 }
+
+.noteBtn {
+    background-color: #ffffff;
+    border: 1px solid #c3c3c3;
+    border-radius: 20px;
+    font-size: var(--font-size-18);
+    font-weight: var(--font-weight-bold);
+    color: #000000;
+    /* flex-grow: 1; */
+    flex-basis: calc(50% - 4px); /* 각 버튼이 부모의 40%를 차지하도록 설정 */
+    flex-shrink: 0; /* 버튼 크기가 줄어들지 않도록 설정 */
+    padding: 16px 0;
+    cursor: pointer;
+}
