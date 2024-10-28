@@ -1,6 +1,7 @@
 import Button from "../../elements/button/Button";
 import Container from "../../elements/container/Container";
 import { Label } from "../../elements/label/Label";
+import VaccineCount from "./VaccineCount";
 
 const Note = () => {
     return (
@@ -42,6 +43,7 @@ const Note = () => {
                     onClick={() => {}}
                 ></Button>
             </div>
+            <VaccineCount />
         </>
     );
 };
