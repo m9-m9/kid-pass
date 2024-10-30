@@ -8,6 +8,7 @@ import Record from "./pages/record/App";
 import Note from "./pages/note/App";
 import { SCREEN } from "./constants/screenUrl";
 import Container from "./elements/container/Container";
+import Profile from "./pages/profile/App";
 
 const RootRoutes: React.FC = () => {
     return (
@@ -30,6 +31,9 @@ const RootRoutes: React.FC = () => {
                         <li>
                             <Link to={SCREEN.NOTE}>아기수첩</Link>
                         </li>
+                        <li>
+                            <Link to={SCREEN.PROFILE}>프로필</Link>
+                        </li>
                     </ul>
                 </nav>
 
@@ -41,6 +45,7 @@ const RootRoutes: React.FC = () => {
                     <Route path={SCREEN.RECORD} element={<Record />} />
                     <Route path={SCREEN.NOTE} element={<Note />} />
                     <Route path={SCREEN.SIGNUP} element={<SignUp />} />
+                    <Route path={SCREEN.PROFILE} element={<Profile />} />
                 </Routes>
             </Container>
         </Router>

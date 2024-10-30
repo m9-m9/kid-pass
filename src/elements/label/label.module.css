@@ -151,3 +151,11 @@
     font-weight: var(--font-weight-bold);
     color: #000000;
 }
+
+/* 프로필 페이지 */
+
+.profileLabel {
+    font-size: var(--font-size-24);
+    font-weight: var(--font-weight-bold);
+    color: #000000;
+}
