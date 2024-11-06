@@ -26,7 +26,7 @@ const MetricsItem: React.FC<MetricsItemProps> = ({
     children,
 }) => (
     <Container className="report" backgroundColor="#f4f4f4">
-        <div className="horizonFlexbox gap-24">
+        <div className="horizonFlexbox align-center gap-24">
             <Label text={title} css="symtomLabel" />
             <svg
                 width="22"
@@ -47,7 +47,11 @@ const MetricsItem: React.FC<MetricsItemProps> = ({
                 />
             </svg>
         </div>
-        <div className={`horizonFlexbox gap-16 ${!isOpen && styles.closed}`}>
+        <div
+            className={`horizonFlexbox align-center gap-16 ${
+                !isOpen && styles.closed
+            }`}
+        >
             {children}
         </div>
     </Container>
@@ -59,7 +63,7 @@ const MetricsDetailItem: React.FC<MetricsDetailItemProps> = ({
     label,
     value,
 }) => (
-    <div className="horizonFlexbox gap-8">
+    <div className="horizonFlexbox align-center gap-8">
         <Label text={label} css="metricsLabel" />
         <Label text={value} css="metricsValue" />
     </div>

@@ -5,17 +5,37 @@
     border: 1px solid black;
 }
 
+/* 메인 페이지 */
+
+.homepage_1 {
+    border-radius: var(--border-radius-8);
+    background-color: #729bed;
+    position: relative;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 24px 16px;
+}
+
+.homepage_2 {
+    border-radius: var(--border-radius-8);
+    border: 1px solid #d5d5d5;
+    background-color: #ffffff;
+    display: flex;
+    padding: 16px;
+    margin-top: 16px;
+}
+
 /* 레포트 페이지 */
 
 .profile {
     background-color: var(--profile-color);
     border-radius: var(--border-radius-20);
-    font-size: var(--font-size-20);
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    padding: 24px;
-    margin: 40px auto;
+    gap: 18px;
+    padding: 16px;
+    margin: 20px auto;
 }
 
 .report {

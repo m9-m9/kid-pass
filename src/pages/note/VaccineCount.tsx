@@ -35,7 +35,7 @@ const VaccineCount = () => {
                             ></Label>
                         </div>
 
-                        <div className="horizonFlexbox gap-4 flex-2">
+                        <div className="horizonFlexbox align-center gap-4 flex-2">
                             {/* dosesCompleted 원 생성 */}
                             {Array.from({
                                 length: vaccineItem.dosesCompleted,

@@ -5,7 +5,7 @@ import styles from "./record.module.css";
 const App: React.FC = () => {
     return (
         <>
-            <div className="horizonFlexbox gap-16 mb-24">
+            <div className="horizonFlexbox align-center gap-16 mb-24">
                 <Label text="2024.10.31.(목)" css="recordDate" />
                 <div className="divider"></div>
                 <Label text="D+32" css="visitDay" />
@@ -28,11 +28,11 @@ const App: React.FC = () => {
                 </div>
             </Container>
             <Container className="addRecord">
-                <div className="horizonFlexbox space-between">
+                <div className="horizonFlexbox align-center space-between">
                     <Label text="특이 증상" css="symtomMetrics" />
                     <Label text="리포트에 추가" css="addReport" />
                 </div>
-                <div className="horizonFlexbox gap-8">
+                <div className="horizonFlexbox align-center gap-8">
                     <Label text="영아산통" css="symtompValue" />
                     <Label text="설사" css="symtompValue" />
                 </div>
@@ -43,7 +43,7 @@ const App: React.FC = () => {
                     <Label text="배변" css="symtompPlaceholder" />
                     <Label text="소변" css="symtompPlaceholder" />
                     <Label text="2:00PM" css="symtompPlaceholder" />
-                    <div className="horizonFlexbox">
+                    <div className="horizonFlexbox align-center">
                         <div className={styles.addSymptom_record_plusBtn}></div>
                         <div className="verticalFlexbox">
                             <Label text="기록으로" css="symtompAdd" />

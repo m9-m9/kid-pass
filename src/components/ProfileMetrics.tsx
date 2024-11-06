@@ -1,4 +1,4 @@
-import {Label} from "../../elements/label/Label";
+import { Label } from "@/elements/label/Label";
 
 type ProfileMetricsProps = {
     label: string;
@@ -6,7 +6,7 @@ type ProfileMetricsProps = {
 };
 
 const ProfileMetrics: React.FC<ProfileMetricsProps> = ({ label, value }) => (
-    <div className="verticalFlexbox gap-8">
+    <div className="verticalFlexbox gap-5">
         <Label text={label} css="metricsLabel" />
         <Label text={value} css="metricsValue" />
     </div>
