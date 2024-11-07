@@ -24,6 +24,8 @@
     display: flex;
     padding: 16px;
     margin-top: 16px;
+    flex: 1;
+    justify-content: space-between;
 }
 
 /* 레포트 페이지 */
@@ -44,6 +46,14 @@
     gap: 24px;
     padding: 24px;
     border-radius: 24px;
+}
+
+.sectionContainer {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 48px;
 }
 
 .prescription {

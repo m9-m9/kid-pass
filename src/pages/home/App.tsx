@@ -7,9 +7,34 @@ import ProfileMetrics from "@/components/ProfileMetrics";
 import ArrowIcon from "@/elements/svg/Arrow";
 import PlusIcon from "@/elements/svg/Plus";
 import styles from "./home.module.css";
+import { MetricsSection } from "@/components/MetricsSection";
+import { useState } from "react";
+import BodyTemp from "@/elements/charts/BodyTemp";
+
+type OpenStates = {
+    sleep: boolean;
+    meal: boolean;
+    urination: boolean;
+    temp: boolean;
+};
 
 const App: React.FC = () => {
     const usr = useUsrStore((state) => state);
+
+    const [openStates, setOpenStates] = useState<OpenStates>({
+        sleep: true,
+        meal: true,
+        urination: true,
+        temp: true,
+    });
+
+    // 상태를 토글하는 공통 함수
+    const toggleMetricsArea = (type: keyof OpenStates) => {
+        setOpenStates((prevState) => ({
+            ...prevState,
+            [type]: !prevState[type],
+        }));
+    };
 
     return (
         <>
@@ -75,16 +100,63 @@ const App: React.FC = () => {
                     src="https://heidimoon.cafe24.com/renwal/test2/Frame%2039.png"
                 />
             </Container>
-            <div className="horizonFlexbox gap-16">
+            <div className="horizonFlexbox gap-16 align-center">
                 <Container className="homepage_2">
-                    <Label text="지금 문 연 병원/약국" css="home_2" />
+                    <div className="verticalFlexbox justify-center">
+                        <Label text="지금 문 연" css="home_2" />
+                        <Label text="병원/약국" css="home_2" />
+                    </div>
+
                     <img src="https://heidimoon.cafe24.com/renwal/test2/Group.png" />
                 </Container>
                 <Container className="homepage_2">
-                    <Label text="진료받은 기록" css="home_2" />
+                    <div className="verticalFlexbox justify-center">
+                        <Label text="진료받은" css="home_2" />
+                        <Label text="기록" css="home_2" />
+                    </div>
+
                     <img src="https://heidimoon.cafe24.com/renwal/test2/OBJECTS.png" />
                 </Container>
             </div>
+            <MetricsSection
+                labelText="오늘의 김아이 기록이에요"
+                metricsData={[
+                    {
+                        title: "체온기록",
+                        isOpen: openStates.temp,
+                        onToggle: () => toggleMetricsArea("temp"),
+                        bodyTempComponent: <BodyTemp />, // BodyTemp 컴포넌트 추가
+                    },
+                    {
+                        title: "수면패턴",
+                        isOpen: openStates.sleep,
+                        onToggle: () => toggleMetricsArea("sleep"),
+                        details: [
+                            { label: "간격", value: "3회" },
+                            { label: "횟수", value: "6회" },
+                        ],
+                    },
+                    {
+                        title: "식사패턴",
+                        isOpen: openStates.meal,
+                        onToggle: () => toggleMetricsArea("meal"),
+                        details: [
+                            { label: "간격", value: "2시간" },
+                            { label: "횟수", value: "6회" },
+                        ],
+                    },
+                    {
+                        title: "식사패턴",
+                        isOpen: openStates.urination,
+                        onToggle: () => toggleMetricsArea("urination"),
+                        details: [
+                            { label: "대변", value: "6회" },
+                            { label: "소변", value: "6회" },
+                            { label: "대변색깔", value: "묽은 변" },
+                        ],
+                    },
+                ]}
+            />
         </>
     );
 };

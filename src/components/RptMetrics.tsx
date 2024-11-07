@@ -1,7 +1,7 @@
 import React from "react";
-import { Label } from "../../elements/label/Label";
-import styles from "./rpt.module.css";
-import Container from "../../elements/container/Container";
+import styles from "../pages/rpt/rpt.module.css";
+import Container from "../elements/container/Container";
+import { Label } from "../elements/label/Label";
 
 // MetricsDetailItem 컴포넌트
 type MetricsDetailItemProps = {
