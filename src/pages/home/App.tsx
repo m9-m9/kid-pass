@@ -9,7 +9,6 @@ import PlusIcon from "@/elements/svg/Plus";
 import styles from "./home.module.css";
 import { MetricsSection } from "@/components/MetricsSection";
 import { useState } from "react";
-import BodyTemp from "@/elements/charts/BodyTemp";
 
 type OpenStates = {
     sleep: boolean;
@@ -121,12 +120,12 @@ const App: React.FC = () => {
             <MetricsSection
                 labelText="오늘의 김아이 기록이에요"
                 metricsData={[
-                    {
-                        title: "체온기록",
-                        isOpen: openStates.temp,
-                        onToggle: () => toggleMetricsArea("temp"),
-                        bodyTempComponent: <BodyTemp />, // BodyTemp 컴포넌트 추가
-                    },
+                    // {
+                    //     title: "체온기록",
+                    //     isOpen: openStates.temp,
+                    //     onToggle: () => toggleMetricsArea("temp"),
+                    //     bodyTempComponent: <BodyTemp />, // BodyTemp 컴포넌트 추가
+                    // },
                     {
                         title: "수면패턴",
                         isOpen: openStates.sleep,

@@ -25,27 +25,34 @@ const MetricsItem: React.FC<MetricsItemProps> = ({
     onToggle,
     children,
 }) => (
-    <Container className="report" backgroundColor="#f4f4f4">
-        <div className="horizonFlexbox align-center gap-24">
-            <Label text={title} css="symtomLabel" />
-            <svg
-                width="22"
-                height={isOpen ? "10" : "9"}
-                viewBox={isOpen ? "0 0 22 10" : "0 0 22 9"}
-                fill="none"
-                onClick={onToggle}
-                xmlns="http://www.w3.org/2000/svg"
-                className={styles.toggleIcon}
-            >
-                <path
-                    d={
-                        isOpen
-                            ? "M1 1L10.5 8.5L21 1"
-                            : "M21 8.5L11.5 0.999999L1 8.5"
-                    }
-                    stroke="black"
-                />
-            </svg>
+    <Container className="report">
+        <div className="horizonFlexbox align-center space-between">
+            <div className="horizonFlexbox align-center gap-20">
+                <Label text={title} css="symtomLabel" />
+                <svg
+                    width="22"
+                    height={isOpen ? "10" : "9"}
+                    viewBox={isOpen ? "0 0 22 10" : "0 0 22 9"}
+                    fill="none"
+                    onClick={onToggle}
+                    xmlns="http://www.w3.org/2000/svg"
+                    className={styles.toggleIcon}
+                >
+                    <path
+                        d={
+                            isOpen
+                                ? "M1 1L10.5 8.5L21 1"
+                                : "M21 8.5L11.5 0.999999L1 8.5"
+                        }
+                        stroke="black"
+                    />
+                </svg>
+            </div>
+            <img
+                src="https://heidimoon.cafe24.com/renwal/test2/circle_plus.svg"
+                width="20px"
+                height="20px"
+            />
         </div>
         <div
             className={`horizonFlexbox align-center gap-16 ${
