@@ -9,6 +9,7 @@ import PlusIcon from "@/elements/svg/Plus";
 import styles from "./home.module.css";
 import { MetricsSection } from "@/components/MetricsSection";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 type OpenStates = {
     sleep: boolean;
@@ -18,7 +19,12 @@ type OpenStates = {
 };
 
 const App: React.FC = () => {
+    const navigate = useNavigate();
     const usr = useUsrStore((state) => state);
+
+    const goToMap = () => {
+        navigate("/map");
+    };
 
     const [openStates, setOpenStates] = useState<OpenStates>({
         sleep: true,
@@ -101,7 +107,10 @@ const App: React.FC = () => {
             </Container>
             <div className="horizonFlexbox gap-16 align-center">
                 <Container className="homepage_2">
-                    <div className="verticalFlexbox justify-center">
+                    <div
+                        className="verticalFlexbox justify-center"
+                        onClick={goToMap}
+                    >
                         <Label text="지금 문 연" css="home_2" />
                         <Label text="병원/약국" css="home_2" />
                     </div>

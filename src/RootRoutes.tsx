@@ -9,6 +9,7 @@ import Note from "./pages/note/App";
 import { SCREEN } from "./constants/screenUrl";
 import Container from "./elements/container/Container";
 import Profile from "./pages/profile/App";
+import Map from "./components/Map";
 
 const RootRoutes: React.FC = () => {
     return (
@@ -46,6 +47,7 @@ const RootRoutes: React.FC = () => {
                     <Route path={SCREEN.NOTE} element={<Note />} />
                     <Route path={SCREEN.SIGNUP} element={<SignUp />} />
                     <Route path={SCREEN.PROFILE} element={<Profile />} />
+                    <Route path={SCREEN.MAP} element={<Map />} />
                 </Routes>
             </Container>
         </Router>
