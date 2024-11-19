@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
+import styles from "./map.module.css";
+import { Label } from "@/elements/label/Label";
 
 const Map: React.FC = () => {
     const mapRef = useRef<HTMLDivElement>(null); // 지도 DOM 참조
-    const [hospitalCount, setHospitalCount] = useState<number>(0); // 병원 수 상태
+    const [selectedTab, setSelectedTab] = useState("hospital"); // 기본 선택값: 병원
 
     useEffect(() => {
         // 스크립트 동적 로드
@@ -30,65 +32,16 @@ const Map: React.FC = () => {
                 if (mapRef.current) {
                     const options = {
                         center: new kakao.maps.LatLng(latitude, longitude), // 현재 위치
-                        level: 3, // 확대 수준
+                        level: 5, // 확대 수준
                     };
 
                     // 지도 생성
-                    const map = new kakao.maps.Map(mapRef.current, options);
-
-                    // 장소 검색 객체 생성
-                    const places = new kakao.maps.services.Places();
-
-                    // 카테고리 검색: 병원 (HP8)
-                    places.categorySearch(
-                        "HP8",
-                        (result: any, status: any) => {
-                            if (status === kakao.maps.services.Status.OK) {
-                                // 병원 수 업데이트
-                                setHospitalCount(result.length);
-
-                                // 결과를 지도에 마커로 표시
-                                result.forEach((place: any) => {
-                                    displayMarker(map, place);
-                                });
-                            } else {
-                                console.error("Failed to fetch hospital data");
-                            }
-                        },
-                        {
-                            location: new kakao.maps.LatLng(
-                                latitude,
-                                longitude,
-                            ), // 현재 위치 기반 검색
-                        },
-                    );
+                    new kakao.maps.Map(mapRef.current, options);
                 }
             });
         };
 
-        const displayMarker = (map: any, place: any) => {
-            const kakao = (window as any).kakao;
-
-            // 마커 생성
-            const marker = new kakao.maps.Marker({
-                map: map,
-                position: new kakao.maps.LatLng(place.y, place.x), // 장소 좌표
-            });
-
-            // 정보창 생성
-            const infowindow = new kakao.maps.InfoWindow({
-                content: `<div style="padding:5px;font-size:12px;">${place.place_name}</div>`,
-                zIndex: 1,
-            });
-
-            // 마커 클릭 이벤트 등록
-            kakao.maps.event.addListener(marker, "click", () => {
-                infowindow.open(map, marker); // 마커 클릭 시 정보창 열기
-            });
-        };
-
         const getCurrentPosition = () => {
-            // 브라우저 위치 정보 가져오기
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
                     (position) => {
@@ -102,7 +55,7 @@ const Map: React.FC = () => {
                 );
             } else {
                 console.error("Geolocation is not supported by this browser.");
-                initializeMap(37.5665, 126.978); // 기본값: 서울 시청 좌표
+                initializeMap(37.5665, 126.978);
             }
         };
 
@@ -111,8 +64,24 @@ const Map: React.FC = () => {
 
     return (
         <div>
-            <h1>맵 컴포넌트</h1>
-            <p>검색된 병원의 개수: {hospitalCount}개</p>
+            <div className={styles.mapHeader}>
+                <div
+                    className={`${styles.tab} ${
+                        selectedTab === "hospital" ? styles.active : ""
+                    }`}
+                    onClick={() => setSelectedTab("hospital")}
+                >
+                    <Label text="병원" css="MapLabel" />
+                </div>
+                <div
+                    className={`${styles.tab} ${
+                        selectedTab === "pharmacy" ? styles.active : ""
+                    }`}
+                    onClick={() => setSelectedTab("pharmacy")}
+                >
+                    <Label text="약국" css="MapLabel" />
+                </div>
+            </div>
             <div
                 ref={mapRef}
                 style={{
@@ -121,6 +90,24 @@ const Map: React.FC = () => {
                     aspectRatio: "16 / 9", // 16:9 비율 유지
                 }}
             />
+            <div className={styles.mapList}>
+                <div className="horizonFlexbox space-between">
+                    <Label text="가람소아과" css="mapList_1" />
+                    <Label text="0.13km" css="mapList_1" />
+                </div>
+                <div className="horizonFlexbox space-between">
+                    <Label text="(금) 08:00 ~ 20:00" css="mapList_2" />
+                </div>
+            </div>
+            <div className={styles.mapList}>
+                <div className="horizonFlexbox space-between">
+                    <Label text="가람소아과" css="mapList_1" />
+                    <Label text="0.13km" css="mapList_1" />
+                </div>
+                <div className="horizonFlexbox space-between">
+                    <Label text="(금) 08:00 ~ 20:00" css="mapList_2" />
+                </div>
+            </div>
         </div>
     );
 };
