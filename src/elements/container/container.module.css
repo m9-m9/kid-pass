@@ -5,25 +5,66 @@
     border: 1px solid black;
 }
 
+.mapContainer {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0;
+    border: 1px solid black;
+}
+
+/* 메인 페이지 */
+
+.homepage_1 {
+    border-radius: var(--border-radius-8);
+    background-color: #729bed;
+    position: relative;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 24px 16px;
+}
+
+.homepage_2 {
+    border-radius: var(--border-radius-8);
+    border: 1px solid #d5d5d5;
+    background-color: #ffffff;
+    display: flex;
+    padding: 16px;
+    margin-top: 16px;
+    flex: 1;
+    justify-content: space-between;
+}
+
+/* 맵 페이지 */
+
 /* 레포트 페이지 */
 
 .profile {
     background-color: var(--profile-color);
     border-radius: var(--border-radius-20);
-    font-size: var(--font-size-20);
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    padding: 24px;
-    margin: 40px auto;
+    gap: 18px;
+    padding: 16px;
+    margin: 20px auto;
 }
 
 .report {
     display: flex;
     flex-direction: column;
     gap: 24px;
-    padding: 24px;
-    border-radius: 24px;
+    padding: 16px;
+    border-radius: var(--border-radius-8);
+    background-color: #ffffff;
+    box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.15);
+}
+
+.sectionContainer {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 48px;
 }
 
 .prescription {

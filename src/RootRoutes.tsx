@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import { Route, Routes, Link, useLocation } from "react-router-dom";
 import Home from "./pages/home/App";
 import Schdl from "./pages/schdl/App";
 import Rpt from "./pages/rpt/App";
@@ -8,11 +8,18 @@ import Record from "./pages/record/App";
 import Note from "./pages/note/App";
 import { SCREEN } from "./constants/screenUrl";
 import Container from "./elements/container/Container";
+import Profile from "./pages/profile/App";
+import Map from "./pages/map/Map";
 
 const RootRoutes: React.FC = () => {
+    const location = useLocation();
+
+    const containerClassName =
+        location.pathname === SCREEN.MAP ? "mapContainer" : "container";
+
     return (
-        <Router>
-            <Container className="container">
+        <>
+            <Container className={containerClassName}>
                 <nav>
                     <ul>
                         <li>
@@ -30,6 +37,9 @@ const RootRoutes: React.FC = () => {
                         <li>
                             <Link to={SCREEN.NOTE}>아기수첩</Link>
                         </li>
+                        <li>
+                            <Link to={SCREEN.PROFILE}>프로필</Link>
+                        </li>
                     </ul>
                 </nav>
 
@@ -41,9 +51,11 @@ const RootRoutes: React.FC = () => {
                     <Route path={SCREEN.RECORD} element={<Record />} />
                     <Route path={SCREEN.NOTE} element={<Note />} />
                     <Route path={SCREEN.SIGNUP} element={<SignUp />} />
+                    <Route path={SCREEN.PROFILE} element={<Profile />} />
+                    <Route path={SCREEN.MAP} element={<Map />} />
                 </Routes>
             </Container>
-        </Router>
+        </>
     );
 };
 

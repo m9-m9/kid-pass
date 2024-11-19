@@ -6,6 +6,8 @@ const SCREEN = {
     RECORD: "/record",
     SIGNUP: "/signup",
     NOTE: "note",
+    PROFILE: "/profile",
+    MAP: "/map",
 };
 
 export { SCREEN };

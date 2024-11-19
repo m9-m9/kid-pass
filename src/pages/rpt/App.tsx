@@ -1,11 +1,10 @@
 import { useState } from "react";
 import Button from "../../elements/button/Button";
-import BodyTemp from "../../elements/charts/BodyTemp";
 import { Label } from "../../elements/label/Label";
 import styles from "./rpt.module.css";
-import { MetricsDetailItem, MetricsItem } from "./RptMetrics";
 import Container from "../../elements/container/Container";
-import ProfileMetrics from "./ProfileMetrics";
+import ProfileMetrics from "@/components/ProfileMetrics";
+import { MetricsSection } from "@/components/MetricsSection";
 
 type OpenStates = {
     sleep: boolean;
@@ -38,7 +37,7 @@ const App: React.FC = () => {
                     <Label text="2024. 10. 31" css="profileDate" />
                     <ProfileMetrics label="2024.09.28 출생" value="김아기" />
                     <ProfileMetrics label="나이 (만)" value="36일, 5주 1일" />
-                    <div className="horizonFlexbox gap-16">
+                    <div className="horizonFlexbox align-center space-between">
                         <ProfileMetrics label="몸무게" value="5.1kg" />
                         <ProfileMetrics label="키" value="51.0cm" />
                         <ProfileMetrics label="머리 둘레" value="36.9cm" />
@@ -47,7 +46,7 @@ const App: React.FC = () => {
 
                 <div className={styles.sectionContainer}>
                     <Label text="지금 아기의 증상은요" css="category" />
-                    <div className="horizonFlexbox gap-8">
+                    <div className="horizonFlexbox align-center gap-8">
                         <Button
                             css="symptomButton"
                             label="고열"
@@ -65,54 +64,57 @@ const App: React.FC = () => {
                         />
                     </div>
                 </div>
-                <div className={styles.sectionContainer}>
-                    <Label text="지난 3일 동안의 아기의 상태" css="category" />
-                    <MetricsItem
-                        title="체온기록"
-                        isOpen={openStates.temp}
-                        onToggle={() => toggleMetricsArea("temp")}
-                    >
-                        <BodyTemp />
-                    </MetricsItem>
 
-                    <MetricsItem
-                        title="수면패턴"
-                        isOpen={openStates.sleep}
-                        onToggle={() => toggleMetricsArea("sleep")}
-                    >
-                        <MetricsDetailItem label="간격" value="3회" />
-                        <MetricsDetailItem label="횟수" value="6회" />
-                    </MetricsItem>
-                    <MetricsItem
-                        title="식사패턴"
-                        isOpen={openStates.meal}
-                        onToggle={() => toggleMetricsArea("meal")}
-                    >
-                        <MetricsDetailItem label="간격" value="2시간" />
-                        <MetricsDetailItem label="횟수" value="6회" />
-                    </MetricsItem>
-                    <MetricsItem
-                        title="식사패턴"
-                        isOpen={openStates.urination}
-                        onToggle={() => toggleMetricsArea("urination")}
-                    >
-                        <MetricsDetailItem label="대변" value="6회" />
-                        <MetricsDetailItem label="소변" value="6회" />
-                        <MetricsDetailItem label="대변색깔" value="묽은 변" />
-                    </MetricsItem>
-                </div>
+                <MetricsSection
+                    labelText="지난 3일 동안의 아기의 상태"
+                    metricsData={[
+                        {
+                            title: "체온기록",
+                            isOpen: openStates.temp,
+                            onToggle: () => toggleMetricsArea("temp"),
+                        },
+                        {
+                            title: "수면패턴",
+                            isOpen: openStates.sleep,
+                            onToggle: () => toggleMetricsArea("sleep"),
+                            details: [
+                                { label: "간격", value: "3회" },
+                                { label: "횟수", value: "6회" },
+                            ],
+                        },
+                        {
+                            title: "식사패턴",
+                            isOpen: openStates.meal,
+                            onToggle: () => toggleMetricsArea("meal"),
+                            details: [
+                                { label: "간격", value: "2시간" },
+                                { label: "횟수", value: "6회" },
+                            ],
+                        },
+                        {
+                            title: "식사패턴",
+                            isOpen: openStates.urination,
+                            onToggle: () => toggleMetricsArea("urination"),
+                            details: [
+                                { label: "대변", value: "6회" },
+                                { label: "소변", value: "6회" },
+                                { label: "대변색깔", value: "묽은 변" },
+                            ],
+                        },
+                    ]}
+                />
                 <div className={styles.sectionContainer}>
                     <Label text="아기가 치료받은 기록이에요" css="category" />
                     <Container
                         className="report prescription"
                         backgroundColor="#f4f4f4"
                     >
-                        <div className="horizonFlexbox gap-24">
+                        <div className="horizonFlexbox align-center gap-24">
                             <Label text="2024.10.05" css="prescriptionDate" />
                             <Label text="땡땡땡 산부인과" css="facilityName" />
                         </div>
 
-                        <div className="horizonFlexbox gap-24">
+                        <div className="horizonFlexbox align-center gap-24">
                             <Label text="신생아 검진" css="treatmentType" />
                             <Label text="병명 없음" css="diagnosisResult" />
                         </div>
@@ -122,11 +124,11 @@ const App: React.FC = () => {
                         </div>
                     </Container>
                     <Container className="report" backgroundColor="#f4f4f4">
-                        <div className="horizonFlexbox gap-24">
+                        <div className="horizonFlexbox align-center gap-24">
                             <Label text="2024.10.05" css="prescriptionDate" />
                             <Label text="땡땡땡 약국" css="facilityName" />
                         </div>
-                        <div className="horizonFlexbox gap-8">
+                        <div className="horizonFlexbox align-center gap-8">
                             <Label text="땡땡정(20ml)" css="drugName" />
                             <Label text="땡땡약(30ml)" css="drugName" />
                         </div>
@@ -153,7 +155,7 @@ const App: React.FC = () => {
             </div>
             <div className={styles.sectionContainer}>
                 <Label text="특이사항" css="category" />
-                <div className="horizonFlexbox gap-8">
+                <div className="horizonFlexbox align-center gap-8">
                     <Button
                         css="commentsButton"
                         label="출산 시 합병증"
