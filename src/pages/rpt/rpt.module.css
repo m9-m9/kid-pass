@@ -10,18 +10,11 @@
     height: auto;
 }
 
-.closed {
-    max-height: 0; /* 접혀 있을 때의 높이 */
-    opacity: 0;
-}
 
 .bg-profile {
     background-color: (var(--profile-color));
 }
 
-.toggleIcon {
-    cursor: pointer;
-}
 
 .tearLine {
     border: 1px dashed #bdbdbd;

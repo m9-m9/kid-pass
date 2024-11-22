@@ -3,13 +3,15 @@ import Button from "../../elements/button/Button";
 import useUsrStore from "../../store/useUsrStore";
 import sendToRn from "../../utils/sendToRn";
 import Container from "@/elements/container/Container";
-import ProfileMetrics from "@/components/ProfileMetrics";
+
 import ArrowIcon from "@/elements/svg/Arrow";
 import PlusIcon from "@/elements/svg/Plus";
 import styles from "./home.module.css";
-import { MetricsSection } from "@/components/MetricsSection";
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import MainMetrics from "@/components/metrics/MainMetrics";
+import { MetricsSection } from "@/components/metrics/MetricsSection";
 
 type OpenStates = {
     sleep: boolean;
@@ -62,11 +64,11 @@ const App: React.FC = () => {
             <Container className="profile">
                 <div className="horizonFlexbox space-between">
                     <div className="verticalFlexbox gap-18 space-between">
-                        <ProfileMetrics
+                        <MainMetrics
                             label="2024.09.28 출생"
                             value="김아기"
                         />
-                        <ProfileMetrics
+                        <MainMetrics
                             label="나이 (만)"
                             value="36일, 5주 1일"
                         />
@@ -92,9 +94,9 @@ const App: React.FC = () => {
                 </div>
 
                 <div className="horizonFlexbox align-center space-between">
-                    <ProfileMetrics label="몸무게" value="5.1kg" />
-                    <ProfileMetrics label="키" value="51.0cm" />
-                    <ProfileMetrics label="머리 둘레" value="36.9cm" />
+                    <MainMetrics label="몸무게" value="5.1kg" />
+                    <MainMetrics label="키" value="51.0cm" />
+                    <MainMetrics label="머리 둘레" value="36.9cm" />
                 </div>
             </Container>
             <Container className="homepage_1 gap-4">
