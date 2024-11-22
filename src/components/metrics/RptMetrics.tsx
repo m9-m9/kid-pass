@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "../pages/rpt/rpt.module.css";
+import styles from "./metrics.module.css";
 import Container from "@/elements/container/Container";
 import { Label } from "@/elements/label/Label";
 
