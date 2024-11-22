@@ -14,8 +14,10 @@ import Map from "./pages/map/Map";
 const RootRoutes: React.FC = () => {
     const location = useLocation();
 
+
+    // Map 컴포넌트에서는 좌우 Padding: 0 을 위해 Container 구분 
     const containerClassName =
-        location.pathname === SCREEN.MAP ? "mapContainer" : "container";
+        location.pathname === SCREEN.MAP ? "mapContainer" : "container"; 
 
     return (
         <>

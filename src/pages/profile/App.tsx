@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useModalStore } from "@/store/useModalStore";
 import { Label } from "@/elements/label/Label";
-import Modal from "@/components/Modal";
+import ProfileModal from "@/elements/modal/Modal";
+
 
 const Profile: React.FC = () => {
     const [chapter, setChapter] = useState(1);
-    const { openModal, closeModal } = useModalStore();
+    const { openModal } = useModalStore();
 
     const nextChapter = () => {
-        if (chapter === 5) {
+        if (chapter === 4) {
             openModal(); // 마지막 챕터에서 모달 열기
         } else {
             setChapter((prev) => (prev < 5 ? prev + 1 : prev));
@@ -50,27 +51,18 @@ const Profile: React.FC = () => {
                 />
             </div>
         ),
-        5: (
-            <div>
-                <Label css="profileLabel" text="등록 완료 메시지" />
-            </div>
-        ),
     };
 
     return (
         <div>
             {chapters[chapter]}
             <button onClick={nextChapter}>
-                {chapter === 5 ? "등록 완료" : "다음"}
+                {chapter === 4 ? "등록 완료" : "다음"}
             </button>
 
-            {/* Modal에 동적으로 내용 전달 */}
-            <Modal>
-                <div>
-                    <p>등록 완료 메시지입니다.</p>
-                    <button onClick={closeModal}>닫기</button>
-                </div>
-            </Modal>
+            
+            <ProfileModal/>
+               
         </div>
     );
 };
