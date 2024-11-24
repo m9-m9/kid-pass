@@ -4,8 +4,7 @@ import { Label } from "../../elements/label/Label";
 import styles from "./rpt.module.css";
 import Container from "../../elements/container/Container";
 import { MetricsSection } from "@/components/metrics/MetricsSection";
-import MainMetrics from "@/components/metrics/MainMetrics";
-
+import ProfileMetrics from "@/components/metrics/ProfileMetrics";
 
 type OpenStates = {
     sleep: boolean;
@@ -36,12 +35,12 @@ const App: React.FC = () => {
                 <Button css="button" label="Report" onClick={() => {}} />
                 <Container className="profile">
                     <Label text="2024. 10. 31" css="profileDate" />
-                    <MainMetrics label="2024.09.28 출생" value="김아기" />
-                    <MainMetrics label="나이 (만)" value="36일, 5주 1일" />
+                    <ProfileMetrics label="2024.09.28 출생" value="김아기" />
+                    <ProfileMetrics label="나이 (만)" value="36일, 5주 1일" />
                     <div className="horizonFlexbox align-center space-between">
-                        <MainMetrics label="몸무게" value="5.1kg" />
-                        <MainMetrics label="키" value="51.0cm" />
-                        <MainMetrics label="머리 둘레" value="36.9cm" />
+                        <ProfileMetrics label="몸무게" value="5.1kg" />
+                        <ProfileMetrics label="키" value="51.0cm" />
+                        <ProfileMetrics label="머리 둘레" value="36.9cm" />
                     </div>
                 </Container>
 

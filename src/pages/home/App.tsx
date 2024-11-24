@@ -10,7 +10,7 @@ import styles from "./home.module.css";
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import MainMetrics from "@/components/metrics/MainMetrics";
+import ProfileMetrics from "@/components/metrics/ProfileMetrics";
 import { MetricsSection } from "@/components/metrics/MetricsSection";
 
 type OpenStates = {
@@ -64,11 +64,11 @@ const App: React.FC = () => {
             <Container className="profile">
                 <div className="horizonFlexbox space-between">
                     <div className="verticalFlexbox gap-18 space-between">
-                        <MainMetrics
+                        <ProfileMetrics
                             label="2024.09.28 출생"
                             value="김아기"
                         />
-                        <MainMetrics
+                        <ProfileMetrics
                             label="나이 (만)"
                             value="36일, 5주 1일"
                         />
@@ -94,9 +94,9 @@ const App: React.FC = () => {
                 </div>
 
                 <div className="horizonFlexbox align-center space-between">
-                    <MainMetrics label="몸무게" value="5.1kg" />
-                    <MainMetrics label="키" value="51.0cm" />
-                    <MainMetrics label="머리 둘레" value="36.9cm" />
+                    <ProfileMetrics label="몸무게" value="5.1kg" />
+                    <ProfileMetrics label="키" value="51.0cm" />
+                    <ProfileMetrics label="머리 둘레" value="36.9cm" />
                 </div>
             </Container>
             <Container className="homepage_1 gap-4">
