@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useModalStore } from "@/store/useModalStore";
 import { Label } from "@/elements/label/Label";
-import ProfileModal from "@/elements/modal/Modal";
-
 
 const Profile: React.FC = () => {
     const [chapter, setChapter] = useState(1);
@@ -10,7 +8,7 @@ const Profile: React.FC = () => {
 
     const nextChapter = () => {
         if (chapter === 4) {
-            openModal(); // 마지막 챕터에서 모달 열기
+            openModal(); // 마지막 챕터에서 전역 모달 열기
         } else {
             setChapter((prev) => (prev < 5 ? prev + 1 : prev));
         }
@@ -59,10 +57,6 @@ const Profile: React.FC = () => {
             <button onClick={nextChapter}>
                 {chapter === 4 ? "등록 완료" : "다음"}
             </button>
-
-            
-            <ProfileModal/>
-               
         </div>
     );
 };
