@@ -1,7 +1,8 @@
 import { Label } from "@/elements/label/Label";
 import React from "react";
-import { MetricsDetailItem, MetricsItem } from "./RptMetrics";
+import { MetricsItem } from "./MetricsItem";
 import Container from "@/elements/container/Container";
+import ProfileMetrics from "./ProfileMetrics";
 
 interface MetricsDetail {
     label: string;
@@ -36,7 +37,7 @@ const MetricsSection: React.FC<MetricsSectionProps> = ({
                     {metric.bodyTempComponent ||
                         (metric.details &&
                             metric.details.map((detail, i) => (
-                                <MetricsDetailItem
+                                <ProfileMetrics
                                     key={i}
                                     label={detail.label}
                                     value={detail.value}

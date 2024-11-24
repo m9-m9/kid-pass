@@ -3,13 +3,15 @@ import Button from "../../elements/button/Button";
 import useUsrStore from "../../store/useUsrStore";
 import sendToRn from "../../utils/sendToRn";
 import Container from "@/elements/container/Container";
-import ProfileMetrics from "@/components/ProfileMetrics";
+
 import ArrowIcon from "@/elements/svg/Arrow";
 import PlusIcon from "@/elements/svg/Plus";
 import styles from "./home.module.css";
-import { MetricsSection } from "@/components/MetricsSection";
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ProfileMetrics from "@/components/metrics/ProfileMetrics";
+import { MetricsSection } from "@/components/metrics/MetricsSection";
 
 type OpenStates = {
     sleep: boolean;

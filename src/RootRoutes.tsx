@@ -1,4 +1,7 @@
+// RootRoutes.tsx
+import React from "react";
 import { Route, Routes, Link, useLocation } from "react-router-dom";
+import { SCREEN } from "./constants/screenUrl";
 import Home from "./pages/home/App";
 import Schdl from "./pages/schdl/App";
 import Rpt from "./pages/rpt/App";
@@ -6,13 +9,15 @@ import Auth from "./pages/auth/App";
 import SignUp from "./pages/auth/signup/App";
 import Record from "./pages/record/App";
 import Note from "./pages/note/App";
-import { SCREEN } from "./constants/screenUrl";
-import Container from "./elements/container/Container";
-import Profile from "./pages/profile/App";
 import Map from "./pages/map/Map";
+import Profile from "./pages/profile/App";
+import Container from "./elements/container/Container";
+import ProfileModal from "./components/modal/Modal";
+import { useModalStore } from "@/store/useModalStore";
 
 const RootRoutes: React.FC = () => {
     const location = useLocation();
+    const { isOpen, closeModal } = useModalStore();
 
     const containerClassName =
         location.pathname === SCREEN.MAP ? "mapContainer" : "container";
@@ -55,6 +60,9 @@ const RootRoutes: React.FC = () => {
                     <Route path={SCREEN.MAP} element={<Map />} />
                 </Routes>
             </Container>
+
+            {/* 전역 ProfileModal */}
+            {isOpen && <ProfileModal closeModal={closeModal} />}
         </>
     );
 };

@@ -1,11 +1,17 @@
-import { Label } from "@/elements/label/Label";
 import React, { useState, useEffect } from "react";
+import { useModalStore } from "@/store/useModalStore";
+import { Label } from "@/elements/label/Label";
 
 const Profile: React.FC = () => {
     const [chapter, setChapter] = useState(1);
+    const { openModal } = useModalStore();
 
     const nextChapter = () => {
-        setChapter((prev) => (prev < 5 ? prev + 1 : prev));
+        if (chapter === 4) {
+            openModal(); // 마지막 챕터에서 전역 모달 열기
+        } else {
+            setChapter((prev) => (prev < 5 ? prev + 1 : prev));
+        }
     };
 
     useEffect(() => {
@@ -43,18 +49,13 @@ const Profile: React.FC = () => {
                 />
             </div>
         ),
-        5: (
-            <div>
-                <Label css="profileLabel" text="등록 완료 메시지" />
-            </div>
-        ),
     };
 
     return (
         <div>
             {chapters[chapter]}
-            <button onClick={nextChapter} disabled={chapter === 5}>
-                다음
+            <button onClick={nextChapter}>
+                {chapter === 4 ? "등록 완료" : "다음"}
             </button>
         </div>
     );

@@ -65,7 +65,7 @@ const VaccineCount = () => {
                             <path
                                 d="M8 4l8 8-8 8"
                                 stroke="black"
-                                stroke-width="1"
+                                strokeWidth="1"
                                 fill="none"
                             />
                         </svg>

@@ -1,13 +1,7 @@
 import React from "react";
-import styles from "../pages/rpt/rpt.module.css";
-import Container from "../elements/container/Container";
-import { Label } from "../elements/label/Label";
-
-// MetricsDetailItem 컴포넌트
-type MetricsDetailItemProps = {
-    label: string;
-    value: string;
-};
+import styles from "./metrics.module.css";
+import Container from "@/elements/container/Container";
+import { Label } from "@/elements/label/Label";
 
 // MetricsItem 컴포넌트
 type MetricsItemProps = {
@@ -64,16 +58,4 @@ const MetricsItem: React.FC<MetricsItemProps> = ({
     </Container>
 );
 
-// Metrics
-
-const MetricsDetailItem: React.FC<MetricsDetailItemProps> = ({
-    label,
-    value,
-}) => (
-    <div className="horizonFlexbox align-center gap-8">
-        <Label text={label} css="metricsLabel" />
-        <Label text={value} css="metricsValue" />
-    </div>
-);
-
-export { MetricsItem, MetricsDetailItem };
+export { MetricsItem };
