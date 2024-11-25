@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useModalStore } from "../../store/useModalStore";
-import { Label } from "../../elements/label/Label";
+import { useModalStore } from "@/store/useModalStore";
+import { Label } from "@/elements/label/Label";
 
 const Profile: React.FC = () => {
     const [chapter, setChapter] = useState(1);
