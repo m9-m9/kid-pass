@@ -7,7 +7,9 @@ interface LabelProps {
 }
 
 const Label: React.FC<LabelProps> = ({ text, css }) => {
-    return <p className={styles[css]}>{text}</p>;
+    return (
+        <p className={styles[css]} dangerouslySetInnerHTML={{ __html: text }} />
+    );
 };
 
 export { Label };
