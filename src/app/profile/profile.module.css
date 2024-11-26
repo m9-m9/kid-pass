@@ -12,12 +12,19 @@
     flex: 1 1 calc(50% - 8px);
     height: auto;
     background-color: #ffffff;
-    color: #222222;
-    border: 1px solid #d9d9d9;
+    color: var(--main-color);
+    border: 1px solid var(--main-color);
     border-radius: 10px;
     padding: 60px 0;
     text-align: center;
     font-size: var(--font-size-24);
     font-weight: var(--font-weight-bold);
     line-height: 1.2;
+}
+
+.inputArea {
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+    margin: 54px 0;
 }
