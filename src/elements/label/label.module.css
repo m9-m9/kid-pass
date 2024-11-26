@@ -1,232 +1,231 @@
 @font-face {
-    font-family: "HakgyoansimWoojuR";
-    src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/HakgyoansimWoojuR.woff2")
-        format("woff2");
-    font-weight: normal;
-    font-style: normal;
+  font-family: "HakgyoansimWoojuR";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/HakgyoansimWoojuR.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
 }
 
 /*홈페이지*/
 
 .Logo {
-    font-size: var(--font-size-24);
-    font-family: "HakgyoansimWoojuR";
-    color: #222222;
+  font-size: var(--font-size-24);
+  font-family: "HakgyoansimWoojuR";
+  color: #222222;
 }
 
 .rptUpdate {
-    font-size: var(--font-size-12);
-    font-weight: var(--font-weight-semiBold);
-    color: #9e9e9e;
+  font-size: var(--font-size-12);
+  font-weight: var(--font-weight-semiBold);
+  color: #9e9e9e;
 }
 
 .home_1 {
-    font-size: var(--font-size-14);
-    font-weight: var(--font-weight-bold);
-    color: #ffffff;
+  font-size: var(--font-size-14);
+  font-weight: var(--font-weight-bold);
+  color: #ffffff;
 }
 
 .home_2 {
-    font-size: var(--font-size-16);
-    font-weight: var(--font-weight-bold);
-    color: #222222;
+  font-size: var(--font-size-16);
+  font-weight: var(--font-weight-bold);
+  color: #222222;
 }
 
 /* 맵 페이지 */
 
 .mapList_1 {
-    font-size: var(--font-size-20);
-    font-weight: var(--font-weight-semiBold);
-    color: #222222;
+  font-size: var(--font-size-20);
+  font-weight: var(--font-weight-semiBold);
+  color: #222222;
 }
 
 .mapList_2 {
-    font-size: var(--font-size-14);
-    font-weight: var(--font-weight-regular);
-    color: #9e9e9e;
+  font-size: var(--font-size-14);
+  font-weight: var(--font-weight-regular);
+  color: #9e9e9e;
 }
 
 .MapLabel {
-    font-size: var(--font-size-16);
-    font-weight: var(--font-weight-semiBold);
-    color: #000000;
+  font-size: var(--font-size-16);
+  font-weight: var(--font-weight-semiBold);
+  color: #000000;
 }
 
 /* 레포트 페이지 */
 
 .metricsLabel {
-    font-size: var(--font-size-13);
-    font-weight: var(--font-weight-medium);
-    color: #646464;
+  font-size: var(--font-size-13);
+  font-weight: var(--font-weight-medium);
+  color: #646464;
 }
 
 .metricsValue {
-    font-size: var(--font-size-18);
-    font-weight: var(--font-weight-bold);
-    color: #000000;
+  font-size: var(--font-size-18);
+  font-weight: var(--font-weight-bold);
+  color: #000000;
 }
 
 .symtomLabel {
-    font-size: var(--font-size-16);
-    font-weight: var(--font-weight-semiBold);
-    color: #222222;
+  font-size: var(--font-size-16);
+  font-weight: var(--font-weight-semiBold);
+  color: #222222;
 }
 
 .facilityName,
 .vaccinationResult {
-    font-size: var(--font-size-16);
-    font-weight: var(--font-weight-medium);
-    color: #000000;
+  font-size: var(--font-size-16);
+  font-weight: var(--font-weight-medium);
+  color: #000000;
 }
 
 .diagnosisResult {
-    font-size: var(--font-size-18);
-    font-weight: var(--font-weight-semiBold);
-    color: #9e9e9e;
+  font-size: var(--font-size-18);
+  font-weight: var(--font-weight-semiBold);
+  color: #9e9e9e;
 }
 
 .treatmentType,
 .drugName,
 .vaccine,
 .symtomMetrics {
-    font-size: var(--font-size-18);
-    font-weight: var(--font-weight-semiBold);
-    color: #000000;
+  font-size: var(--font-size-18);
+  font-weight: var(--font-weight-semiBold);
+  color: #000000;
 }
 
 .category {
-    font-size: var(--font-size-20);
-    font-weight: var(--font-weight-bold);
-    color: #000000;
+  font-size: var(--font-size-20);
+  font-weight: var(--font-weight-bold);
+  color: #000000;
 }
 
 .profileDate {
-    font-size: var(--font-size-12);
-    font-weight: var(--font-weight-regular);
-    color: #646464;
+  font-size: var(--font-size-12);
+  font-weight: var(--font-weight-regular);
+  color: #646464;
 }
 
 .prescriptionDate {
-    font-size: var(--font-size-16);
-    font-weight: var(--font-weight-regular);
-    color: #9e9e9e;
+  font-size: var(--font-size-16);
+  font-weight: var(--font-weight-regular);
+  color: #9e9e9e;
 }
 
 /* 기록 메인페이지*/
 
 .frequency {
-    font-size: var(--font-size-16);
-    font-weight: var(--font-weight-semiBold);
-    color: #d9d9d9;
-    line-height: 0.5;
+  font-size: var(--font-size-16);
+  font-weight: var(--font-weight-semiBold);
+  color: #d9d9d9;
+  line-height: 0.5;
 }
 
 .addReport {
-    font-size: var(--font-size-14);
-    font-weight: var(--font-weight-semiBold);
-    color: #ffffff;
+  font-size: var(--font-size-14);
+  font-weight: var(--font-weight-semiBold);
+  color: #ffffff;
 }
 
 .symtompValue,
 .babyAge,
 .metricsRecord {
-    font-size: var(--font-size-18);
-    font-weight: var(--font-weight-regular);
-    color: #000000;
+  font-size: var(--font-size-18);
+  font-weight: var(--font-weight-regular);
+  color: #000000;
 }
 
 .symtompPlaceholder {
-    font-size: var(--font-size-20);
-    font-weight: var(--font-weight-semiBold);
-    color: #d9d9d9;
+  font-size: var(--font-size-20);
+  font-weight: var(--font-weight-semiBold);
+  color: #d9d9d9;
 }
 
 .symtompAdd {
-    font-size: var(--font-size-16);
-    font-weight: var(--font-weight-semiBold);
-    color: #000000;
+  font-size: var(--font-size-16);
+  font-weight: var(--font-weight-semiBold);
+  color: #000000;
 }
 
 .symtompList {
-    font-size: var(--font-size-12);
-    font-weight: var(--font-weight-semiBold);
-    color: #000000;
+  font-size: var(--font-size-12);
+  font-weight: var(--font-weight-semiBold);
+  color: #000000;
 }
 
 /* 기록 상세페이지*/
 
 .recordDate {
-    font-size: var(--font-size-20);
-    font-weight: var(--font-weight-semiBold);
-    color: #000000;
+  font-size: var(--font-size-20);
+  font-weight: var(--font-weight-semiBold);
+  color: #000000;
 }
 
 .visitDay {
-    font-size: var(--font-size-16);
-    font-weight: var(--font-weight-semiBold);
-    color: #9e9e9e;
+  font-size: var(--font-size-16);
+  font-weight: var(--font-weight-semiBold);
+  color: #9e9e9e;
 }
 
 .metricsDate {
-    font-size: var(--font-size-16);
-    font-weight: var(--font-weight-regular);
-    color: #9e9e9e;
+  font-size: var(--font-size-16);
+  font-weight: var(--font-weight-regular);
+  color: #9e9e9e;
 }
 
 .detailTime {
-    font-size: var(--font-size-16);
-    font-weight: var(--font-weight-semiBold);
-    color: #000000;
+  font-size: var(--font-size-16);
+  font-weight: var(--font-weight-semiBold);
+  color: #000000;
 }
 
 /* 아기수첩 페이지 */
 
 .babyName {
-    font-size: var(--font-size-32);
-    font-weight: var(--font-weight-semiBold);
-    color: #000000;
+  font-size: var(--font-size-32);
+  font-weight: var(--font-weight-semiBold);
+  color: #000000;
 }
 
 .dueDate {
-    font-size: var(--font-size-18);
-    font-weight: var(--font-weight-bold);
-    color: #ffffff;
+  font-size: var(--font-size-18);
+  font-weight: var(--font-weight-bold);
+  color: #ffffff;
 }
 
 .vaccination {
-    font-size: var(--font-size-24);
-    font-weight: var(--font-weight-regular);
-    color: #000000;
+  font-size: var(--font-size-24);
+  font-weight: var(--font-weight-regular);
+  color: #000000;
 }
 
 .vaccinationRate {
-    font-size: var(--font-size-28);
-    font-weight: var(--font-weight-bold);
-    color: #000000;
+  font-size: var(--font-size-28);
+  font-weight: var(--font-weight-bold);
+  color: #000000;
 }
 
 /* 프로필 페이지 */
 
 .profileLabel {
-    font-size: var(--font-size-24);
-    font-weight: var(--font-weight-bold);
-    color: #000000;
+  font-size: var(--font-size-24);
+  font-weight: var(--font-weight-bold);
+  color: #000000;
 }
 
 .inputForm {
-    font-size: var(--font-size-18);
-    font-weight: var(--font-weight-semiBold);
-    color: #707070;
+  font-size: var(--font-size-18);
+  font-weight: var(--font-weight-semiBold);
+  color: #707070;
 }
 
 .profileDesc {
-    font-size: var(--font-size-20);
-    font-weight: var(--font-weight-bold);
-    color: #707070;
+  font-size: var(--font-size-20);
+  font-weight: var(--font-weight-bold);
+  color: #707070;
 }
 
 .profSymtomp {
-    font-size: var(--font-size-16);
-    font-weight: var(--font-weight-bold);
-    color: #222222;
+  font-size: var(--font-size-16);
+  font-weight: var(--font-weight-bold);
+  color: #222222;
 }
