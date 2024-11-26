@@ -218,3 +218,9 @@
     font-weight: var(--font-weight-semiBold);
     color: #707070;
 }
+
+.profileDesc {
+    font-size: var(--font-size-20);
+    font-weight: var(--font-weight-bold);
+    color: #707070;
+}

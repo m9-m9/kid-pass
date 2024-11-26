@@ -12,7 +12,7 @@ const Chapter1: React.FC<ChapterProps> = ({ onNext }) => {
                 css="profileLabel"
                 text="아이의 나이대가<br>어떻게 되나요?"
             />
-            <div className={styles.profileContainer}>
+            <div className={`${styles.profileContainer} mt-48`}>
                 <div className={styles.profileContainer_item} onClick={onNext}>
                     신생아
                 </div>
