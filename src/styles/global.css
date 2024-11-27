@@ -96,6 +96,14 @@ input:focus {
     outline: none;
 }
 
+textarea {
+    resize: none;
+}
+
+textarea:focus {
+    outline: none;
+}
+
 /* Utility classes */
 .text-center {
     text-align: center;
