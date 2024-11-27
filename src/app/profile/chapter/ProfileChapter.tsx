@@ -18,7 +18,7 @@ const ProfileChapters: React.FC = () => {
 
     return (
         <div>
-            {chapter === 1 && <Chapter1 onNext={nextChapter} />}
+            {chapter === 1 && <Chapter4 onNext={nextChapter} />}
             {chapter === 2 && <Chapter2 onNext={nextChapter} />}
             {chapter === 3 && <Chapter3 onNext={nextChapter} />}
             {chapter === 4 && <Chapter4 onNext={nextChapter} />}
