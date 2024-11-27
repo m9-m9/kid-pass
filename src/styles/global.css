@@ -1,5 +1,6 @@
 /* src/styles/global.css */
 @import "variables.css";
+@import "remixicon/fonts/remixicon.css";
 
 /* Reset default styles */
 * {
@@ -89,6 +90,10 @@ select {
     font-family: inherit;
     font-size: inherit;
     line-height: inherit;
+}
+
+input:focus {
+    outline: none;
 }
 
 /* Utility classes */
@@ -197,8 +202,16 @@ select {
     margin-bottom: 32px;
 }
 
+.mb-36 {
+    margin-bottom: 32px;
+}
+
 .mb-48 {
     margin-bottom: 48px;
+}
+
+.mb-120 {
+    margin-bottom: 120px;
 }
 
 .mt-16 {
@@ -207,6 +220,10 @@ select {
 
 .mt-12 {
     margin-top: 16px;
+}
+
+.mt-20 {
+    margin-top: 24px;
 }
 
 .mt-24 {

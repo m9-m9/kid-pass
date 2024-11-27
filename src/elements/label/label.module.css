@@ -224,3 +224,9 @@
     font-weight: var(--font-weight-bold);
     color: #707070;
 }
+
+.profSymtomp {
+    font-size: var(--font-size-16);
+    font-weight: var(--font-weight-bold);
+    color: #222222;
+}

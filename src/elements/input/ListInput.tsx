@@ -1,12 +1,7 @@
+import { InputProps } from "./Input";
 import styles from "./input.module.css";
 
-export interface InputProps {
-    type: string;
-    placeholder?: string;
-    className: string;
-}
-
-const Input: React.FC<InputProps> = ({ type, placeholder, className }) => {
+const ListInput: React.FC<InputProps> = ({ type, placeholder, className }) => {
     return (
         <>
             <input
@@ -18,4 +13,4 @@ const Input: React.FC<InputProps> = ({ type, placeholder, className }) => {
     );
 };
 
-export default Input;
+export default ListInput;

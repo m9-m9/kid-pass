@@ -7,6 +7,18 @@
     box-sizing: border-box;
 }
 
-.inputForm:focus {
-    outline: none;
+.listInputForm {
+    border: none;
+    height: 50px;
+    line-height: 50px;
+    width: 100%;
+    padding: 0;
+    text-align: left;
+    border-bottom: 1px solid #d9d9d9;
+}
+
+.listInputForm::placeholder {
+    font-size: var(--font-size-16);
+    font-weight: var(--font-weight-bold);
+    color: #d9d9d9;
 }
