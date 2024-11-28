@@ -25,13 +25,13 @@ const Chapter3: React.FC<ChapterProps> = ({ onNext }) => {
                         className={styles.profileContainer_item}
                         onClick={onNext}
                     >
-                        신생아
+                        있어요
                     </div>
                     <div
                         className={styles.profileContainer_item}
                         onClick={onNext}
                     >
-                        육아
+                        없어요
                     </div>
                 </div>
             </div>
