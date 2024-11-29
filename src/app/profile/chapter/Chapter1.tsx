@@ -1,18 +1,18 @@
 "use client";
 
 import React from "react";
-import { useProfileStore } from "@/store/useProfileStore"; // Zustand Store import
+import { useProfileStore } from "@/store/useProfileStore"; 
 import { Label } from "@/elements/label/Label";
 import { ChapterProps } from "@/hook/useChapter";
 import styles from "../profile.module.css";
 
 const Chapter1: React.FC<ChapterProps> = ({ onNext }) => {
-    const setAge = useProfileStore((state) => state.setAge); // Zustand의 setAge 가져오기
+    const setAge = useProfileStore((state) => state.setAge); 
 
     const handleAgeSelection = (event: React.MouseEvent<HTMLDivElement>) => {
         const selectedAge = (event.target as HTMLElement).innerHTML.trim(); // innerHTML 가져오기
-        setAge(selectedAge); // Zustand에 저장
-        onNext(); // 다음 챕터로 이동
+        setAge(selectedAge); 
+        onNext(); 
     };
 
     return (
