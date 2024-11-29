@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { useProfileStore } from "@/store/useProfileStore"; // Zustand Store import
+import { useProfileStore } from "@/store/useProfileStore"; 
 import { useChapter } from "../../../hook/useChapter";
 import Chapter1 from "./Chapter1";
 import Chapter2 from "./Chapter2";
@@ -13,8 +13,10 @@ const ProfileChapters: React.FC = () => {
     const { chapter, nextChapter } = useChapter({
         totalChapters: 5,
         onComplete: () => {
-            const age = useProfileStore.getState().age; // Zustand 상태 직접 가져오기
-            console.log("프로필 등록 완료:", { age }); // 상태 출력
+            const age = useProfileStore.getState().age; 
+            const detail = useProfileStore.getState().details; 
+            console.log("프로필 등록 완료:", { age });
+            console.log("프로필 등록 완료:", { detail }); 
         },
     });
 
