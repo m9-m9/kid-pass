@@ -1,78 +1,76 @@
-/* 일정기록 메인 페이지*/
-
 .addSymptom_record_plusBtn {
-    position: relative;
-    width: 16px;
-    height: 16px;
+  position: relative;
+  width: 16px;
+  height: 16px;
 }
 
 .addSymptom_record_plusBtn::before,
 .addSymptom_record_plusBtn::after {
-    content: "";
-    position: absolute;
-    background-color: black;
+  content: "";
+  position: absolute;
+  background-color: black;
 }
 
 .addSymptom_record_plusBtn::before {
-    width: 2px;
-    height: 14px;
-    left: 6px;
+  width: 2px;
+  height: 14px;
+  left: 6px;
 }
 
 .addSymptom_record_plusBtn::after {
-    width: 14px;
-    height: 2px;
-    top: 5px;
+  width: 14px;
+  height: 2px;
+  top: 5px;
 }
 
 /* 디테일페이지 */
 .circle-plus {
-    position: relative;
-    width: 24px; /* 원하는 크기로 설정 */
-    height: 24px;
-    border: 2px solid #b3b3b3; /* 원의 색상 */
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
+  position: relative;
+  width: 24px; /* 원하는 크기로 설정 */
+  height: 24px;
+  border: 2px solid #b3b3b3; /* 원의 색상 */
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 }
 
 .circle-plus::before,
 .circle-plus::after {
-    content: "";
-    position: absolute;
-    background-color: #b3b3b3; /* 더하기 기호의 색상 */
+  content: "";
+  position: absolute;
+  background-color: #b3b3b3; /* 더하기 기호의 색상 */
 }
 
 .circle-plus::before {
-    width: 60%;
-    height: 2px;
+  width: 60%;
+  height: 2px;
 }
 
 .circle-plus::after {
-    width: 2px;
-    height: 60%;
+  width: 2px;
+  height: 60%;
 }
 
 .typeBtn {
-    font-size: var(--font-size-14);
-    font-weight: var(--font-weight-semiBold);
-    color: #9e9e9e;
-    background: none;
-    border: none;
+  font-size: var(--font-size-14);
+  font-weight: var(--font-weight-semiBold);
+  color: #9e9e9e;
+  background: none;
+  border: none;
 }
 
 .recordContainer {
-    display: flex;
-    flex-direction: column;
-    margin-top: 48px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 48px;
 }
 
 .record {
-    display: flex;
-    align-items: center;
-    padding: 16px;
-    background-color: #ffcca3;
-    gap: 48px;
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  background-color: #ffcca3;
+  gap: 48px;
 }

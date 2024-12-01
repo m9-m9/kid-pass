@@ -31,7 +31,8 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
       <body>
-        <Container className="container">{children}</Container>
+        {/* <Container className="mapContainer">{children}</Container> */}
+        {children}
         {/* 전역 ProfileModal */}
         <ProfileModal />
       </body>
