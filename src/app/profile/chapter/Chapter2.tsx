@@ -24,53 +24,51 @@ const Chapter2: React.FC<ChapterProps> = ({ onNext }) => {
         onNext(); // 다음으로 이동
     };
 
-
-
     return (
         <form onSubmit={handleSubmit}>
             <Label css="profileLabel" text="아이의 정보를<br>등록해주세요" />
             <div className={styles.inputArea}>
-                <InputForm 
-                    labelText="이름" 
-                    labelCss="inputForm" 
-                    value={name} 
-                    onChange={setName} 
-                    placeholder="홍길동"   
-                    required={true} 
+                <InputForm
+                    labelText="이름"
+                    labelCss="inputForm"
+                    value={name}
+                    onChange={setName}
+                    placeholder="홍길동"
+                    required={true}
                     errorMessage="이름을 입력해주세요"
                 />
-                <InputForm 
-                    labelText="출생일" 
-                    labelCss="inputForm" 
-                    value={birthDate} 
-                    onChange={setBirthDate} 
+                <InputForm
+                    labelText="출생일"
+                    labelCss="inputForm"
+                    value={birthDate}
+                    onChange={setBirthDate}
                     placeholder="YYYY-MM-DD"
                     required={true}
                     errorMessage="출생일을 입력해주세요"
                 />
-                <InputForm 
-                    labelText="몸무게" 
-                    labelCss="inputForm" 
-                    value={weight} 
-                    onChange={setWeight} 
+                <InputForm
+                    labelText="몸무게"
+                    labelCss="inputForm"
+                    value={weight}
+                    onChange={setWeight}
                     placeholder="8.xx 소수점 2자리까지 입력해주세요"
                     required={true}
                     errorMessage="몸무게를 입력해주세요"
                 />
-                <InputForm 
-                    labelText="키" 
-                    labelCss="inputForm" 
-                    value={height} 
-                    onChange={setHeight} 
+                <InputForm
+                    labelText="키"
+                    labelCss="inputForm"
+                    value={height}
+                    onChange={setHeight}
                     placeholder="30.x 소수점 1자리까지 입력해주세요"
                     required={true}
                     errorMessage="키를 입력해주세요"
                 />
-                <InputForm 
-                    labelText="머리둘레" 
-                    labelCss="inputForm" 
-                    value={headCircumference} 
-                    onChange={setHeadCircumference} 
+                <InputForm
+                    labelText="머리둘레"
+                    labelCss="inputForm"
+                    value={headCircumference}
+                    onChange={setHeadCircumference}
                     placeholder="50.x 소수점 1자리까지 입력해주세요"
                     required={true}
                     errorMessage="머리둘레를 입력해주세요"

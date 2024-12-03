@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Label } from "@/elements/label/Label";
 import Button from "@/elements/button/Button";
 import { ChapterProps } from "@/hook/useChapter";
@@ -10,44 +10,132 @@ import styles from "../profile.module.css";
 import XIcon from "@/elements/svg/XIcon";
 
 const Chapter4: React.FC<ChapterProps> = ({ onNext }) => {
+    const [symptomInputValue, setSymptomInputValue] = useState("");
+    const [allergicInputValue, setAllergicInputValue] = useState("");
+    const [symptomList, setSymptomList] = useState<string[]>([]);
+    const [allergicList, setAllergicList] = useState<string[]>([]);
+
+    // 증상 추가 함수
+    const addSymptom = () => {
+        const trimmedValue = symptomInputValue.trim();
+        if (trimmedValue && !symptomList.includes(trimmedValue)) {
+            setSymptomList((prev) => [...prev, trimmedValue]);
+            setSymptomInputValue("");
+        }
+    };
+
+    const handleSymptomKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            addSymptom();
+        }
+    };
+
+    const removeSymptom = (index: number) => {
+        setSymptomList((prev) => prev.filter((_, i) => i !== index));
+    };
+
+    // 알레르기 추가 함수
+    const addAllergic = () => {
+        const trimmedValue = allergicInputValue.trim();
+        if (trimmedValue && !allergicList.includes(trimmedValue)) {
+            setAllergicList((prev) => [...prev, trimmedValue]);
+            setAllergicInputValue("");
+        }
+    };
+
+    const handleAllergicKeyDown = (
+        e: React.KeyboardEvent<HTMLInputElement>,
+    ) => {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            addAllergic();
+        }
+    };
+
+    const removeAllergic = (index: number) => {
+        setAllergicList((prev) => prev.filter((_, i) => i !== index));
+    };
+
     return (
         <div>
             <Label
                 css="profileLabel"
                 text="김아기의 과거 증상과<br>
-진료 기룍을 알려주세요"
+진료 기록을 알려주세요"
             />
             <div className={`${styles.listInputArea} mt-48`}>
                 <Label
                     text="과거에 진단받은 질환이 있나요?"
                     css="profileDesc"
                 />
-                <ListInput
-                    type="text"
-                    className="listInputForm"
-                    placeholder="ex:아토피"
-                />
-                <Circleline color="#729BED" className="listInputCheckbox" />
-            </div>
-            <div className="mt-20 verticalFlexbox gap-8">
-                <div className={styles.symptomList}>
-                    <Label css="profSymtomp" text="아토피" />
-                    <XIcon color="#222222" />
+                <div className="flex gap-12">
+                    <ListInput
+                        type="text"
+                        className="listInputForm"
+                        value={symptomInputValue}
+                        placeholder="ex:아토피"
+                        onChange={(e) => setSymptomInputValue(e.target.value)}
+                        onKeyDown={handleSymptomKeyDown}
+                    />
+                    <Circleline
+                        color="#729BED"
+                        className="listInputCheckbox"
+                        onClick={addSymptom}
+                    />
                 </div>
             </div>
+            <div className="mt-20 verticalFlexbox gap-8">
+                {symptomList.map((symptom, index) => (
+                    <div key={index} className={styles.symptomList}>
+                        <Label css="profSymtomp" text={symptom} />
+                        <XIcon
+                            color="#222222"
+                            onClick={() => removeSymptom(index)}
+                        />
+                    </div>
+                ))}
+            </div>
+
             <div className={`${styles.listInputArea} mt-48 mb-120`}>
                 <Label
-                    text="약품이나 식품에<br>
-알러지가 있다면 적어주세요"
+                    text="약품이나 식품에<br>알러지가 있다면 적어주세요"
                     css="profileDesc"
                 />
-                <ListInput
-                    type="text"
-                    className="listInputForm"
-                    placeholder="ex:땅콩"
-                />
-                <Circleline color="#729BED" className="listInputCheckbox" />
+                <div className="flex gap-12">
+                    <ListInput
+                        type="text"
+                        className="listInputForm"
+                        value={allergicInputValue}
+                        placeholder="ex:땅콩"
+                        onChange={(e) => setAllergicInputValue(e.target.value)}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                                e.preventDefault();
+                                addAllergic();
+                            }
+                        }}
+                    />
+                    <Circleline
+                        color="#729BED"
+                        className="listInputCheckbox"
+                        onClick={addAllergic}
+                    />
+                </div>
+                <div className="mt-20 verticalFlexbox gap-8">
+                    {allergicList.map((allergic, index) => (
+                        <div key={index} className={styles.symptomList}>
+                            <Label css="profSymtomp" text={allergic} />
+
+                            <XIcon
+                                color="#222222"
+                                onClick={() => removeAllergic(index)}
+                            />
+                        </div>
+                    ))}
+                </div>
             </div>
+
             <Button css="nextBtn" onClick={onNext} label="다음"></Button>
         </div>
     );

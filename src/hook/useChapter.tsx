@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 
 export interface ChapterProps {
     onNext: () => void;
+    goToChapter: (targetNumber: number) => void;
 }
 
 export interface UseChapterProps {
@@ -11,7 +12,7 @@ export interface UseChapterProps {
     onComplete?: () => void;
 }
 
-export const useChapter = ({ totalChapters, onComplete }: UseChapterProps) => {
+const useChapter = ({ totalChapters, onComplete }: UseChapterProps) => {
     const [chapter, setChapter] = useState(1);
 
     const nextChapter = () => {
@@ -28,10 +29,17 @@ export const useChapter = ({ totalChapters, onComplete }: UseChapterProps) => {
         }
     };
 
+    const goToChapter = (targetChapter: number) => {
+        if (targetChapter >= 1 && targetChapter <= totalChapters) {
+            setChapter(targetChapter);
+        }
+    };
+
     useEffect(() => {
-        // React Native와 통신
         window.ReactNativeWebView?.postMessage(JSON.stringify({ chapter }));
     }, [chapter]);
 
-    return { chapter, nextChapter, previousChapter };
+    return { chapter, nextChapter, previousChapter, goToChapter };
 };
+
+export default useChapter;
