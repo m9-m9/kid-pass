@@ -2,11 +2,10 @@
 
 import React from "react";
 import { Label } from "@/elements/label/Label";
-import Button from "@/elements/button/Button";
 import { ChapterProps } from "@/hook/useChapter";
 import styles from "../profile.module.css";
 
-const Chapter3: React.FC<ChapterProps> = ({ onNext }) => {
+const Chapter3: React.FC<ChapterProps> = ({ goToChapter }) => {
     return (
         <div>
             <Label
@@ -23,13 +22,13 @@ const Chapter3: React.FC<ChapterProps> = ({ onNext }) => {
                 <div className={`${styles.profileContainer} mt-12`}>
                     <div
                         className={styles.profileContainer_item}
-                        onClick={onNext}
+                        onClick={() => goToChapter(4)}
                     >
                         있어요
                     </div>
                     <div
                         className={styles.profileContainer_item}
-                        onClick={onNext}
+                        onClick={() => goToChapter(5)}
                     >
                         없어요
                     </div>
