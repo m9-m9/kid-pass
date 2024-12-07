@@ -1,4 +1,10 @@
-.listInputCheckbox {
+.symptomInputCheckbox {
+    position: absolute;
+    bottom: 10px;
+    right: 0;
+}
+
+.allergicInputCheckbox {
     position: absolute;
     bottom: 10px;
     right: 0;

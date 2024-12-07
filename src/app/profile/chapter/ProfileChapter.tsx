@@ -15,8 +15,15 @@ const ProfileChapters: React.FC = () => {
         onComplete: () => {
             const age = useProfileStore.getState().age;
             const detail = useProfileStore.getState().details;
-            console.log("프로필 등록 완료:", { age });
-            console.log("프로필 등록 완료:", { detail });
+            const symptom = useProfileStore.getState().symptom;
+            const allergic = useProfileStore.getState().allergic;
+            const etc = useProfileStore.getState().etc;
+
+            console.log("나이:", { age });
+            console.log("정보:", { detail });
+            console.log("증상", { symptom });
+            console.log("알러지", { allergic });
+            console.log("알러지", { etc });
         },
     });
 
