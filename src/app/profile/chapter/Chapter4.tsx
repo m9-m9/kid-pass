@@ -8,6 +8,7 @@ import ListInput from "@/elements/input/ListInput";
 import Circleline from "@/elements/svg/Checkbox";
 import styles from "../profile.module.css";
 import XIcon from "@/elements/svg/XIcon";
+import { useProfileStore } from "@/store/useProfileStore";
 
 const Chapter4: React.FC<ChapterProps> = ({ onNext }) => {
     const [symptomInputValue, setSymptomInputValue] = useState("");
@@ -15,7 +16,10 @@ const Chapter4: React.FC<ChapterProps> = ({ onNext }) => {
     const [symptomList, setSymptomList] = useState<string[]>([]);
     const [allergicList, setAllergicList] = useState<string[]>([]);
 
-    // 증상 추가 함수
+    const setSymptom = useProfileStore((state) => state.setSymptom);
+    const setAllergic = useProfileStore((state) => state.setAllergic);
+
+    // 증상 추가
     const addSymptom = () => {
         const trimmedValue = symptomInputValue.trim();
         if (trimmedValue && !symptomList.includes(trimmedValue)) {
@@ -24,6 +28,7 @@ const Chapter4: React.FC<ChapterProps> = ({ onNext }) => {
         }
     };
 
+    // 증상 입력
     const handleSymptomKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") {
             e.preventDefault();
@@ -31,6 +36,7 @@ const Chapter4: React.FC<ChapterProps> = ({ onNext }) => {
         }
     };
 
+    // 증상 삭제
     const removeSymptom = (index: number) => {
         setSymptomList((prev) => prev.filter((_, i) => i !== index));
     };
@@ -44,6 +50,7 @@ const Chapter4: React.FC<ChapterProps> = ({ onNext }) => {
         }
     };
 
+    // 알레르기 입력
     const handleAllergicKeyDown = (
         e: React.KeyboardEvent<HTMLInputElement>,
     ) => {
@@ -53,8 +60,18 @@ const Chapter4: React.FC<ChapterProps> = ({ onNext }) => {
         }
     };
 
+    // 알레르기 삭제
     const removeAllergic = (index: number) => {
         setAllergicList((prev) => prev.filter((_, i) => i !== index));
+    };
+
+    const handleNext = () => {
+        // Zustand store에 저장
+        setSymptom(symptomList);
+        setAllergic(allergicList);
+
+        // 부모 컴포넌트로 이동
+        onNext();
     };
 
     return (
@@ -64,7 +81,7 @@ const Chapter4: React.FC<ChapterProps> = ({ onNext }) => {
                 text="김아기의 과거 증상과<br>
 진료 기록을 알려주세요"
             />
-            <div className={`${styles.listInputArea} mt-48`}>
+            <div className={`${styles.listInputArea} mt-48 `}>
                 <Label
                     text="과거에 진단받은 질환이 있나요?"
                     css="profileDesc"
@@ -80,12 +97,12 @@ const Chapter4: React.FC<ChapterProps> = ({ onNext }) => {
                     />
                     <Circleline
                         color="#729BED"
-                        className="listInputCheckbox"
+                        className="symptomInputCheckbox"
                         onClick={addSymptom}
                     />
                 </div>
             </div>
-            <div className="mt-20 verticalFlexbox gap-8">
+            <div className="mt-20 verticalFlexbox gap-8 mb-48">
                 {symptomList.map((symptom, index) => (
                     <div key={index} className={styles.symptomList}>
                         <Label css="profSymtomp" text={symptom} />
@@ -97,11 +114,11 @@ const Chapter4: React.FC<ChapterProps> = ({ onNext }) => {
                 ))}
             </div>
 
-            <div className={`${styles.listInputArea} mt-48 mb-120`}>
-                <Label
-                    text="약품이나 식품에<br>알러지가 있다면 적어주세요"
-                    css="profileDesc"
-                />
+            <Label
+                text="약품이나 식품에<br>알러지가 있다면 적어주세요"
+                css="profileDesc"
+            />
+            <div className={`${styles.listInputArea}`}>
                 <div className="flex gap-12">
                     <ListInput
                         type="text"
@@ -109,34 +126,28 @@ const Chapter4: React.FC<ChapterProps> = ({ onNext }) => {
                         value={allergicInputValue}
                         placeholder="ex:땅콩"
                         onChange={(e) => setAllergicInputValue(e.target.value)}
-                        onKeyDown={(e) => {
-                            if (e.key === "Enter") {
-                                e.preventDefault();
-                                addAllergic();
-                            }
-                        }}
+                        onKeyDown={handleAllergicKeyDown}
                     />
                     <Circleline
                         color="#729BED"
-                        className="listInputCheckbox"
+                        className="allergicInputCheckbox"
                         onClick={addAllergic}
                     />
                 </div>
-                <div className="mt-20 verticalFlexbox gap-8">
-                    {allergicList.map((allergic, index) => (
-                        <div key={index} className={styles.symptomList}>
-                            <Label css="profSymtomp" text={allergic} />
-
-                            <XIcon
-                                color="#222222"
-                                onClick={() => removeAllergic(index)}
-                            />
-                        </div>
-                    ))}
-                </div>
             </div>
+            <div className="mt-20 verticalFlexbox gap-8 mb-120">
+                {allergicList.map((allergic, index) => (
+                    <div key={index} className={styles.symptomList}>
+                        <Label css="profSymtomp" text={allergic} />
 
-            <Button css="nextBtn" onClick={onNext} label="다음"></Button>
+                        <XIcon
+                            color="#222222"
+                            onClick={() => removeAllergic(index)}
+                        />
+                    </div>
+                ))}
+            </div>
+            <Button css="nextBtn" onClick={handleNext} label="다음"></Button>
         </div>
     );
 };
