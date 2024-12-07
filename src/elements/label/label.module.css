@@ -212,3 +212,21 @@
     font-weight: var(--font-weight-bold);
     color: #000000;
 }
+
+.inputForm {
+    font-size: var(--font-size-18);
+    font-weight: var(--font-weight-semiBold);
+    color: #707070;
+}
+
+.profileDesc {
+    font-size: var(--font-size-20);
+    font-weight: var(--font-weight-bold);
+    color: #707070;
+}
+
+.profSymtomp {
+    font-size: var(--font-size-16);
+    font-weight: var(--font-weight-bold);
+    color: #222222;
+}
