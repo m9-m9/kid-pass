@@ -160,17 +160,17 @@ const App: React.FC = () => {
         }}
       >
         <WeeklyCalendar />
-        <Carousel
-          slides={SLIDES}
-          options={{
-            useButton: false,
-            useIndex: false,
-            dragFree: true,
-            selectedItems: selectedItems,
-            onSelect: handleSelect,
-          }}
-        />
       </div>
+      <Carousel
+        slides={SLIDES}
+        options={{
+          useButton: false,
+          useIndex: false,
+          dragFree: true,
+          selectedItems: selectedItems,
+          onSelect: handleSelect,
+        }}
+      />
 
       <div style={{ marginBottom: 60 }}>
         <Schedule schedules={scheduleData} />

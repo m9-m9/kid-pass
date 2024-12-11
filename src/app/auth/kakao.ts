@@ -49,7 +49,7 @@ export class KakaoLoginProvider implements SocialLoginProvider {
           });
         },
         fail: reject,
-        redirectUri: "http://localhost:5173/",
+        redirectUri: "http://localhost:3000/auth/login",
       });
     });
   }
