@@ -1,12 +1,13 @@
 import React from "react";
 import ProfileChapters from "./chapter/ProfileChapter";
+import Container from "@/elements/container/Container";
 
 const ProfilePage: React.FC = () => {
-    return (
-        <div>
-            <ProfileChapters />
-        </div>
-    );
+  return (
+    <Container className="container">
+      <ProfileChapters />
+    </Container>
+  );
 };
 
 export default ProfilePage;

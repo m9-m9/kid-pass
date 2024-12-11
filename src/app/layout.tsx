@@ -25,15 +25,10 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // const containerClassName = location.pathname === SCREEN.MAP ? "mapContainer" : "container";
-  // TODO: classNmae 전역에서 어떻게 사용할지
-
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
       <body>
-        {/* <Container className="mapContainer">{children}</Container> */}
         {children}
-        {/* 전역 ProfileModal */}
         <ProfileModal />
       </body>
     </html>
