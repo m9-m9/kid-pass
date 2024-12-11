@@ -75,7 +75,7 @@ const Chapter2: React.FC<ChapterProps> = ({ onNext }) => {
         />
       </div>
 
-      <Button css="nextBtn" type="submit" label="다음"></Button>
+      <Button type="submit" label="다음"></Button>
     </form>
   );
 };

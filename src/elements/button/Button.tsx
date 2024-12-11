@@ -1,17 +1,24 @@
-import React, { ButtonHTMLAttributes } from "react";
+import React, { ButtonHTMLAttributes, CSSProperties } from "react";
 import styles from "./button.module.css"; // CSS 모듈 가져오기
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   label: string;
   onClick?: () => void;
   css?: string;
-  backgroundColor?: string;
-  color?: string;
+  size?: "S" | "L";
+  style?: CSSProperties;
 }
 
-const Button: React.FC<ButtonProps> = ({ label, onClick, css = "button", backgroundColor, color, ...props }) => {
+const Button: React.FC<ButtonProps> = ({ label, onClick, css, style, size = "L", ...props }) => {
   return (
-    <button className={styles[css]} onClick={onClick && onClick} style={{ backgroundColor, color }} {...props}>
+    <button
+      className={`${css && styles[css]} ${styles.button} ${size === "L" ? styles.buttonLarge : styles.buttonSmall} `}
+      onClick={onClick && onClick}
+      style={{
+        ...style,
+      }}
+      {...props}
+    >
       {label}
     </button>
   );
