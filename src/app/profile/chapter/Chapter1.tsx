@@ -5,6 +5,8 @@ import { useProfileStore } from "@/store/useProfileStore";
 import { Label } from "@/elements/label/Label";
 import { ChapterProps } from "@/hook/useChapter";
 import styles from "../profile.module.css";
+import Grid from "@/elements/grid/Grid";
+import Spacer from "@/elements/spacer/Spacer";
 
 const Chapter1: React.FC<ChapterProps> = ({ onNext }) => {
   const setAge = useProfileStore((state) => state.setAge);
@@ -15,27 +17,28 @@ const Chapter1: React.FC<ChapterProps> = ({ onNext }) => {
     onNext();
   };
 
+
+  const Item = ({ txt }: { txt: string }) => (
+    <div
+      className={styles.profileContainer_item}
+      onClick={handleAgeSelection}
+      dangerouslySetInnerHTML={{ __html: txt }}
+    />
+  );
+
   return (
     <div>
       <Label css="profileLabel" text="아이의 나이대가<br>어떻게 되나요?" />
-      <div className={`${styles.profileContainer} mt-48`}>
-        <div className={styles.profileContainer_item} onClick={handleAgeSelection}>
-          신생아
-        </div>
-        <div className={styles.profileContainer_item} onClick={handleAgeSelection}>
-          육아
-        </div>
-        <div className={styles.profileContainer_item} onClick={handleAgeSelection}>
-          초등
-          <br />
-          저학년
-        </div>
-        <div className={styles.profileContainer_item} onClick={handleAgeSelection}>
-          초등
-          <br />
-          고학년
-        </div>
-      </div>
+      <Spacer height={56} />
+      <Grid
+        items={[
+          <Item txt={"신생아"} />,
+          <Item txt={"육아"} />,
+          <Item txt={`초등<br/>저학년`} />,
+          <Item txt={`초등<br/>저학년`} />,
+        ]}
+        column={2}
+      />
     </div>
   );
 };

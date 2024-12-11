@@ -74,8 +74,7 @@ const Chapter2: React.FC<ChapterProps> = ({ onNext }) => {
           errorMessage="머리둘레를 입력해주세요"
         />
       </div>
-
-      <Button css="nextBtn" type="submit" label="다음"></Button>
+      <Button type="submit" label="다음"></Button>
     </form>
   );
 };
