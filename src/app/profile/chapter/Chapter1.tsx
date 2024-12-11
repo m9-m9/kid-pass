@@ -17,6 +17,7 @@ const Chapter1: React.FC<ChapterProps> = ({ onNext }) => {
     onNext();
   };
 
+
   const Item = ({ txt }: { txt: string }) => (
     <div
       className={styles.profileContainer_item}
