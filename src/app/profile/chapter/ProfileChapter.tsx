@@ -34,7 +34,7 @@ const ProfileChapters: React.FC = () => {
 
                 // Body 데이터 생성
                 const body = {
-                    // chldrnTy: age,
+                    chldrnTy: age,
                     chldrnNm: chldrnNm || "",
                     chldrnBrthdy: chldrnBrthdy || "",
                     chldrnBdwgh: parseFloat(chldrnBdwgh) || 0,
