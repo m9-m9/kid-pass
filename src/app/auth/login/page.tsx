@@ -10,6 +10,7 @@ import useFetch from "@/hook/useFetch";
 import useUsrStore from "@/store/useUsrStore";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import styles from "./login.module.css";
 
 const App: React.FC = () => {
   const searchParams = useSearchParams();
@@ -45,9 +46,9 @@ const App: React.FC = () => {
   return (
     <Container className="container">
       <LoadingFullScreen isVisible={loading} />
-      <Header title="이메일 로그인" onBack={() => {}} />
-      <Spacer height={50} />
-      <form onSubmit={handleLogin} style={{ display: "flex", flexDirection: "column", flex: 1 }}>
+      <Header title="이메일" onBack={() => {}} />
+      {/* <Spacer height={50} /> */}
+      <form onSubmit={(e) => handleLogin(e)} style={{ display: "flex", flexDirection: "column", flex: 1 }}>
         <InputForm
           labelText="이메일 아이디"
           placeholder="todayschild@mail.com"
@@ -62,8 +63,15 @@ const App: React.FC = () => {
           labelCss="inputForm"
           value={mberPw}
           onChange={setMberPw}
+          type="password"
+          showPasswordToggle
         />
-
+        <Spacer height={50} />
+        <div className={styles.container}>
+          <p className={styles.text}>계정 찾기</p>
+          <div className={styles.line} />
+          <p className={styles.text}>회원가입</p>
+        </div>
         <div style={{ flex: 1 }} />
         <Button type="submit" label="다음" />
       </form>

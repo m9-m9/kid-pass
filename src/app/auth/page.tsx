@@ -3,9 +3,11 @@ import styles from "./auth.module.css";
 import "remixicon/fonts/remixicon.css";
 import Button from "@/elements/button/Button";
 import Spacer from "@/elements/spacer/Spacer";
-import { Label } from "@/elements/label/Label";
+import useAuthSocial from "./useAuthSocial";
 
-const LoginScreen = () => {
+const AuthScreen = () => {
+  const { user, handleLogin } = useAuthSocial();
+
   return (
     <div className={styles.container}>
       {/* Main Content */}
@@ -22,6 +24,7 @@ const LoginScreen = () => {
         {/* Buttons */}
         <div className={styles.buttonContainer}>
           <Button
+            onClick={() => handleLogin("kakao", true)}
             style={{ background: "#fee500", color: "#000" }}
             label={
               <div className={styles.buttonItem}>
@@ -45,6 +48,7 @@ const LoginScreen = () => {
           />
 
           <Button
+            onClick={() => handleLogin("google", true)}
             style={{ backgroundColor: "#f2f2f2", color: "#000" }}
             label={
               <div className={styles.buttonItem}>
@@ -65,4 +69,4 @@ const LoginScreen = () => {
   );
 };
 
-export default LoginScreen;
+export default AuthScreen;
