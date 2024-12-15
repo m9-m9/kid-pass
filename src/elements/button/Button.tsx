@@ -2,7 +2,7 @@ import React, { ButtonHTMLAttributes, CSSProperties } from "react";
 import styles from "./button.module.css"; // CSS 모듈 가져오기
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  label: string;
+  label: string | React.ReactNode;
   onClick?: () => void;
   css?: string;
   size?: "S" | "L";
@@ -12,7 +12,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 const Button: React.FC<ButtonProps> = ({ label, onClick, css, style, size = "L", ...props }) => {
   return (
     <button
-      className={`${css && styles[css]} ${styles.button} ${size === "L" ? styles.buttonLarge : styles.buttonSmall} `}
+      className={`${styles.button}  ${size === "L" ? styles.buttonLarge : styles.buttonSmall} ${css && styles[css]}`}
       onClick={onClick && onClick}
       style={{
         ...style,

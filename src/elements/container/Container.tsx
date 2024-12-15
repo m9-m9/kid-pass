@@ -5,9 +5,10 @@ export interface ContainerProps {
   children: React.ReactNode;
   className?: string;
   backgroundColor?: string;
+  style?: React.CSSProperties;
 }
 
-const Container: React.FC<ContainerProps> = ({ children, className, backgroundColor }) => {
+const Container: React.FC<ContainerProps> = ({ style, children, className, backgroundColor }) => {
   // 클래스명 조합
   const classNames = className
     ?.split(" ")
@@ -15,7 +16,7 @@ const Container: React.FC<ContainerProps> = ({ children, className, backgroundCo
     .join(" ");
 
   return (
-    <div className={classNames} style={{ backgroundColor }}>
+    <div className={classNames} style={{ backgroundColor, ...style }}>
       {children}
     </div>
   );

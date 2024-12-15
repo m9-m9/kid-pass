@@ -1,54 +1,73 @@
 "use client";
 
+import InputForm from "@/components/form/InputForm";
+import Header from "@/components/header/Header";
+import LoadingFullScreen from "@/components/loading/LoadingFullScreen";
+import Button from "@/elements/button/Button";
+import Container from "@/elements/container/Container";
+import Spacer from "@/elements/spacer/Spacer";
+import useFetch from "@/hook/useFetch";
+import useUsrStore from "@/store/useUsrStore";
 import { useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const App: React.FC = () => {
   const searchParams = useSearchParams();
-  const code = searchParams.get("code");
+  const { setAccessToken, setRefreshToken } = useUsrStore();
 
-  const handleLogin = async () => {
-    try {
-      const code = searchParams.get("code");
+  const [mberId, setMberId] = useState("");
+  const [mberPw, setMberPw] = useState("");
 
-      if (!code) {
-        throw new Error("Code parameter not found in the URL.");
-      }
+  const { sendRequest, responseData, loading, destroy } = useFetch<any>();
 
-      const response = await fetch("http://localhost:8071/authenticate/login-with-kakao", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${code}`,
-        },
-        body: JSON.stringify({ code }),
-      });
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-      if (!response.ok) {
-        throw new Error(`HTTP error ${response.status}`);
-      }
-
-      const data = await response.json();
-      console.log("Login response:", data);
-    } catch (err) {
-      if (err instanceof Error) {
-        console.log(err);
-      }
-    }
+    sendRequest({
+      url: "authenticate/login",
+      method: "POST",
+      body: {
+        mberId,
+        mberPw,
+      },
+    });
   };
 
   useEffect(() => {
-    if (code) {
-      handleLogin();
+    if (responseData) {
+      if (responseData && responseData.msg === "succes") {
+        setAccessToken(responseData.data.accessToken);
+        setRefreshToken(responseData.data.refreshToken);
+      }
     }
-  }, [code]);
+  }, [responseData]);
 
   return (
-    <div>
-      로그인
-      <input />
-      <input />
-    </div>
+    <Container className="container">
+      <LoadingFullScreen isVisible={loading} />
+      <Header title="이메일 로그인" onBack={() => {}} />
+      <Spacer height={50} />
+      <form onSubmit={handleLogin} style={{ display: "flex", flexDirection: "column", flex: 1 }}>
+        <InputForm
+          labelText="이메일 아이디"
+          placeholder="todayschild@mail.com"
+          labelCss="inputForm"
+          value={mberId}
+          onChange={setMberId}
+        />
+        <Spacer height={32} />
+        <InputForm
+          labelText="비밀번호"
+          placeholder="문자와 숫자를 포함한 8~20자"
+          labelCss="inputForm"
+          value={mberPw}
+          onChange={setMberPw}
+        />
+
+        <div style={{ flex: 1 }} />
+        <Button type="submit" label="다음" />
+      </form>
+    </Container>
   );
 };
 
