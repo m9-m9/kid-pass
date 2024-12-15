@@ -9,38 +9,69 @@ import Grid from "@/elements/grid/Grid";
 import Spacer from "@/elements/spacer/Spacer";
 
 const Chapter1: React.FC<ChapterProps> = ({ onNext }) => {
-  const setAge = useProfileStore((state) => state.setAge);
+    const setAge = useProfileStore((state) => state.setAge);
+    const ageTypes = ["NWNBB", "BABY", "INFANT", "CHILD"] as const;
 
-  const handleAgeSelection = (event: React.MouseEvent<HTMLDivElement>) => {
-    const selectedAge = (event.target as HTMLElement).innerHTML.trim(); // innerHTML 가져오기
-    setAge(selectedAge);
-    onNext();
-  };
+    const texts = [
+        <>
+            신생아
+            <br />
+            (태아 ~ 1개월)
+        </>,
+        <>
+            영아
+            <br />
+            (1개월 ~ 1년)
+        </>,
+        <>
+            유아
+            <br />
+            (1년~6년)
+        </>,
+        <>
+            소아
+            <br />
+            (6년~12년)
+        </>,
+    ];
 
+    const handleAgeSelection = (index: number) => {
+        setAge(ageTypes[index]);
+        onNext();
+    };
 
-  const Item = ({ txt }: { txt: string }) => (
-    <div
-      className={styles.profileContainer_item}
-      onClick={handleAgeSelection}
-      dangerouslySetInnerHTML={{ __html: txt }}
-    />
-  );
+    const Item = ({
+        children,
+        index,
+    }: {
+        children: React.ReactNode;
+        index: number;
+    }) => (
+        <div
+            className={styles.profileContainer_item}
+            onClick={() => handleAgeSelection(index)}
+        >
+            {children}
+        </div>
+    );
 
-  return (
-    <div>
-      <Label css="profileLabel" text="아이의 나이대가<br>어떻게 되나요?" />
-      <Spacer height={56} />
-      <Grid
-        items={[
-          <Item txt={"신생아"} />,
-          <Item txt={"육아"} />,
-          <Item txt={`초등<br/>저학년`} />,
-          <Item txt={`초등<br/>저학년`} />,
-        ]}
-        column={2}
-      />
-    </div>
-  );
+    return (
+        <div>
+            <Label
+                css="profileLabel"
+                text="아이의 나이대가<br>어떻게 되나요?"
+            />
+            <Spacer height={56} />
+            <Grid
+                items={texts.map((text, index) => (
+                    <Item key={index} index={index}>
+                        {text}
+                    </Item>
+                ))}
+                column={2}
+            />
+        </div>
+    );
 };
 
 export default Chapter1;

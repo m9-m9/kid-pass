@@ -30,6 +30,11 @@ const Chapter4: React.FC<ChapterProps> = ({ onNext }) => {
 
     // 증상 입력
     const handleSymptomKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        // 한글 입력 중이면 무시
+        if (e.nativeEvent.isComposing) {
+            return;
+        }
+
         if (e.key === "Enter") {
             e.preventDefault();
             addSymptom();
@@ -44,8 +49,14 @@ const Chapter4: React.FC<ChapterProps> = ({ onNext }) => {
     // 알레르기 추가 함수
     const addAllergic = () => {
         const trimmedValue = allergicInputValue.trim();
+        console.log("입력된 값:", trimmedValue); // 입력값 확인
+
         if (trimmedValue && !allergicList.includes(trimmedValue)) {
-            setAllergicList((prev) => [...prev, trimmedValue]);
+            console.log("추가되기 전 리스트:", allergicList);
+            setAllergicList((prev) => {
+                console.log("업데이트될 리스트:", [...prev, trimmedValue]);
+                return [...prev, trimmedValue];
+            });
             setAllergicInputValue("");
         }
     };
@@ -54,12 +65,16 @@ const Chapter4: React.FC<ChapterProps> = ({ onNext }) => {
     const handleAllergicKeyDown = (
         e: React.KeyboardEvent<HTMLInputElement>,
     ) => {
+        // 한글 입력 중이면 무시
+        if (e.nativeEvent.isComposing) {
+            return;
+        }
+
         if (e.key === "Enter") {
             e.preventDefault();
             addAllergic();
         }
     };
-
     // 알레르기 삭제
     const removeAllergic = (index: number) => {
         setAllergicList((prev) => prev.filter((_, i) => i !== index));
