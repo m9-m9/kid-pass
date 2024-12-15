@@ -1,13 +1,17 @@
 import { create } from "zustand";
 
 interface UsrState {
-  name: string;
-  setName: (name: string) => void;
+  setAccessToken: (name: string) => void;
+  setRefreshToken: (name: string) => void;
+  accessToken?: string;
+  refreshToken?: string;
 }
 
 const useUsrStore = create<UsrState>((set) => ({
-  name: "kim",
-  setName: (v: string) => set(() => ({ name: v })),
+  accessToken: undefined,
+  refreshToken: undefined,
+  setAccessToken: (v: string) => set(() => ({ accessToken: v })),
+  setRefreshToken: (v: string) => set(() => ({ refreshToken: v })),
 }));
 
 export default useUsrStore;
