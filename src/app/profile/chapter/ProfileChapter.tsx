@@ -29,7 +29,18 @@ const ProfileChapters: React.FC = () => {
                     chldrnHead,
                 ] = details;
 
-                // 포스트맨에서 성공한 형식과 동일하게 body 구성
+                const sanitizeArray = (arr: string[]) => {
+                    if (!Array.isArray(arr)) return [];
+                    // 중복 제거, 빈 문자열 제거, 공백 제거
+                    return [
+                        ...new Set(
+                            arr
+                                .filter((item) => item && item.trim())
+                                .map((item) => item.trim()),
+                        ),
+                    ];
+                };
+
                 const body = {
                     chldrnTy: age,
                     chldrnNm: chldrnNm,
@@ -37,8 +48,8 @@ const ProfileChapters: React.FC = () => {
                     chldrnBdwgh: parseFloat(chldrnBdwgh) || 0,
                     chldrnHeight: parseFloat(chldrnHeight) || 0,
                     chldrnHead: parseFloat(chldrnHead) || 0,
-                    allrgyNm: allrgyNm,
-                    symptmsNm: symptmsNm,
+                    allrgyNm: sanitizeArray(allrgyNm),
+                    symptmsNm: sanitizeArray(symptmsNm),
                     chldrnMemo: chldrnMemo,
                 };
 
