@@ -1,9 +1,9 @@
 "use client";
 
 import { Label } from "@/elements/label/Label";
-import Button from "../../elements/button/Button";
-import useUsrStore from "../../store/useUsrStore";
-import sendToRn from "../../utils/sendToRn";
+import Button from "../../../elements/button/Button";
+import useUsrStore from "../../../store/useUsrStore";
+import sendToRn from "../../../utils/sendToRn";
 import Container from "@/elements/container/Container";
 import ArrowIcon from "@/elements/svg/Arrow";
 import PlusIcon from "@/elements/svg/Plus";
@@ -20,7 +20,7 @@ type OpenStates = {
     temp: boolean;
 };
 
-const App: React.FC = () => {
+const Home: React.FC = () => {
     const usr = useUsrStore((state) => state);
 
     const [openStates, setOpenStates] = useState<OpenStates>({
@@ -166,4 +166,4 @@ const App: React.FC = () => {
     );
 };
 
-export default App;
+export default Home;
