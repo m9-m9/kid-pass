@@ -29,7 +29,8 @@ const MapComponent: React.FC = () => {
                 </div>
             </div>
             <KakaoMap />
-            <div className={styles.mapList}>
+
+            {/* <div className={styles.mapList}>
                 <div className="horizonFlexbox space-between">
                     <Label text="가람소아과" css="mapList_1" />
                     <Label text="0.13km" css="mapList_1" />
@@ -37,16 +38,7 @@ const MapComponent: React.FC = () => {
                 <div className="horizonFlexbox space-between">
                     <Label text="(금) 08:00 ~ 20:00" css="mapList_2" />
                 </div>
-            </div>
-            <div className={styles.mapList}>
-                <div className="horizonFlexbox space-between">
-                    <Label text="가람소아과" css="mapList_1" />
-                    <Label text="0.13km" css="mapList_1" />
-                </div>
-                <div className="horizonFlexbox space-between">
-                    <Label text="(금) 08:00 ~ 20:00" css="mapList_2" />
-                </div>
-            </div>
+            </div> */}
         </div>
     );
 };
