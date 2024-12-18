@@ -12,6 +12,7 @@ import { useState } from "react";
 import ProfileMetrics from "@/components/metrics/ProfileMetrics";
 import { MetricsSection } from "@/components/metrics/MetricsSection";
 import Link from "next/link";
+import ProfileCarousel from "./ProfileCarousel";
 
 type OpenStates = {
     sleep: boolean;
@@ -56,44 +57,7 @@ const Home: React.FC = () => {
                 <Label text="오늘의아이" css="Logo" />
                 <img src="https://heidimoon.cafe24.com/renwal/test2/Bell.svg" />
             </div>
-            <Container className="profile">
-                <div className="horizonFlexbox space-between">
-                    <div className="verticalFlexbox gap-18 space-between">
-                        <ProfileMetrics
-                            label="2024.09.28 출생"
-                            value="김아기"
-                        />
-                        <ProfileMetrics
-                            label="나이 (만)"
-                            value="36일, 5주 1일"
-                        />
-                    </div>
-
-                    <div className="verticalFlexbox gap-7">
-                        <div className="horizonFlexbox align-center">
-                            <Label text="리포트 업데이트" css="rptUpdate" />
-                            <ArrowIcon
-                                direction="right"
-                                color="#9e9e9e"
-                                size={16}
-                            />
-                        </div>
-                        <div className="horizonFlexbox align-center justify-center">
-                            <img
-                                src="https://heidimoon.cafe24.com/renwal/test2/barcode.png"
-                                width="76px"
-                                height="76px"
-                            />
-                        </div>
-                    </div>
-                </div>
-
-                <div className="horizonFlexbox align-center space-between">
-                    <ProfileMetrics label="몸무게" value="5.1kg" />
-                    <ProfileMetrics label="키" value="51.0cm" />
-                    <ProfileMetrics label="머리 둘레" value="36.9cm" />
-                </div>
-            </Container>
+            <ProfileCarousel />
             <Container className="homepage_1 gap-4">
                 <PlusIcon color="#FFFFFF" size={12} strokeWidth={4} />
                 <Label text="오늘의 아이 증상 기록하기" css="home_1" />
