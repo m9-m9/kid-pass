@@ -39,6 +39,8 @@ const App: React.FC = () => {
             if (responseData && responseData.msg === "success") {
                 setAccessToken(responseData.data.accessToken);
                 setRefreshToken(responseData.data.refreshToken);
+
+                router.push("/home");
             }
         }
     }, [responseData]);

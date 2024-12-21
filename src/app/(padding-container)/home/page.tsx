@@ -2,17 +2,16 @@
 
 import { Label } from "@/elements/label/Label";
 import Button from "../../../elements/button/Button";
-import useUsrStore from "../../../store/useUsrStore";
 import sendToRn from "../../../utils/sendToRn";
 import Container from "@/elements/container/Container";
-import ArrowIcon from "@/elements/svg/Arrow";
 import PlusIcon from "@/elements/svg/Plus";
 import styles from "./home.module.css";
-import { useState } from "react";
-import ProfileMetrics from "@/components/metrics/ProfileMetrics";
+import { useEffect, useState } from "react";
 import { MetricsSection } from "@/components/metrics/MetricsSection";
 import Link from "next/link";
 import ProfileCarousel from "./ProfileCarousel";
+import useAuth from "@/hook/useAuth";
+import { useRouter } from "next/navigation";
 
 type OpenStates = {
     sleep: boolean;
@@ -22,7 +21,15 @@ type OpenStates = {
 };
 
 const App: React.FC = () => {
-    const usr = useUsrStore((state) => state);
+    const { getToken } = useAuth();
+    const router = useRouter();
+
+    useEffect(() => {
+        const token = getToken();
+        if (!token) {
+            router.push("auth/login");
+        }
+    }, []);
 
     const [openStates, setOpenStates] = useState<OpenStates>({
         sleep: true,
