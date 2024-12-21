@@ -7,13 +7,6 @@ interface RequestConfig {
   body?: any;
 }
 
-interface UseFetchResult<T> {
-  sendRequest: (config: RequestConfig) => Promise<void>;
-  responseData: T | null;
-  loading: boolean;
-  destroy: () => void;
-}
-
 function useFetch<T>() {
   const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -37,9 +30,10 @@ function useFetch<T>() {
       const response = await fetch(fullUrl, {
         method: config.method || "GET",
         headers: {
+          "Content-Type": "application/json",
           ...config.headers,
         },
-        body: config.body,
+        body: JSON.stringify(config.body),
         signal: newController.signal,
       });
 
