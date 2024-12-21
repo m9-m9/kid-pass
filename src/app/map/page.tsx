@@ -5,7 +5,7 @@ import styles from "./map.module.css";
 import { Label } from "@/elements/label/Label";
 import KakaoMap from "./KaKaoMap";
 
-const MapComponent: React.FC = () => {
+const App: React.FC = () => {
     const [selectedTab, setSelectedTab] = useState("hospital"); // 기본 선택값: 병원
 
     return (
@@ -43,4 +43,4 @@ const MapComponent: React.FC = () => {
     );
 };
 
-export default MapComponent;
+export default App;

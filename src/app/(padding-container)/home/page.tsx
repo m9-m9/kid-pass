@@ -21,7 +21,7 @@ type OpenStates = {
     temp: boolean;
 };
 
-const Home: React.FC = () => {
+const App: React.FC = () => {
     const usr = useUsrStore((state) => state);
 
     const [openStates, setOpenStates] = useState<OpenStates>({
@@ -41,13 +41,7 @@ const Home: React.FC = () => {
 
     return (
         <>
-            {usr.name}
-            <Button
-                label="Home"
-                onClick={() => {
-                    usr.setName("Lee");
-                }}
-            />
+            <Button label="Home" />
 
             <Button
                 label="login"
@@ -130,4 +124,4 @@ const Home: React.FC = () => {
     );
 };
 
-export default Home;
+export default App;

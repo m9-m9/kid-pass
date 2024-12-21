@@ -3,7 +3,7 @@ import Container from "../../elements/container/Container";
 import { Label } from "../../elements/label/Label";
 import VaccineCount from "./VaccineCount";
 
-const Note = () => {
+const App = () => {
     return (
         <>
             <div className="horizonFlexbox align-center gap-8 mb-16">
@@ -48,4 +48,4 @@ const Note = () => {
     );
 };
 
-export default Note;
+export default App;
