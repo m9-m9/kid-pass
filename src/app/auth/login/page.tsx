@@ -19,7 +19,7 @@ const App: React.FC = () => {
     const [mberId, setMberId] = useState("");
     const [mberPw, setMberPw] = useState("");
 
-    const { sendRequest, responseData, loading, destroy } = useFetch<any>();
+    const { sendRequest, responseData, loading } = useFetch<any>();
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -40,6 +40,9 @@ const App: React.FC = () => {
                 setAccessToken(responseData.data.accessToken);
                 setRefreshToken(responseData.data.refreshToken);
 
+                document.cookie = `refreshToken=${
+                    responseData.data.refreshToken
+                }; path=/; max-age=${7 * 24 * 60 * 60}; secure`;
                 router.push("/home");
             }
         }

@@ -12,6 +12,7 @@ import Link from "next/link";
 import ProfileCarousel from "./ProfileCarousel";
 import useAuth from "@/hook/useAuth";
 import { useRouter } from "next/navigation";
+import useFetch from "@/hook/useFetch";
 
 type OpenStates = {
     sleep: boolean;
@@ -24,12 +25,37 @@ const App: React.FC = () => {
     const { getToken } = useAuth();
     const router = useRouter();
 
+    const { sendRequest, responseData, loading } = useFetch<any>();
+
+    const fetchChildernInfo = (token: string) => {
+        console.log(token);
+        sendRequest({
+            url: "authenticate/reissue",
+            method: "POST", // POST 메서드 사용
+            headers: {
+                Authorization: `Bearer ${token}`, // Bearer prefix 추가
+            },
+
+            // body는 필요없음 (토큰이 헤더에 있기 때문)
+        });
+    };
+
     useEffect(() => {
         const token = getToken();
         if (!token) {
             router.push("auth/login");
+            return;
         }
+
+        fetchChildernInfo(token);
     }, []);
+
+    // responseData 처리
+    useEffect(() => {
+        if (responseData) {
+            console.log(responseData);
+        }
+    }, [responseData]);
 
     const [openStates, setOpenStates] = useState<OpenStates>({
         sleep: true,
