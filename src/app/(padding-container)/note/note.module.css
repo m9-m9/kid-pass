@@ -11,3 +11,15 @@
 .dosesRemaining {
     background-color: #d9d9d9;
 }
+
+.vaccineCount {
+    background-color: #ffffff;
+    padding: 4px 8px;
+    border-radius: 12px;
+}
+
+.vaccineCount p {
+    color: #ff6969;
+    font-size: var(--font-size-12);
+    font-weight: var(--font-weight-semiBold);
+}

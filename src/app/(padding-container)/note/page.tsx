@@ -1,25 +1,35 @@
+import Warning from "@/elements/svg/Warning";
 import Button from "../../../elements/button/Button";
 import Container from "../../../elements/container/Container";
 import { Label } from "../../../elements/label/Label";
 import InfoBar from "./InfoBar";
 import VaccineCount from "./VaccineCount";
+import styles from "./note.module.css";
 
 const App = () => {
     return (
         <>
             <InfoBar />
             <Label text="다가오는 예방접종일" css="metricsValue" />
-            <Container className="dueDate mb-16 mt-12">
-                <Label text="결핵" css="dueDate" />
-                <div className="vertivalFlexbox gap-8">
-                    <Label text="D-DAY + 5" css="dueDate" />
-                    <Label text="접종일이 지났습니다" css="dueDate" />
+            <Container className="dueDate mt-12 mb-36">
+                <div className="horizonFlexbox gap-12">
+                    <Warning />
+                    <div className="verticalFlexbox space-between">
+                        <div className="horizonFlexbox gap-4">
+                            <Label text="결핵" css="vaccineName" />
+                            <div className={styles.vaccineCount}>
+                                <Label text="2차" css="" />
+                            </div>
+                        </div>
+                        <Label text="접종일이 지났어요!" css="vaccineWarning" />
+                    </div>
+                </div>
+                <div className="verticalFlexbox space-between">
+                    <Label text="24.10.30" css="vaccineDate" />
+                    <Label text="D+5일" css="vaccineCount" />
                 </div>
             </Container>
-            <Container className="vaccination">
-                <Label text="B형 간염 3차" css="vaccination" />
-                <Label text="D-Day" css="vaccination" />
-            </Container>
+            <Label text="예방접종 진행률" css="metricsValue" />
             <Container className="vaccinationRate">
                 <Label text="예방접종률" css="symtomLabel" />
                 <div className="horizonFlexbox align-center gap-16">
