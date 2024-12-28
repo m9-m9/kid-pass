@@ -31,12 +31,11 @@ const App: React.FC = () => {
         console.log(token);
         sendRequest({
             url: "authenticate/reissue",
-            method: "POST", // POST 메서드 사용
+            method: "POST",
             headers: {
-                Authorization: `Bearer ${token}`, // Bearer prefix 추가
+                Authorization: `Bearer ${token}`,
             },
-
-            // body는 필요없음 (토큰이 헤더에 있기 때문)
+            credentials: "include",
         });
     };
 
