@@ -1,16 +1,15 @@
 import Button from "../../../elements/button/Button";
 import Container from "../../../elements/container/Container";
 import { Label } from "../../../elements/label/Label";
+import InfoBar from "./InfoBar";
 import VaccineCount from "./VaccineCount";
 
 const App = () => {
     return (
         <>
-            <div className="horizonFlexbox align-center gap-8 mb-16">
-                <Label text="김아기" css="babyName" />
-                <Label text="12주" css="babyAge" />
-            </div>
-            <Container className="dueDate mb-16">
+            <InfoBar />
+            <Label text="다가오는 예방접종일" css="metricsValue" />
+            <Container className="dueDate mb-16 mt-12">
                 <Label text="결핵" css="dueDate" />
                 <div className="vertivalFlexbox gap-8">
                     <Label text="D-DAY + 5" css="dueDate" />
