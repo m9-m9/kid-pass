@@ -1,6 +1,6 @@
-import Button from "../../elements/button/Button";
-import Container from "../../elements/container/Container";
-import { Label } from "../../elements/label/Label";
+import Button from "../../../elements/button/Button";
+import Container from "../../../elements/container/Container";
+import { Label } from "../../../elements/label/Label";
 import VaccineCount from "./VaccineCount";
 
 const App = () => {
@@ -32,16 +32,8 @@ const App = () => {
                 </div>
             </Container>
             <div className="horizonFlexbox align-center gap-8 space-around">
-                <Button
-                    css="noteBtn"
-                    label="달력보기"
-                    onClick={() => {}}
-                ></Button>
-                <Button
-                    css="noteBtn"
-                    label="알림설정"
-                    onClick={() => {}}
-                ></Button>
+                <Button css="noteBtn" label="달력보기"></Button>
+                <Button css="noteBtn" label="알림설정"></Button>
             </div>
             <VaccineCount />
         </>
