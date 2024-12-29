@@ -13,6 +13,7 @@ interface InputFormProps {
   errorMessage?: string;
   type?: "text" | "password" | "email" | "number";
   showPasswordToggle?: boolean;
+  unit?: string;
 }
 
 const PasswordToggleButton = memo(({ showPassword, onClick }: { showPassword: boolean; onClick: () => void }) => (
@@ -37,6 +38,7 @@ const InputForm = memo(
     errorMessage,
     type = "text",
     showPasswordToggle = false,
+    unit,
   }: InputFormProps) => {
     const [showPassword, setShowPassword] = useState(false);
 
@@ -69,15 +71,18 @@ const InputForm = memo(
       <div className={styles.inputForm}>
         <Label text={labelText} css={labelCss} />
         <div className={styles.inputContainer}>
-          <Input
-            type={inputType}
-            className="inputForm"
-            value={value}
-            onChange={handleChange}
-            placeholder={placeholder}
-            required={required}
-            errorMessage={errorMessage}
-          />
+          <div className={styles.inputWrapper}>
+            <Input
+              type={inputType}
+              className="inputForm"
+              value={value}
+              onChange={handleChange}
+              placeholder={placeholder}
+              required={required}
+              errorMessage={errorMessage}
+            />
+            {unit && <span className={styles.unit}>{unit}</span>}
+          </div>
           {passwordToggleButton}
         </div>
         {errorMessage && <span>{errorMessage}</span>}
