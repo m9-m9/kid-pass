@@ -74,3 +74,32 @@
   background-color: #ffcca3;
   gap: 48px;
 }
+
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: var(--profile-color);
+  height: 100px;
+  align-items: center;
+}
+
+.cardText {
+  font-size: var(--font-size-16);
+  font-weight: var(--font-weight-bold);
+  text-align: center;
+}
+
+.titleContainer {
+  display: flex;
+  justify-content: center;
+  border-bottom: 1px solid black;
+  padding: 20px 0;
+  margin: 20px 0;
+}
+
+.modalTitle {
+  text-align: center;
+  font-size: var(--font-size-18);
+  font-weight: var(--font-weight-bold);
+}

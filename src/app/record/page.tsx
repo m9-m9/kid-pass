@@ -1,25 +1,81 @@
 "use client";
-import DateCarousel from "@/components/datePicker/DateCarousel";
+
 import { DateType } from "@/hook/useDatePicker";
-import { useState } from "react";
-import { ko } from "date-fns/locale";
+import { useEffect, useState } from "react";
 import "react-day-picker/dist/style.css";
-import { DayPicker } from "react-day-picker";
-import WeeklyCalendarSlider from "@/components/datePicker/DateCarousel";
 import WeeklyCalendar from "@/components/datePicker/DateCarousel";
 import Container from "@/elements/container/Container";
 import Carousel from "@/components/carousel/Carousel";
-import { EmblaOptionsType } from "embla-carousel";
 import Schedule, { DaySchedule } from "@/components/schedule/Schedule";
 import { useModalStore } from "@/store/useModalStore";
+import Grid from "@/elements/grid/Grid";
+import styles from "./record.module.css";
+import Image from "next/image";
 
 const SLIDES = ["수면", "수유", "배변", "체온", "몸무게/키", "머리둘레", "감정", "특이증상", "약", "기타"];
+
+const RECORDS = [
+  {
+    title: "수유",
+    src: "/images/feeding.png",
+  },
+  {
+    title: "배설",
+    src: "/images/diaper.png",
+  },
+  {
+    title: "수면",
+    src: "/images/sleep.png",
+  },
+  {
+    title: "체온",
+    src: "/images/temperature.png",
+  },
+  {
+    title: "몸무게/키/머리둘레",
+    src: "/images/scale.png",
+  },
+  {
+    title: "감정",
+    src: "/images/heart.png",
+  },
+  {
+    title: "특이증상",
+    src: "/images/info.png",
+  },
+  {
+    title: "약",
+    src: "/images/medicine.png",
+  },
+  {
+    title: "기타",
+    src: "/images/etc.png",
+  },
+];
+
+const items = RECORDS.map((v) => (
+  <div className={styles.card}>
+    <Image src={v.src} alt="Record picture" width={32} height={32} />
+    <span className={styles.cardText}>{v.title}</span>
+  </div>
+));
 
 const App: React.FC = () => {
   const [date, setDate] = useState<DateType>({ year: 2024, month: 11, date: 2 });
 
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
-  const { openModal, closeModal } = useModalStore();
+  const { openModal, closeModal, setComp } = useModalStore();
+
+  useEffect(() => {
+    setComp(
+      <>
+        <div className={styles.titleContainer}>
+          <span className={styles.modalTitle}>오늘의 아이 기록하기</span>
+        </div>
+        <Grid items={items} column={3} />
+      </>
+    );
+  }, []);
 
   const handleSelect = (index: number) => {
     setSelectedItems((prev) => {

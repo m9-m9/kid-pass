@@ -11,7 +11,7 @@ const Grid = ({ items, column }: Props) => {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: `repeat(${column}, ${100 / column}%)`,
+          gridTemplateColumns: `repeat(${column}, ${100 / column - 1.5}%)`,
           gap: "8px",
           width: "100%",
         }}
