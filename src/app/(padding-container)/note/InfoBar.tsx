@@ -11,7 +11,7 @@ const InfoBar = () => {
                     <div className="divider"></div>
                     <Label text="김아기 D+32" css="countDown"></Label>
                 </div>
-                <div>
+                <div className="horizonFlexbox">
                     <Profile />
                 </div>
             </div>

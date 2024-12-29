@@ -160,12 +160,14 @@
 
 /* 아기수첩 페이지 */
 
-.dueDate {
-    background-color: #ff5555;
+.noteContainer {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    gap: 12px;
     padding: 16px;
-    border-radius: var(--border-radius-20);
+    border-radius: var(--border-radius-10);
+    margin: 12px 0 36px 0;
+    width: 100%;
 }
 
 .vaccination {
@@ -182,10 +184,19 @@
     justify-content: space-between;
     padding: 16px;
     align-items: center;
+    gap: 4px;
 }
 
 .vaccineCount {
     display: flex;
     width: 100%;
     justify-content: space-between;
+    box-shadow: var(--box-shadow);
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.vaccinationRate {
+    padding: 4px 8px;
+    border-radius: 12px;
 }

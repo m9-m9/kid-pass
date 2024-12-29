@@ -5,7 +5,7 @@
 }
 
 .dosesCompleted {
-    background-color: #ff8181;
+    background-color: #729bed;
 }
 
 .dosesRemaining {
@@ -15,11 +15,25 @@
 .vaccineCount {
     background-color: #ffffff;
     padding: 4px 8px;
-    border-radius: 12px;
+    border-radius: 8px;
 }
 
 .vaccineCount p {
     color: #ff6969;
     font-size: var(--font-size-12);
     font-weight: var(--font-weight-semiBold);
+}
+
+.noteBtn {
+    background-color: #ffffff;
+    border: 1px solid #bdbdbd;
+    color: #222222;
+    cursor: pointer;
+    flex: 1;
+    border-radius: 8px;
+    display: flex;
+    padding: 12px 16px;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
 }
