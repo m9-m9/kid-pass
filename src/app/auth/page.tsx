@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import styles from "./auth.module.css";
 import "remixicon/fonts/remixicon.css";

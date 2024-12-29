@@ -24,13 +24,20 @@ const App: React.FC = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    const body = {
+      mberId,
+      mberPw,
+      mberSexdstn: "F",
+      mberSttus: "PLAN",
+    };
+    const formData = new FormData();
+    formData.append("Member", JSON.stringify(body));
+    formData.append("file", "");
+
     sendRequest({
-      url: "authenticate/login",
+      url: "authenticate/signup",
       method: "POST",
-      body: {
-        mberId,
-        mberPw,
-      },
+      body: formData,
     });
   };
 
