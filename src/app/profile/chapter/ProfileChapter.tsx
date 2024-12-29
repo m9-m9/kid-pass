@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useProfileStore } from "@/store/useProfileStore";
 import useChapter from "@/hook/useChapter";
 import Chapter1 from "./Chapter1";
@@ -9,8 +9,16 @@ import Chapter3 from "./Chapter3";
 import Chapter4 from "./Chapter4";
 import Chapter5 from "./Chapter5";
 import axios from "axios";
+import useAuth from "@/hook/useAuth";
 
 const ProfileChapters: React.FC = () => {
+    const { getToken } = useAuth();
+    const [token, setToken] = useState();
+
+    useEffect(() => {
+        const accessToken = getToken();
+        setToken(accessToken);
+    }, []);
     const { chapter, nextChapter, goToChapter } = useChapter({
         totalChapters: 5,
         onComplete: async () => {
@@ -54,9 +62,6 @@ const ProfileChapters: React.FC = () => {
                 };
 
                 console.log("Sending data:", JSON.stringify(body, null, 2));
-
-                const token =
-                    "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJrZWtlMiIsImF1dGgiOiJST0xFX0dOUkwiLCJleHAiOjE3MzQ4Mjk4OTh9.Bk7Us3P4xZ42txRJSvdvaV5R3EFxkbHmzyrlk6uiD4vOoyGVsuVQuMBRgN45ECFYqAAbLM6mSwNFrFNl9HP_ZA";
 
                 const response = await axios.post(
                     "http://localhost:8071/api/v1/chldrn/createChldrnInfo",

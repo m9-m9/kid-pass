@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import Button from "../../elements/button/Button";
 import { Label } from "../../elements/label/Label";
