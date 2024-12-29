@@ -36,7 +36,6 @@ const VaccineCount = () => {
                         </div>
 
                         <div className="horizonFlexbox align-center gap-4 flex-2">
-                            {/* dosesCompleted 원 생성 */}
                             {Array.from({
                                 length: vaccineItem.dosesCompleted,
                             }).map((_, i) => (
@@ -57,15 +56,15 @@ const VaccineCount = () => {
                         </div>
                         <svg
                             className="flex-1"
-                            width="16"
-                            height="16"
+                            width="24"
+                            height="24"
                             viewBox="0 0 24 24"
                             xmlns="http://www.w3.org/2000/svg"
                         >
                             <path
                                 d="M8 4l8 8-8 8"
                                 stroke="black"
-                                strokeWidth="1"
+                                strokeWidth="3"
                                 fill="none"
                             />
                         </svg>
