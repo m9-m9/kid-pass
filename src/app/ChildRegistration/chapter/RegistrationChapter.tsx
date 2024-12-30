@@ -11,7 +11,7 @@ import Chapter5 from "./Chapter5";
 import axios from "axios";
 import useAuth from "@/hook/useAuth";
 
-const ProfileChapters: React.FC = () => {
+const RegistrationChapters: React.FC = () => {
     const { getToken } = useAuth();
     const [token, setToken] = useState();
 
@@ -116,4 +116,4 @@ const ProfileChapters: React.FC = () => {
     );
 };
 
-export default ProfileChapters;
+export default RegistrationChapters;
