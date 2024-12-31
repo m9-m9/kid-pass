@@ -6,7 +6,7 @@ const SCREEN = {
     RECORD: "/record",
     SIGNUP: "/signup",
     NOTE: "note",
-    PROFILE: "/ChildRegistration",
+    PROFILE: "/profile",
     MAP: "/map",
 };
 

@@ -4,7 +4,7 @@ import React from "react";
 import { useProfileStore } from "@/store/useProfileStore";
 import { Label } from "@/elements/label/Label";
 import { ChapterProps } from "@/hook/useChapter";
-import styles from "../profile.module.css";
+import styles from "../kid.module.css";
 import Grid from "@/elements/grid/Grid";
 import Spacer from "@/elements/spacer/Spacer";
 
