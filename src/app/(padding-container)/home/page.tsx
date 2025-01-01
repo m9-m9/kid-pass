@@ -21,9 +21,28 @@ type OpenStates = {
     temp: boolean;
 };
 
+interface PhysicalStats {
+    chldrnBdwgh: number;
+    chldrnHead: number;
+    chldrnHeight: number;
+    chldrnNo: number;
+}
+
+export interface KidProfile {
+    age: number;
+    atchCode: string;
+    chldrnBrthdy?: string;
+    chldrnInfoList: [PhysicalStats];
+    chldrnNm: string;
+    chldrnNo: number;
+    days: number;
+    weeks: number;
+}
+
 const App: React.FC = () => {
     const { getToken } = useAuth();
     const router = useRouter();
+    const [kidProfiles, setKidProfiles] = useState<KidProfile[]>([]);
 
     const { sendRequest, responseData, loading } = useFetch<any>();
 
@@ -52,7 +71,9 @@ const App: React.FC = () => {
     // responseData 처리
     useEffect(() => {
         if (responseData) {
-            console.log(responseData);
+            console.log(responseData.data.chldrnInfo);
+
+            setKidProfiles(responseData.data.chldrnInfo);
         }
     }, [responseData]);
 
@@ -83,7 +104,7 @@ const App: React.FC = () => {
                 <Label text="오늘의아이" css="Logo" />
                 <img src="https://heidimoon.cafe24.com/renwal/test2/Bell.svg" />
             </div>
-            <ProfileCarousel />
+            <ProfileCarousel profiles={kidProfiles} isLoading={loading} />
             <Container className="homepage_1 gap-4">
                 <PlusIcon color="#FFFFFF" size={12} strokeWidth={4} />
                 <Label text="오늘의 아이 증상 기록하기" css="home_1" />
