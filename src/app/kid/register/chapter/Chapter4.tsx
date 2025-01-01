@@ -3,20 +3,20 @@
 import React from "react";
 import { Label } from "@/elements/label/Label";
 import { ChapterProps } from "@/hook/useChapter";
-import styles from "../profile.module.css";
+import styles from "../kid.module.css";
 import Grid from "@/elements/grid/Grid";
 
-const Chapter3: React.FC<ChapterProps> = ({ goToChapter }) => {
+const Chapter4: React.FC<ChapterProps> = ({ goToChapter }) => {
     const items = [
         <div
             className={styles.profileContainer_item}
-            onClick={() => goToChapter(4)}
+            onClick={() => goToChapter(5)}
         >
             있어요
         </div>,
         <div
             className={styles.profileContainer_item}
-            onClick={() => goToChapter(5)}
+            onClick={() => goToChapter(6)}
         >
             없어요
         </div>,
@@ -43,4 +43,4 @@ const Chapter3: React.FC<ChapterProps> = ({ goToChapter }) => {
     );
 };
 
-export default Chapter3;
+export default Chapter4;

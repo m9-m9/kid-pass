@@ -1,11 +1,11 @@
 import React from "react";
-import ProfileChapters from "./chapter/ProfileChapter";
+import Register from "./chapter/Register";
 import Container from "@/elements/container/Container";
 
 const App: React.FC = () => {
     return (
         <Container className="container">
-            <ProfileChapters />
+            <Register />
         </Container>
     );
 };

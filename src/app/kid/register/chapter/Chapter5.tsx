@@ -6,11 +6,11 @@ import Button from "@/elements/button/Button";
 import { ChapterProps } from "@/hook/useChapter";
 import ListInput from "@/elements/input/ListInput";
 import Circleline from "@/elements/svg/Checkbox";
-import styles from "../profile.module.css";
+import styles from "../kid.module.css";
 import XIcon from "@/elements/svg/XIcon";
 import { useProfileStore } from "@/store/useProfileStore";
 
-const Chapter4: React.FC<ChapterProps> = ({ onNext }) => {
+const Chapter5: React.FC<ChapterProps> = ({ onNext }) => {
     const [symptomInputValue, setSymptomInputValue] = useState("");
     const [allergicInputValue, setAllergicInputValue] = useState("");
     const [symptomList, setSymptomList] = useState<string[]>([]);
@@ -167,4 +167,4 @@ const Chapter4: React.FC<ChapterProps> = ({ onNext }) => {
     );
 };
 
-export default Chapter4;
+export default Chapter5;

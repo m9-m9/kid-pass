@@ -4,7 +4,7 @@ import React from "react";
 import { useProfileStore } from "@/store/useProfileStore";
 import { Label } from "@/elements/label/Label";
 import { ChapterProps } from "@/hook/useChapter";
-import styles from "../profile.module.css";
+import styles from "../kid.module.css";
 import Grid from "@/elements/grid/Grid";
 import Spacer from "@/elements/spacer/Spacer";
 
@@ -14,24 +14,16 @@ const Chapter1: React.FC<ChapterProps> = ({ onNext }) => {
 
     const texts = [
         <>
-            신생아
-            <br />
-            (태아 ~ 1개월)
+            <div className={styles.genderSelection}>
+                <img src="/boySign.png" />
+                남자
+            </div>
         </>,
         <>
-            영아
-            <br />
-            (1개월 ~ 1년)
-        </>,
-        <>
-            유아
-            <br />
-            (1년~6년)
-        </>,
-        <>
-            소아
-            <br />
-            (6년~12년)
+            <div className={styles.genderSelection}>
+                <img src="/girlSign.png" />
+                여자
+            </div>
         </>,
     ];
 
@@ -48,7 +40,7 @@ const Chapter1: React.FC<ChapterProps> = ({ onNext }) => {
         index: number;
     }) => (
         <div
-            className={styles.profileContainer_item}
+            className={styles.gender_item}
             onClick={() => handleAgeSelection(index)}
         >
             {children}
@@ -57,10 +49,7 @@ const Chapter1: React.FC<ChapterProps> = ({ onNext }) => {
 
     return (
         <div>
-            <Label
-                css="profileLabel"
-                text="아이의 나이대가<br>어떻게 되나요?"
-            />
+            <Label css="profileLabel" text="아이의 성별은<br/>무엇인가요?" />
             <Spacer height={56} />
             <Grid
                 items={texts.map((text, index) => (

@@ -4,11 +4,11 @@ import React, { useEffect, useState } from "react";
 import { Label } from "@/elements/label/Label";
 import Button from "@/elements/button/Button";
 import { ChapterProps } from "@/hook/useChapter";
-import styles from "../profile.module.css";
+import styles from "../kid.module.css";
 import { useProfileStore } from "@/store/useProfileStore";
 import { useModalStore } from "@/store/useModalStore";
 
-const Chapter5: React.FC<ChapterProps> = ({ onNext }) => {
+const Chapter6: React.FC<ChapterProps> = ({ onNext }) => {
     const [etcInput, setEtcInput] = useState("");
     const setEtc = useProfileStore((state) => state.setEtc);
     const { openModal, setComp, closeModal } = useModalStore();
@@ -69,4 +69,4 @@ const Chapter5: React.FC<ChapterProps> = ({ onNext }) => {
     );
 };
 
-export default Chapter5;
+export default Chapter6;

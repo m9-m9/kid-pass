@@ -10,8 +10,9 @@ import Chapter4 from "./Chapter4";
 import Chapter5 from "./Chapter5";
 import axios from "axios";
 import useAuth from "@/hook/useAuth";
+import Chapter6 from "./Chapter6";
 
-const ProfileChapters: React.FC = () => {
+const Register: React.FC = () => {
     const { getToken } = useAuth();
     const [token, setToken] = useState();
 
@@ -20,7 +21,7 @@ const ProfileChapters: React.FC = () => {
         setToken(accessToken);
     }, []);
     const { chapter, nextChapter, goToChapter } = useChapter({
-        totalChapters: 5,
+        totalChapters: 6,
         onComplete: async () => {
             try {
                 const age = useProfileStore.getState().age;
@@ -104,16 +105,19 @@ const ProfileChapters: React.FC = () => {
                 <Chapter2 onNext={nextChapter} goToChapter={() => {}} />
             )}
             {chapter === 3 && (
-                <Chapter3 onNext={nextChapter} goToChapter={goToChapter} />
+                <Chapter3 onNext={nextChapter} goToChapter={() => {}} />
             )}
             {chapter === 4 && (
-                <Chapter4 onNext={nextChapter} goToChapter={() => {}} />
+                <Chapter4 onNext={nextChapter} goToChapter={goToChapter} />
             )}
             {chapter === 5 && (
                 <Chapter5 onNext={nextChapter} goToChapter={() => {}} />
+            )}
+            {chapter === 6 && (
+                <Chapter6 onNext={nextChapter} goToChapter={() => {}} />
             )}
         </div>
     );
 };
 
-export default ProfileChapters;
+export default Register;

@@ -5,10 +5,10 @@ import { Label } from "@/elements/label/Label";
 import Button from "@/elements/button/Button";
 import { ChapterProps } from "@/hook/useChapter";
 import InputForm from "@/components/form/InputForm";
-import styles from "../profile.module.css";
+import styles from "../kid.module.css";
 import { useProfileStore } from "@/store/useProfileStore";
 
-const Chapter2: React.FC<ChapterProps> = ({ onNext }) => {
+const Chapter3: React.FC<ChapterProps> = ({ onNext }) => {
     const setDetails = useProfileStore((state) => state.setDetails);
     const [name, setName] = useState("");
     const [birthDate, setBirthDate] = useState("");
@@ -163,4 +163,4 @@ const Chapter2: React.FC<ChapterProps> = ({ onNext }) => {
     );
 };
 
-export default Chapter2;
+export default Chapter3;
