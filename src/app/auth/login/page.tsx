@@ -10,6 +10,7 @@ import useFetch from "@/hook/useFetch";
 import useUsrStore from "@/store/useUsrStore";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import styles from "./login.module.css";
 
 const App: React.FC = () => {
     const searchParams = useSearchParams();
@@ -39,7 +40,6 @@ const App: React.FC = () => {
             if (responseData && responseData.msg === "success") {
                 setAccessToken(responseData.data.accessToken);
                 setRefreshToken(responseData.data.refreshToken);
-
                 document.cookie = `refreshToken=${
                     responseData.data.refreshToken
                 }; path=/; max-age=${7 * 24 * 60 * 60}; secure`;
