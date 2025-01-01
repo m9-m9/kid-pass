@@ -33,7 +33,7 @@ const App = () => {
                 </div>
             </Container>
             <Label text="예방접종 진행률" css="metricsValue" />
-            <Container className="noteContainer" backgroundColor="#F4F4F4">
+            <Container className="rateContainer" backgroundColor="#F4F4F4">
                 <div className="horizonFlexbox space-between">
                     <div className="horizonFlexbox gap-4">
                         <Container

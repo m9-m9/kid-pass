@@ -162,6 +162,16 @@
 
 .noteContainer {
     display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px;
+    border-radius: var(--border-radius-10);
+    margin: 12px 0 36px 0;
+    width: 100%;
+}
+
+.rateContainer {
+    display: flex;
     flex-direction: column;
     gap: 12px;
     padding: 16px;
