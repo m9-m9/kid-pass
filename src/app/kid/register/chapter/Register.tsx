@@ -29,6 +29,7 @@ const Register: React.FC = () => {
                 const symptmsNm = useProfileStore.getState().symptom;
                 const allrgyNm = useProfileStore.getState().allergic;
                 const chldrnMemo = useProfileStore.getState().etc;
+                const chldrnSexdstn = useProfileStore.getState().chldrnSexdstn;
 
                 const [
                     chldrnNm,
@@ -54,6 +55,7 @@ const Register: React.FC = () => {
                     chldrnTy: age,
                     chldrnNm: chldrnNm,
                     chldrnBrthdy: chldrnBrthdy,
+                    chldrnSexdstn: chldrnSexdstn,
                     chldrnBdwgh: parseFloat(chldrnBdwgh) || 0,
                     chldrnHeight: parseFloat(chldrnHeight) || 0,
                     chldrnHead: parseFloat(chldrnHead) || 0,

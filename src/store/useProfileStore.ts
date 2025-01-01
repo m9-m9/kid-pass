@@ -6,7 +6,9 @@ interface ProfileState {
     symptom: string[];
     allergic: string[];
     etc: string | null;
+    chldrnSexdstn: string;
     setAge: (age: string) => void;
+    setChldrnSexdstn: (chldrnSexdstn: string) => void;
     setDetails: (details: string[]) => void;
     setSymptom: (symptom: string[]) => void;
     setAllergic: (allergic: string[]) => void;
@@ -14,12 +16,14 @@ interface ProfileState {
 }
 
 export const useProfileStore = create<ProfileState>((set) => ({
+    chldrnSexdstn: "",
     age: "",
     details: [],
     symptom: [],
     allergic: [],
     etc: null,
     setAge: (age: string) => set({ age }),
+    setChldrnSexdstn: (chldrnSexdstn: string) => set({ chldrnSexdstn }),
     setDetails: (details: string[]) => set({ details }),
     setSymptom: (symptom: string[]) => set({ symptom }),
     setAllergic: (allergic: string[]) => set({ allergic }),
