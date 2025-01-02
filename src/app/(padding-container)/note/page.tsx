@@ -1,7 +1,6 @@
 "use client";
 
 import Warning from "@/elements/svg/Warning";
-import Button from "../../../elements/button/Button";
 import Container from "../../../elements/container/Container";
 import { Label } from "../../../elements/label/Label";
 import InfoBar from "./InfoBar";

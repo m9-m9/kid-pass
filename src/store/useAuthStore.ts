@@ -1,14 +1,14 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-interface UsrState {
+interface AuthState {
     setAccessToken: (name: string) => void;
     setRefreshToken: (name: string) => void;
     accessToken?: string;
     refreshToken?: string;
 }
 
-const useUsrStore = create<UsrState>()(
+const useAuthStore = create<AuthState>()(
     persist(
         (set) => ({
             accessToken: undefined,
@@ -22,4 +22,4 @@ const useUsrStore = create<UsrState>()(
     ),
 );
 
-export default useUsrStore;
+export default useAuthStore;

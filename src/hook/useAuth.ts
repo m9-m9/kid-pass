@@ -1,8 +1,8 @@
-import useUsrStore from "@/store/useUsrStore";
+import useAuthStore from "@/store/useAuthStore";
 
 // useAuth.ts 같은 커스텀 훅으로 만들기
 const useAuth = () => {
-    const { accessToken, setAccessToken } = useUsrStore();
+    const { accessToken, setAccessToken } = useAuthStore();
 
     const getToken = () => {
         // 1. 먼저 Zustand store 확인

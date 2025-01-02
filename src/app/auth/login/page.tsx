@@ -7,7 +7,7 @@ import Button from "@/elements/button/Button";
 import Container from "@/elements/container/Container";
 import Spacer from "@/elements/spacer/Spacer";
 import useFetch from "@/hook/useFetch";
-import useUsrStore from "@/store/useUsrStore";
+import useAuthStore from "@/store/useAuthStore";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import styles from "./login.module.css";
@@ -15,7 +15,7 @@ import styles from "./login.module.css";
 const App: React.FC = () => {
     const searchParams = useSearchParams();
     const router = useRouter();
-    const { setAccessToken, setRefreshToken } = useUsrStore();
+    const { setAccessToken, setRefreshToken } = useAuthStore();
 
     const [mberId, setMberId] = useState("");
     const [mberPw, setMberPw] = useState("");
