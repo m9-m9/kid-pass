@@ -17,7 +17,7 @@ const useAuthStore = create<AuthState>()(
             setRefreshToken: (v: string) => set(() => ({ refreshToken: v })),
         }),
         {
-            name: "kidlove", // localstorage key
+            name: "kidlove",
         },
     ),
 );

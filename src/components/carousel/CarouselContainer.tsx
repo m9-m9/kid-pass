@@ -6,13 +6,13 @@ import styles from "./Carousel.module.css";
 interface Props {
     children: ReactNode;
     options?: EmblaOptionsType;
-    slideClassName?: keyof typeof styles; // styles 객체의 키값만 허용
+    slideClassName?: keyof typeof styles;
 }
 
 const CarouselContainer: React.FC<Props> = ({
     children,
     options,
-    slideClassName = "slide", // 기본값으로 'slide' 클래스 사용
+    slideClassName = "slide",
 }) => {
     const [emblaRef] = useEmblaCarousel({
         align: "start",

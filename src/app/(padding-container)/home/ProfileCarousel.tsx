@@ -21,10 +21,12 @@ const ProfileCarousel: React.FC<ProfileCarouselProps> = ({
     return (
         <CarouselContainer
             options={{
-                slidesToScroll: 1, // 한 번에 스크롤할 슬라이드 수
-                containScroll: "trimSnaps", // 끝에서 스크롤 제한
+                slidesToScroll: 1,
+                containScroll: "trimSnaps",
             }}
-            slideClassName="slide-ratio-90"
+            slideClassName={
+                profiles.length > 1 ? "slide-ratio-90" : "slide-ratio-100"
+            }
         >
             {profiles.map((profile) => {
                 const [physicalStats] = profile.chldrnInfoList;

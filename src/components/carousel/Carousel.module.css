@@ -102,7 +102,12 @@
 /* 0.9 : 0.1 */
 
 .slide-ratio-90 {
-    flex: 0 0 90%;
+    flex: 0 0 95%;
     min-width: 0;
     margin-right: 10px;
+}
+
+.slide-ratio-100 {
+    flex: 0 0 100%;
+    min-width: 0;
 }

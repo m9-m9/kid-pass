@@ -47,7 +47,6 @@ const App: React.FC = () => {
     const { sendRequest, responseData, loading } = useFetch<any>();
 
     const fetchChildernInfo = (token: string) => {
-        console.log(token);
         sendRequest({
             url: "authenticate/reissue",
             method: "POST",
@@ -68,11 +67,8 @@ const App: React.FC = () => {
         fetchChildernInfo(token);
     }, []);
 
-    // responseData 처리
     useEffect(() => {
         if (responseData) {
-            console.log(responseData.data.chldrnInfo);
-
             setKidProfiles(responseData.data.chldrnInfo);
         }
     }, [responseData]);

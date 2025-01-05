@@ -13,7 +13,7 @@ const useUserStore = create<UserState>()(
             setChldrnNo: (no: string) => set(() => ({ chldrnNo: no })),
         }),
         {
-            name: "userInfo", // localstorage key
+            name: "userInfo",
         },
     ),
 );
