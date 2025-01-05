@@ -3,16 +3,18 @@ import ProfileMetrics from "@/components/metrics/ProfileMetrics";
 import Container from "@/elements/container/Container";
 import { Label } from "@/elements/label/Label";
 import ArrowIcon from "@/elements/svg/Arrow";
-import { KidProfile } from "./page";
+import { KidRecord } from "./page";
 
 interface ProfileCarouselProps {
-    profiles: KidProfile[];
+    profiles: KidRecord[];
     isLoading: boolean;
+    onSlideChange: (index: number) => void;
 }
 
 const ProfileCarousel: React.FC<ProfileCarouselProps> = ({
     profiles,
     isLoading,
+    onSlideChange,
 }) => {
     if (isLoading) {
         return <div>Loading...</div>;
@@ -27,8 +29,10 @@ const ProfileCarousel: React.FC<ProfileCarouselProps> = ({
             slideClassName={
                 profiles.length > 1 ? "slide-ratio-90" : "slide-ratio-100"
             }
+            onSelect={onSlideChange}
         >
-            {profiles.map((profile) => {
+            {profiles.map((kidRecord) => {
+                const { profile } = kidRecord;
                 const [physicalStats] = profile.chldrnInfoList;
 
                 return (
