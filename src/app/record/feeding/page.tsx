@@ -10,8 +10,10 @@ import styles from "./feeding.module.css";
 import Spacer from "@/elements/spacer/Spacer";
 import Carousel from "@/components/carousel/Carousel";
 import Button from "@/elements/button/Button";
-import DateRangePicker from "@/components/dateRangePicker/DateRangePicker";
 import useFetch from "@/hook/useFetch";
+import Header from "@/components/header/Header";
+import { useRouter } from "next/navigation";
+import CustomDateTimePicker from "@/components/customDateTimePicker/CustomDateTimePicker";
 
 const SLIDES = ["30ml", "90ml", "120ml", "150ml", "모름"];
 enum MealType {
@@ -31,23 +33,22 @@ const MEALTYPES = [
 const MEALMEMO = ["🤮 토했어요", "🤚 수유 거부"];
 
 const App: React.FC = () => {
+  const router = useRouter();
+
   const [mealAmount, setMealAmount] = useState("");
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
   const [mealTy, setMealTy] = useState("");
   const [mealMemo, setMealMemo] = useState("");
 
-  const { sendRequest, responseData, loading, destroy } = useFetch();
-
-  useEffect(() => {
-    return () => {
-      destroy();
-    };
-  }, []);
+  const { sendRequest, responseData, loading } = useFetch();
+  const [selectedDate, setSelectedDate] = useState<Date>();
 
   const etcs = MEALMEMO.map((v, i) => (
     <button
       key={i}
-      className={`${styles.kindButton} ${mealMemo === v ? styles.selected : ""}`}
+      className={`${styles.kindButton} ${
+        mealMemo === v ? styles.selected : ""
+      }`}
       onClick={() => setMealMemo(v)}
       type="button"
     >
@@ -58,7 +59,9 @@ const App: React.FC = () => {
   const kinds = MEALTYPES.map((v, i) => (
     <button
       key={i}
-      className={`${styles.kindButton} ${mealTy === v.key ? styles.selected : ""}`}
+      className={`${styles.kindButton} ${
+        mealTy === v.key ? styles.selected : ""
+      }`}
       onClick={() => setMealTy(v.key)}
       type="button"
     >
@@ -105,11 +108,19 @@ const App: React.FC = () => {
   };
 
   return (
-    <Container className="container">
-      <form onSubmit={onSubmit} style={{ display: "flex", flexDirection: "column", flex: 1 }}>
+    <Container className="container" scroll>
+      <Header title="수유 기록하기" onBack={() => router.back()} />
+      <Spacer height={30} />
+      <form
+        onSubmit={onSubmit}
+        style={{ display: "flex", flexDirection: "column", flex: 1 }}
+      >
         <Label css="inputForm" text="수유 시간" />
         <Spacer height={10} />
-        <DateRangePicker onChange={handleDateChange} />
+        <CustomDateTimePicker
+          selected={selectedDate}
+          onSelect={(date) => setSelectedDate(date)}
+        />
         <Spacer height={30} />
 
         <Label css="inputForm" text="수유 종류" />
@@ -142,8 +153,7 @@ const App: React.FC = () => {
         <Label css="inputForm" text="기타 사항" />
         <Spacer height={10} />
         <Grid items={etcs} column={2} />
-
-        <div style={{ flex: 1 }} />
+        <Spacer height={30} />
         <Button label="등록하기" size="L" />
       </form>
     </Container>
