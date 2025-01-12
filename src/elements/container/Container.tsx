@@ -6,9 +6,16 @@ export interface ContainerProps {
   className?: string;
   backgroundColor?: string;
   style?: React.CSSProperties;
+  scroll?: boolean;
 }
 
-const Container: React.FC<ContainerProps> = ({ style, children, className, backgroundColor }) => {
+const Container: React.FC<ContainerProps> = ({
+  style,
+  children,
+  className,
+  backgroundColor,
+  scroll,
+}) => {
   // 클래스명 조합
   const classNames = className
     ?.split(" ")
@@ -16,7 +23,10 @@ const Container: React.FC<ContainerProps> = ({ style, children, className, backg
     .join(" ");
 
   return (
-    <div className={classNames} style={{ backgroundColor, ...style }}>
+    <div
+      className={classNames}
+      style={{ backgroundColor, ...style, height: scroll ? "" : "100vh" }}
+    >
       {children}
     </div>
   );
