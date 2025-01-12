@@ -18,7 +18,9 @@ const CarouselContainer: React.FC<Props> = ({
 }) => {
     const [emblaRef, emblaApi] = useEmblaCarousel({
         align: "start",
-        dragFree: true,
+        dragFree: false, // 자유 드래그 비활성화
+        containScroll: "keepSnaps", // 스냅 포인트로 제한
+        skipSnaps: false, // 스냅 건너뛰기 비활성화
         ...options,
     });
 

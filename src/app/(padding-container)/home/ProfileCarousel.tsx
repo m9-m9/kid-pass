@@ -27,7 +27,7 @@ const ProfileCarousel: React.FC<ProfileCarouselProps> = ({
                 containScroll: "trimSnaps",
             }}
             slideClassName={
-                profiles.length > 1 ? "slide-ratio-90" : "slide-ratio-100"
+                profiles.length > 1 ? "slide-ratio-95" : "slide-ratio-100"
             }
             onSelect={onSlideChange}
         >
