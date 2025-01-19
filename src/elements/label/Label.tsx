@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./label.module.css";
 
 interface LabelProps {
-    text: string;
+    text: string | number;
     css: string;
 }
 

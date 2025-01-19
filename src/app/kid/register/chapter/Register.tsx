@@ -64,8 +64,6 @@ const Register: React.FC = () => {
                     chldrnMemo: chldrnMemo,
                 };
 
-                console.log("Sending data:", JSON.stringify(body, null, 2));
-
                 const response = await axios.post(
                     "http://localhost:8071/api/v1/chldrn/createChldrnInfo",
                     body,
@@ -77,7 +75,8 @@ const Register: React.FC = () => {
                     },
                 );
 
-                console.log(response.data);
+                const currentKid = response.data.data.chldrnNo;
+                localStorage.setItem("currentKid", currentKid);
             } catch (error) {
                 if (axios.isAxiosError(error)) {
                     console.error("API Error:", {

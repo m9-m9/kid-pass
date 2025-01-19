@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import Warning from "@/elements/svg/Warning";
 import Container from "../../../elements/container/Container";
@@ -8,7 +8,79 @@ import VaccineCount from "./VaccineCount";
 import styles from "./note.module.css";
 import ProgressBar from "@/components/progressBar/progressBar";
 
+
+import useFetch from "@/hook/useFetch";
+import useAuth from "@/hook/useAuth";
+import { useEffect, useState } from "react";
+
+
+
+export interface VacntnInfo  {
+
+    vacntnCnt : number;
+    vacntnEra : string;
+    vacntnIctsd : string;
+    vacntnInoclDt : string;
+    vacntnMthNo : number;
+    vacntnNo:  number;
+    vacntnOdr : number;
+}
+
+
+
 const App = () => {
+
+    const { getToken } = useAuth();
+    const token = getToken();
+    const { sendRequest, responseData, loading, destroy } = useFetch();
+    const [vacntnInfo, setVacntnInfo] = useState<VacntnInfo[]>([])
+    const [totalVacntnCnt, setTotalVacntnCnt] = useState(0)
+    const [totalVacntnOdr, setTotalVacntnOdr] = useState(0)
+
+    
+    useEffect(() => {
+        
+        const currentKid = localStorage.getItem("currentKid");
+        const fetchData = async () => {
+            if (currentKid) {
+
+                try {
+                    const response = await sendRequest({
+                        url: `api/v1/chldrn/findChldrnProfileInfo?chldrnNo=${currentKid}`,
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    });
+                    
+                    setVacntnInfo(response.data.vacntnInfo)
+                    
+                    const sums = response.data.vacntnInfo.reduce((acc:any, item:any) => ({
+                    cntSum: acc.cntSum + item.vacntnCnt,
+                    odrSum: acc.odrSum + item.vacntnOdr
+                }), { cntSum: 0, odrSum: 0 });
+
+                setTotalVacntnCnt(sums.cntSum);
+                setTotalVacntnOdr(sums.odrSum);
+
+                    
+                } catch (error) {
+                    
+                }
+            }
+        };
+        
+        fetchData();
+    }, [sendRequest]);
+
+    const calculatePercentage = () => {
+        
+        
+        return Math.round((totalVacntnOdr / totalVacntnCnt) * 100);
+    };
+
+    
+    
+
     return (
         <>
             <InfoBar />
@@ -40,20 +112,20 @@ const App = () => {
                             backgroundColor="#729BED"
                         >
                             <Label text="완료" css="vaccinationTF" />
-                            <Label text="50" css="vaccinationTF" />
+                            <Label text={totalVacntnOdr} css="vaccinationTF" />
                         </Container>
                         <Container
                             className="vaccinationRate"
                             backgroundColor="#BFBFBF"
                         >
                             <Label text="미접종" css="vaccinationTF" />
-                            <Label text="15" css="vaccinationTF" />
+                            <Label text={totalVacntnCnt} css="vaccinationTF" />
                         </Container>
                     </div>
-                    <Label text="30%" css="vaccineRate" />
+                    <Label text={`${calculatePercentage()}%`} css="vaccineRate" />
                 </div>
 
-                <ProgressBar completed={40} total={10} />
+                <ProgressBar completed={calculatePercentage()} total={100} />
             </Container>
             <div className="horizonFlexbox gap-8">
                 <div className={styles.noteBtn}>
@@ -66,7 +138,7 @@ const App = () => {
                 </div>
             </div>
             <Label text="예방접종 자세히 보기" css="metricsValue" />
-            <VaccineCount />
+            <VaccineCount vacntnInfo={vacntnInfo} />
         </>
     );
 };

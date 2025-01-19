@@ -1,43 +1,35 @@
-import React from "react";
+
+
+import React  from "react";
 import styles from "./note.module.css";
 import Container from "@/elements/container/Container";
 import { Label } from "@/elements/label/Label";
+import { VacntnInfo } from "./page";
 
-type Vaccine = {
-    vaccine: string;
-    dosesCompleted: number;
-    dosesRemaining: number;
-};
+interface VaccineCountProps {
+    vacntnInfo: VacntnInfo[];
+}
 
-const vaccineName: Vaccine[] = [
-    {
-        vaccine: "결핵",
-        dosesCompleted: 3,
-        dosesRemaining: 2,
-    },
-    {
-        vaccine: "B형간염",
-        dosesCompleted: 2,
-        dosesRemaining: 2,
-    },
-];
 
-const VaccineCount = () => {
+const VaccineCount = ({vacntnInfo}: VaccineCountProps) => {
+
+  
+
     return (
         <>
             <div className="verticalFlexbox gap-16 mt-32">
-                {vaccineName.map((vaccineItem, index) => (
+                {vacntnInfo.map((vaccineItem, index) => (
                     <Container className="vaccineCount" key={index}>
                         <div className="flex-7">
                             <Label
-                                text={vaccineItem.vaccine}
+                                text={vaccineItem.vacntnIctsd}
                                 css="vaccine"
                             ></Label>
                         </div>
 
                         <div className="horizonFlexbox align-center gap-4 flex-2">
                             {Array.from({
-                                length: vaccineItem.dosesCompleted,
+                                length: vaccineItem.vacntnOdr,
                             }).map((_, i) => (
                                 <span
                                     key={i}
@@ -46,7 +38,7 @@ const VaccineCount = () => {
                             ))}
                             {/* dosesRemaining 원 생성 */}
                             {Array.from({
-                                length: vaccineItem.dosesRemaining,
+                                length: vaccineItem.vacntnCnt,
                             }).map((_, i) => (
                                 <span
                                     key={i}
