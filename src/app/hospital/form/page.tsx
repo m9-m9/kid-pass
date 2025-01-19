@@ -40,7 +40,7 @@ const HospitalForm = () => {
   const [selectedMedicines, setSelectedMedicines] = useState<Item[]>([]);
 
   return (
-    <Container className="container" scroll>
+    <Container className="container">
       <Header title="진료 기록하기" onBack={() => router.back()} />
       <Spacer height={36} />
 

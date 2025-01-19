@@ -35,7 +35,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <Container className="container">
+    <Container className="container" full>
       <Header title="몸무게・키・두위 기록하기" onBack={() => router.back()} />
       <Spacer height={30} />
       <form

@@ -75,7 +75,7 @@ const App: React.FC = () => {
   ));
 
   return (
-    <Container className="container">
+    <Container className="container" full>
       <Header title="특이증상 기록하기" onBack={() => router.back()} />
       <Spacer height={30} />
       <form
