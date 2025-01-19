@@ -39,9 +39,9 @@ const App: React.FC = () => {
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
   const [mealTy, setMealTy] = useState("");
   const [mealMemo, setMealMemo] = useState("");
+  const [selectedDate, setSelectedDate] = useState<Date>();
 
   const { sendRequest, responseData, loading } = useFetch();
-  const [selectedDate, setSelectedDate] = useState<Date>();
 
   const etcs = MEALMEMO.map((v, i) => (
     <button
@@ -108,7 +108,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <Container className="container" scroll>
+    <Container className="container">
       <Header title="수유 기록하기" onBack={() => router.back()} />
       <Spacer height={30} />
       <form

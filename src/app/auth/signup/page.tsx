@@ -8,12 +8,13 @@ import Container from "@/elements/container/Container";
 import Spacer from "@/elements/spacer/Spacer";
 import useFetch from "@/hook/useFetch";
 import useUsrStore from "@/store/useUsrStore";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const App: React.FC = () => {
   const searchParams = useSearchParams();
   const { setAccessToken, setRefreshToken } = useUsrStore();
+  const router = useRouter();
 
   const [mberId, setMberId] = useState("");
   const [mberPw, setMberPw] = useState("");
@@ -51,11 +52,14 @@ const App: React.FC = () => {
   }, [responseData]);
 
   return (
-    <Container className="container">
+    <Container className="container" full>
       <LoadingFullScreen isVisible={loading} />
-      <Header title="회원가입" onBack={() => {}} />
+      <Header title="회원가입" onBack={() => router.back()} />
       {/* <Spacer height={50} /> */}
-      <form onSubmit={(e) => handleLogin(e)} style={{ display: "flex", flexDirection: "column", flex: 1 }}>
+      <form
+        onSubmit={(e) => handleLogin(e)}
+        style={{ display: "flex", flexDirection: "column", flex: 1 }}
+      >
         <InputForm
           labelText="이메일"
           placeholder="todayschild@mail.com"

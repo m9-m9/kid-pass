@@ -14,6 +14,7 @@ import Image from "next/image";
 import FloatingBtn from "@/components/floatingBtn/FloatingBtn";
 import Link from "next/link";
 import BottomNavigation from "@/components/bottomNavigation/BottomNavigation";
+import useAuth from "@/hook/useAuth";
 
 const SLIDES = [
   "수면",
@@ -37,12 +38,12 @@ const RECORDS = [
   {
     title: "배설",
     src: "/images/diaper.png",
-    path: "/record/feeding",
+    path: "/record/buHist",
   },
   {
     title: "수면",
     src: "/images/sleep.png",
-    path: "/record/feeding",
+    path: "/record/sleep",
   },
   {
     title: "체온",
@@ -57,7 +58,7 @@ const RECORDS = [
   {
     title: "감정",
     src: "/images/heart.png",
-    path: "/record/feeding",
+    path: "/record/emotion",
   },
   {
     title: "특이증상",
@@ -67,7 +68,7 @@ const RECORDS = [
   {
     title: "약",
     src: "/images/medicine.png",
-    path: "/record/feeding",
+    path: "/record/takngHist",
   },
   {
     title: "기타",
@@ -85,6 +86,8 @@ const App: React.FC = () => {
 
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
   const { openModal, closeModal, setComp } = useModalStore();
+
+  const { getCrtChldNo } = useAuth();
 
   const items = RECORDS.map((v) => (
     <Link href={v.path} onClick={() => closeModal()}>

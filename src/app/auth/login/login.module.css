@@ -15,3 +15,11 @@
   justify-content: center;
   gap: 10px;
 }
+
+.signupButton {
+  background: none;
+  color: #666;
+  font-size: 14px;
+  border: none;
+  border-bottom: 1px solid #ddd;
+}

@@ -6,7 +6,7 @@ export interface ContainerProps {
   className?: string;
   backgroundColor?: string;
   style?: React.CSSProperties;
-  scroll?: boolean;
+  full?: boolean;
 }
 
 const Container: React.FC<ContainerProps> = ({
@@ -14,7 +14,7 @@ const Container: React.FC<ContainerProps> = ({
   children,
   className,
   backgroundColor,
-  scroll,
+  full,
 }) => {
   // 클래스명 조합
   const classNames = className
@@ -25,7 +25,11 @@ const Container: React.FC<ContainerProps> = ({
   return (
     <div
       className={classNames}
-      style={{ backgroundColor, ...style, height: scroll ? "" : "100vh" }}
+      style={{
+        backgroundColor,
+        ...style,
+        ...(full && { height: "100vh" }),
+      }}
     >
       {children}
     </div>
