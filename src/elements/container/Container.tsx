@@ -6,9 +6,11 @@ export interface ContainerProps {
   className?: string;
   backgroundColor?: string;
   style?: React.CSSProperties;
+  onClick?: () => void;
+
 }
 
-const Container: React.FC<ContainerProps> = ({ style, children, className, backgroundColor }) => {
+const Container: React.FC<ContainerProps> = ({ style, children, className, backgroundColor,onClick }) => {
   // 클래스명 조합
   const classNames = className
     ?.split(" ")
@@ -16,7 +18,7 @@ const Container: React.FC<ContainerProps> = ({ style, children, className, backg
     .join(" ");
 
   return (
-    <div className={classNames} style={{ backgroundColor, ...style }}>
+    <div className={classNames} style={{ backgroundColor, ...style }} onClick={onClick}>
       {children}
     </div>
   );

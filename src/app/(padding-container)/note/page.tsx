@@ -1,29 +1,25 @@
 'use client'
 
-import Warning from "@/elements/svg/Warning";
 import Container from "../../../elements/container/Container";
 import { Label } from "../../../elements/label/Label";
 import InfoBar from "./InfoBar";
-import VaccineCount from "./VaccineCount";
-import styles from "./note.module.css";
+import VaccineCount from "./components/VaccineCount";
 import ProgressBar from "@/components/progressBar/progressBar";
-
-
 import useFetch from "@/hook/useFetch";
 import useAuth from "@/hook/useAuth";
 import { useEffect, useState } from "react";
 
 
 
-export interface VacntnInfo  {
+export interface VacntnInfo {
 
-    vacntnCnt : number;
-    vacntnEra : string;
-    vacntnIctsd : string;
-    vacntnInoclDt : string;
-    vacntnMthNo : number;
-    vacntnNo:  number;
-    vacntnOdr : number;
+    vacntnCnt: number;
+    vacntnEra: string;
+    vacntnIctsd: string;
+    vacntnInoclDt: string;
+    vacntnMthNo: number;
+    vacntnNo: number;
+    vacntnOdr: number;
 }
 
 
@@ -37,9 +33,9 @@ const App = () => {
     const [totalVacntnCnt, setTotalVacntnCnt] = useState(0)
     const [totalVacntnOdr, setTotalVacntnOdr] = useState(0)
 
-    
+
     useEffect(() => {
-        
+
         const currentKid = localStorage.getItem("currentKid");
         const fetchData = async () => {
             if (currentKid) {
@@ -51,58 +47,48 @@ const App = () => {
                             Authorization: `Bearer ${token}`,
                         },
                     });
-                    
+
+
+
                     setVacntnInfo(response.data.vacntnInfo)
-                    
-                    const sums = response.data.vacntnInfo.reduce((acc:any, item:any) => ({
-                    cntSum: acc.cntSum + item.vacntnCnt,
-                    odrSum: acc.odrSum + item.vacntnOdr
-                }), { cntSum: 0, odrSum: 0 });
 
-                setTotalVacntnCnt(sums.cntSum);
-                setTotalVacntnOdr(sums.odrSum);
+                    const sums = calculateVaccineSums(response.data.vacntnInfo)
 
-                    
+                    setTotalVacntnCnt(sums.cntSum);
+                    setTotalVacntnOdr(sums.odrSum);
+
+
+
                 } catch (error) {
-                    
+
                 }
             }
         };
-        
+
         fetchData();
     }, [sendRequest]);
 
+
+
+    const calculateVaccineSums = (vacntnInfo: any[]) => {
+        return vacntnInfo.reduce((acc, item) => ({
+            cntSum: acc.cntSum + item.vacntnCnt,
+            odrSum: acc.odrSum + item.vacntnOdr
+        }), { cntSum: 0, odrSum: 0 });
+    };
+
     const calculatePercentage = () => {
-        
-        
+
+
         return Math.round((totalVacntnOdr / totalVacntnCnt) * 100);
     };
 
-    
-    
+
+
 
     return (
         <>
             <InfoBar />
-            <Label text="다가오는 예방접종일" css="metricsValue" />
-            <Container className="noteContainer" backgroundColor="#ff5555">
-                <div className="horizonFlexbox gap-12">
-                    <Warning />
-                    <div className="verticalFlexbox space-between">
-                        <div className="horizonFlexbox gap-4">
-                            <Label text="결핵" css="vaccineName" />
-                            <div className={styles.vaccineCount}>
-                                <Label text="2차" css="" />
-                            </div>
-                        </div>
-                        <Label text="접종일이 지났어요!" css="vaccineWarning" />
-                    </div>
-                </div>
-                <div className="verticalFlexbox space-between">
-                    <Label text="24.10.30" css="vaccineDate" />
-                    <Label text="D+5일" css="vaccineCount" />
-                </div>
-            </Container>
             <Label text="예방접종 진행률" css="metricsValue" />
             <Container className="rateContainer" backgroundColor="#F4F4F4">
                 <div className="horizonFlexbox space-between">
@@ -127,7 +113,7 @@ const App = () => {
 
                 <ProgressBar completed={calculatePercentage()} total={100} />
             </Container>
-            <div className="horizonFlexbox gap-8">
+            {/* <div className="horizonFlexbox gap-8">
                 <div className={styles.noteBtn}>
                     <Label text="달력보기" css="noteBtn"></Label>
                     <img src="/vaccineCalander.svg" />
@@ -136,7 +122,7 @@ const App = () => {
                     <Label text="알림설정" css="noteBtn"></Label>
                     <img src="/vaccineAlarm.svg" />
                 </div>
-            </div>
+            </div> */}
             <Label text="예방접종 자세히 보기" css="metricsValue" />
             <VaccineCount vacntnInfo={vacntnInfo} />
         </>

@@ -11,16 +11,22 @@ const useAuth = () => {
         }
 
         // 2. store에 없으면 localStorage 확인
-        const stored = localStorage.getItem("kidlove");
-        if (stored) {
-            const parsedData = JSON.parse(stored);
-            const storedToken = parsedData.state.accessToken;
-
-            // localStorage에 있으면 Zustand store에도 다시 설정
-            if (storedToken) {
-                setAccessToken(storedToken);
-                return storedToken;
-            }
+        if (typeof localStorage !== "undefined") {
+            const stored = localStorage.getItem("kidlove");
+            if (stored) {
+                const parsedData = JSON.parse(stored);
+                const storedToken = parsedData.state.accessToken;
+    
+                // localStorage에 있으면 Zustand store에도 다시 설정
+                if (storedToken) {
+                    setAccessToken(storedToken);
+                    return storedToken;
+                }
+            // 이후 처리
+        } else {
+            console.warn("localStorage is not available.");
+        }
+      
         }
 
         return null; // 둘 다 없으면 null 반환
