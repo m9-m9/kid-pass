@@ -6,7 +6,8 @@ import styles from "./Header.module.css"
 import { useEffect, useRef, useState } from "react";
 import useChldrnList from "@/hook/useChldrnList";
 import useChldrnListStore, { ChildInfo } from "@/store/useChldrnListStore";
-
+import { format } from 'date-fns';
+import { ko } from 'date-fns/locale';
 
 
 const ProfileHeader = () => {
@@ -16,7 +17,7 @@ const ProfileHeader = () => {
     const { getChldrnList } = useChldrnList();
     const setCurrentKid = useChldrnListStore((state) => state.setCurrentKid);
     const currentKid = useChldrnListStore((state) => state.currentKid); // currentKid 구독
-
+    const today = format(new Date(), 'M월 d일', { locale: ko });
     // 컴포넌트에서 자녀 목록 가져오기
     const childrenList = getChldrnList();
 
@@ -48,10 +49,10 @@ const ProfileHeader = () => {
         <div className={styles.container}>
             <div className={styles.infoBarWrapper}>
                 <div className={styles.leftSection}>
-                    <Label text={currentChild?.chldrnNm} css="babyName" />
-                    <Label text="12주" css="babyName" />
+
+                    <Label text={`${today}, 오늘`} css="babyName" />
                     <div className="divider"></div>
-                    <Label text="김아기 D+32" css="countDown"></Label>
+                    <Label text={`${currentChild?.chldrnNm} D+32`} css="countDown"></Label>
                 </div>
                 <button
                     ref={profileRef}
