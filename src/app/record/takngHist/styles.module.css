@@ -1,0 +1,20 @@
+.kindButton {
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: white;
+  font-size: 1.6rem;
+  text-align: center;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.selected {
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+/* 터치 피드백을 위한 active 상태 */
+.kindButton:active {
+  opacity: 0.8;
+}

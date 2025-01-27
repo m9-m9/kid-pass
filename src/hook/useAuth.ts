@@ -2,13 +2,14 @@ import useAuthStore from "@/store/useAuthStore";
 
 // useAuth.ts 같은 커스텀 훅으로 만들기
 const useAuth = () => {
-    const { accessToken, setAccessToken } = useAuthStore();
+  const { accessToken, setAccessToken, crtChldrnNo, setCrtChldrnNo } =
+  useAuthStore();
 
-    const getToken = () => {
-        // 1. 먼저 Zustand store 확인
-        if (accessToken) {
-            return accessToken;
-        }
+  const getToken = () => {
+    // 1. 먼저 Zustand store 확인
+    if (accessToken) {
+      return accessToken;
+    }
 
         // 2. store에 없으면 localStorage 확인
         if (typeof localStorage !== "undefined") {
@@ -29,10 +30,29 @@ const useAuth = () => {
       
         }
 
-        return null; // 둘 다 없으면 null 반환
-    };
+    return null; // 둘 다 없으면 null 반환
+  };
 
-    return { getToken };
+  // 현재 접속중인 아이번호 가져오기
+  const getCrtChldNo = () => {
+    if (crtChldrnNo) {
+      return crtChldrnNo;
+    }
+
+    const stored = localStorage.getItem("kidlove");
+    if (stored) {
+      const parsedData = JSON.parse(stored);
+      const storedCurrentChldrnNo = parsedData.state;
+      if (storedCurrentChldrnNo) {
+        setCrtChldrnNo(storedCurrentChldrnNo);
+        return storedCurrentChldrnNo;
+      }
+    }
+
+    return null; // 둘다 없으면 null 반환
+  };
+
+  return { getToken, getCrtChldNo };
 };
 
 export default useAuth;

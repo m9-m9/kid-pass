@@ -11,60 +11,92 @@ import { useModalStore } from "@/store/useModalStore";
 import Grid from "@/elements/grid/Grid";
 import styles from "./record.module.css";
 import Image from "next/image";
+import FloatingBtn from "@/components/floatingBtn/FloatingBtn";
+import Link from "next/link";
+import BottomNavigation from "@/components/bottomNavigation/BottomNavigation";
+import useAuth from "@/hook/useAuth";
 
-const SLIDES = ["수면", "수유", "배변", "체온", "몸무게/키", "머리둘레", "감정", "특이증상", "약", "기타"];
+const SLIDES = [
+  "수면",
+  "수유",
+  "배변",
+  "체온",
+  "몸무게/키",
+  "머리둘레",
+  "감정",
+  "특이증상",
+  "약",
+  "기타",
+];
 
 const RECORDS = [
   {
     title: "수유",
     src: "/images/feeding.png",
+    path: "/record/feeding",
   },
   {
     title: "배설",
     src: "/images/diaper.png",
+    path: "/record/buHist",
   },
   {
     title: "수면",
     src: "/images/sleep.png",
+    path: "/record/sleep",
   },
   {
     title: "체온",
     src: "/images/temperature.png",
+    path: "/record/heat",
   },
   {
     title: "몸무게/키/머리둘레",
     src: "/images/scale.png",
+    path: "/record/hgWgh",
   },
   {
     title: "감정",
     src: "/images/heart.png",
+    path: "/record/emotion",
   },
   {
     title: "특이증상",
     src: "/images/info.png",
+    path: "/record/symptm",
   },
   {
     title: "약",
     src: "/images/medicine.png",
+    path: "/record/takngHist",
   },
   {
     title: "기타",
     src: "/images/etc.png",
+    path: "/record/feeding",
   },
 ];
 
-const items = RECORDS.map((v) => (
-  <div className={styles.card}>
-    <Image src={v.src} alt="Record picture" width={32} height={32} />
-    <span className={styles.cardText}>{v.title}</span>
-  </div>
-));
-
 const App: React.FC = () => {
-  const [date, setDate] = useState<DateType>({ year: 2024, month: 11, date: 2 });
+  const [date, setDate] = useState<DateType>({
+    year: 2024,
+    month: 11,
+    date: 2,
+  });
 
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
   const { openModal, closeModal, setComp } = useModalStore();
+
+  const { getCrtChldNo } = useAuth();
+
+  const items = RECORDS.map((v) => (
+    <Link href={v.path} onClick={() => closeModal()}>
+      <div className={styles.card}>
+        <Image src={v.src} alt="Record picture" width={32} height={32} />
+        <span className={styles.cardText}>{v.title}</span>
+      </div>
+    </Link>
+  ));
 
   useEffect(() => {
     setComp(
@@ -231,34 +263,9 @@ const App: React.FC = () => {
       <div style={{ marginBottom: 60 }}>
         <Schedule schedules={scheduleData} />
       </div>
-      <div
-        style={{
-          position: "fixed",
-          bottom: 0,
-          width: "100%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          background: "linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1))",
-          paddingTop: "60px",
-          paddingBottom: "20px",
-        }}
-      >
-        <div
-          style={{
-            padding: 8,
-            background: "#729BED",
-            fontSize: 18,
-            color: "white",
-            width: "80%",
-            textAlign: "center",
-            borderRadius: 8,
-          }}
-          onClick={() => openModal()}
-        >
-          기록하기
-        </div>
-      </div>
+      <FloatingBtn onClick={() => openModal()} />
+
+      <BottomNavigation />
     </Container>
   );
 };
