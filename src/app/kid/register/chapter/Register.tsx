@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useProfileStore } from "@/store/useProfileStore";
 import useChapter from "@/hook/useChapter";
 import Chapter1 from "./Chapter1";
 import Chapter2 from "./Chapter2";
@@ -12,6 +11,7 @@ import axios from "axios";
 import useAuth from "@/hook/useAuth";
 import Chapter6 from "./Chapter6";
 import instance from "@/utils/axios";
+import { useChldrnInfoStore } from "@/store/useChldrnInfoStore";
 
 const Register: React.FC = () => {
     const { getToken } = useAuth();
@@ -26,12 +26,12 @@ const Register: React.FC = () => {
         totalChapters: 6,
         onComplete: async () => {
             try {
-                const age = useProfileStore.getState().age;
-                const details = useProfileStore.getState().details;
-                const symptmsNm = useProfileStore.getState().symptom;
-                const allrgyNm = useProfileStore.getState().allergic;
-                const chldrnMemo = useProfileStore.getState().etc;
-                const chldrnSexdstn = useProfileStore.getState().chldrnSexdstn;
+                const age = useChldrnInfoStore.getState().age;
+                const details = useChldrnInfoStore.getState().details;
+                const symptmsNm = useChldrnInfoStore.getState().symptom;
+                const allrgyNm = useChldrnInfoStore.getState().allergic;
+                const chldrnMemo = useChldrnInfoStore.getState().etc;
+                const chldrnSexdstn = useChldrnInfoStore.getState().chldrnSexdstn;
 
                 const [
                     chldrnNm,

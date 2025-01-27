@@ -8,7 +8,7 @@ import ListInput from "@/elements/input/ListInput";
 import Circleline from "@/elements/svg/Checkbox";
 import styles from "../kid.module.css";
 import XIcon from "@/elements/svg/XIcon";
-import { useProfileStore } from "@/store/useProfileStore";
+import { useChldrnInfoStore } from "@/store/useChldrnInfoStore";
 
 const Chapter5: React.FC<ChapterProps> = ({ onNext }) => {
     const [symptomInputValue, setSymptomInputValue] = useState("");
@@ -16,8 +16,8 @@ const Chapter5: React.FC<ChapterProps> = ({ onNext }) => {
     const [symptomList, setSymptomList] = useState<string[]>([]);
     const [allergicList, setAllergicList] = useState<string[]>([]);
 
-    const setSymptom = useProfileStore((state) => state.setSymptom);
-    const setAllergic = useProfileStore((state) => state.setAllergic);
+    const setSymptom = useChldrnInfoStore((state) => state.setSymptom);
+    const setAllergic = useChldrnInfoStore((state) => state.setAllergic);
 
     // 증상 추가
     const addSymptom = () => {

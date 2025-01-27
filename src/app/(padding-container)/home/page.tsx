@@ -14,6 +14,7 @@ import useAuth from "@/hook/useAuth";
 import { useRouter } from "next/navigation";
 import BottomNavigation from "@/components/bottomNavigation/BottomNavigation";
 import instance from "../../../utils/axios";
+import useChldrnListStore from "@/store/useChldrnListStore";
 
 type OpenStates = {
   sleep: boolean;
@@ -63,6 +64,7 @@ const App: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [kidsData, setKidsData] = useState<KidRecord[]>([]);
   const [currentKidIndex, setCurrentKidIndex] = useState(0);
+  const { setChldrnList } = useChldrnListStore();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -77,7 +79,6 @@ const App: React.FC = () => {
 
       try {
         setLoading(true);
-        console.log(token)
         const response = await instance.post(
           "authenticate/reissue",
           {},
@@ -89,10 +90,21 @@ const App: React.FC = () => {
           }
         );
 
-        if (response.data?.data?.chldrnInfo) {
+        const childInfo = response.data?.data?.chldrnInfo;
+        console.log(childInfo)
 
-          console.log(response.data.data.chldrnInfo[0].chldrnNo)
-          localStorage.setItem("currentkid", response.data.data.chldrnInfo[0].chldrnNo)
+        if (childInfo) {
+
+
+          localStorage.setItem("currentkid", childInfo[0].chldrnNo)
+          const childrenToStore = childInfo.map(child => ({
+            chldrnNo: child.chldrnNo,
+            chldrnNm: child.chldrnNm
+          }));
+
+          setChldrnList(childrenToStore);
+
+
           const mockMetrics = (kidName: string, kidIndex: number) => [
             {
               title: "수면패턴",

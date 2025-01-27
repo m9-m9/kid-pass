@@ -5,12 +5,12 @@ import { Label } from "@/elements/label/Label";
 import Button from "@/elements/button/Button";
 import { ChapterProps } from "@/hook/useChapter";
 import styles from "../kid.module.css";
-import { useProfileStore } from "@/store/useProfileStore";
+import { useChldrnInfoStore } from "@/store/useChldrnInfoStore";
 import { useModalStore } from "@/store/useModalStore";
 
 const Chapter6: React.FC<ChapterProps> = ({ onNext }) => {
     const [etcInput, setEtcInput] = useState("");
-    const setEtc = useProfileStore((state) => state.setEtc);
+    const setEtc = useChldrnInfoStore((state) => state.setEtc);
     const { openModal, setComp, closeModal } = useModalStore();
 
     useEffect(() => {

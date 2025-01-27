@@ -6,10 +6,10 @@ import Button from "@/elements/button/Button";
 import { ChapterProps } from "@/hook/useChapter";
 import InputForm from "@/components/form/InputForm";
 import styles from "../kid.module.css";
-import { useProfileStore } from "@/store/useProfileStore";
+import { useChldrnInfoStore } from "@/store/useChldrnInfoStore";
 
 const Chapter3: React.FC<ChapterProps> = ({ onNext }) => {
-    const setDetails = useProfileStore((state) => state.setDetails);
+    const setDetails = useChldrnInfoStore((state) => state.setDetails);
     const [name, setName] = useState("");
     const [birthDate, setBirthDate] = useState("");
     const [weight, setWeight] = useState("");

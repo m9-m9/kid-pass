@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { useProfileStore } from "@/store/useProfileStore";
+import { useChldrnInfoStore } from "@/store/useChldrnInfoStore";
 import { Label } from "@/elements/label/Label";
 import { ChapterProps } from "@/hook/useChapter";
 import styles from "../kid.module.css";
@@ -9,7 +9,7 @@ import Grid from "@/elements/grid/Grid";
 import Spacer from "@/elements/spacer/Spacer";
 
 const Chapter1: React.FC<ChapterProps> = ({ onNext }) => {
-    const setChldrnSexdstn = useProfileStore((state) => state.setChldrnSexdstn);
+    const setChldrnSexdstn = useChldrnInfoStore((state) => state.setChldrnSexdstn);
     const chldrnSexdstnType = ["M", "F"] as const;
 
     const texts = [

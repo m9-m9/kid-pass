@@ -2,12 +2,12 @@
 
 import Container from "../../../elements/container/Container";
 import { Label } from "../../../elements/label/Label";
-import InfoBar from "./InfoBar";
 import VaccineCount from "./components/VaccineCount";
 import ProgressBar from "@/components/progressBar/progressBar";
 import useAuth from "@/hook/useAuth";
 import { useEffect, useState } from "react";
 import instance from "@/utils/axios";
+import ProfileHeader from "@/components/header/ProfileHeader";
 
 
 
@@ -86,7 +86,7 @@ const App = () => {
 
     return (
         <>
-            <InfoBar />
+            <ProfileHeader />
             <Label text="예방접종 진행률" css="metricsValue" />
             <Container className="rateContainer" backgroundColor="#F4F4F4">
                 <div className="horizonFlexbox space-between">

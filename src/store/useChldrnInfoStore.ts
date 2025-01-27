@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-interface ProfileState {
+interface ChldrnInfoState {
     age: string;
     details: string[];
     symptom: string[];
@@ -15,7 +15,7 @@ interface ProfileState {
     setEtc: (etc: string) => void;
 }
 
-export const useProfileStore = create<ProfileState>((set) => ({
+export const useChldrnInfoStore = create<ChldrnInfoState>((set) => ({
     chldrnSexdstn: "",
     age: "",
     details: [],
