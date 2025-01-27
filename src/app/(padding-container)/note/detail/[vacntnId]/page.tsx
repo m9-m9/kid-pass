@@ -7,6 +7,7 @@ import styles from "../../note.module.css";
 import { useParams, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Label } from '@/elements/label/Label';
+import instance from '@/utils/axios';
 
 
 interface VaccineDetail {
@@ -40,7 +41,6 @@ export default function VaccineDetailPage() {
     const token = getToken();
     const params = useParams();
     const searchParams = useSearchParams();
-    const { sendRequest, responseData, loading, destroy } = useFetch();
     const [vaccineDetail, setVaccineDetail] = useState<VaccineDetail | null>(null);
 
     const vacntnId = decodeURIComponent(params?.vacntnId as string);
@@ -50,15 +50,18 @@ export default function VaccineDetailPage() {
         const fetchVaccineDetail = async () => {
             if (currentKid && vacntnId) {
                 try {
-                    const response = await sendRequest({
-                        url: `api/v1/babyNote/getVacntnIctsdDtl?chldrnNo=${currentKid}&vacntnIctsd=${vacntnId}`,
+                    const response = await instance.get(
+                        `api/v1/babyNote/getVacntnIctsdDtl?chldrnNo=${currentKid}&vacntnIctsd=${vacntnId}`, {
                         headers: {
                             Authorization: `Bearer ${token}`,
                         }
-                    });
+                    }
+
+                    );
 
 
-                    setVaccineDetail(response.data[0]);
+                    console.log(response)
+                    setVaccineDetail(response.data.data[0]);
                 } catch (error) {
 
                 }
@@ -68,7 +71,7 @@ export default function VaccineDetailPage() {
 
 
         fetchVaccineDetail();
-    }, [currentKid, vacntnId, sendRequest, token]);
+    }, [currentKid, vacntnId, token]);
 
 
 

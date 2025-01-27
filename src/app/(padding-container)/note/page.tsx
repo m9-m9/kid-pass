@@ -5,9 +5,9 @@ import { Label } from "../../../elements/label/Label";
 import InfoBar from "./InfoBar";
 import VaccineCount from "./components/VaccineCount";
 import ProgressBar from "@/components/progressBar/progressBar";
-import useFetch from "@/hook/useFetch";
 import useAuth from "@/hook/useAuth";
 import { useEffect, useState } from "react";
+import instance from "@/utils/axios";
 
 
 
@@ -28,52 +28,50 @@ const App = () => {
 
     const { getToken } = useAuth();
     const token = getToken();
-    const { sendRequest, responseData, loading, destroy } = useFetch();
     const [vacntnInfo, setVacntnInfo] = useState<VacntnInfo[]>([])
     const [totalVacntnCnt, setTotalVacntnCnt] = useState(0)
     const [totalVacntnOdr, setTotalVacntnOdr] = useState(0)
-
-
+    const currentKid = localStorage.getItem("currentkid");
     useEffect(() => {
-
-        const currentKid = localStorage.getItem("currentKid");
         const fetchData = async () => {
             if (currentKid) {
-
                 try {
-                    const response = await sendRequest({
-                        url: `api/v1/chldrn/findChldrnProfileInfo?chldrnNo=${currentKid}`,
+                    const response = await instance.get(`/api/v1/chldrn/findChldrnProfileInfo?chldrnNo=${currentKid}`, {
                         headers: {
                             Authorization: `Bearer ${token}`,
                         },
                     });
 
-
-
-                    setVacntnInfo(response.data.vacntnInfo)
-
-                    const sums = calculateVaccineSums(response.data.vacntnInfo)
-
-                    setTotalVacntnCnt(sums.cntSum);
-                    setTotalVacntnOdr(sums.odrSum);
-
-
+                    if (response.data.data.vacntnInfo) {
+                        setVacntnInfo(response.data.data.vacntnInfo);
+                        const sums = calculateVaccineSums(response.data.data.vacntnInfo);
+                        setTotalVacntnCnt(sums.cntSum);
+                        setTotalVacntnOdr(sums.odrSum);
+                    }
 
                 } catch (error) {
-
+                    console.error('데이터 불러오기 실패:', error);
                 }
             }
         };
 
         fetchData();
-    }, [sendRequest]);
+    }, [currentKid]);
 
 
+    useEffect(() => {
+
+    }, [])
 
     const calculateVaccineSums = (vacntnInfo: any[]) => {
+        if (!Array.isArray(vacntnInfo)) {
+            console.error('vacntnInfo가 배열이 아닙니다:', vacntnInfo);
+            return { cntSum: 0, odrSum: 0 };
+        }
+
         return vacntnInfo.reduce((acc, item) => ({
-            cntSum: acc.cntSum + item.vacntnCnt,
-            odrSum: acc.odrSum + item.vacntnOdr
+            cntSum: acc.cntSum + (item?.vacntnCnt || 0),
+            odrSum: acc.odrSum + (item?.vacntnOdr || 0)
         }), { cntSum: 0, odrSum: 0 });
     };
 

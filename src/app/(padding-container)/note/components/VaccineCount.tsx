@@ -18,7 +18,7 @@ const VaccineCount = ({ vacntnInfo }: VaccineCountProps) => {
     useEffect(() => {
 
 
-        setCurrentKid(localStorage.getItem("currentKid") ?? '');
+        setCurrentKid(localStorage.getItem("currentkid") ?? '');
     }, []);
 
     const handleVaccineClick = (vacntnIctsd: string) => {

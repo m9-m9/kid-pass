@@ -90,6 +90,9 @@ const App: React.FC = () => {
         );
 
         if (response.data?.data?.chldrnInfo) {
+
+          console.log(response.data.data.chldrnInfo[0].chldrnNo)
+          localStorage.setItem("currentkid", response.data.data.chldrnInfo[0].chldrnNo)
           const mockMetrics = (kidName: string, kidIndex: number) => [
             {
               title: "수면패턴",

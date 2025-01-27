@@ -3,7 +3,7 @@ import axios from "axios";
 
 const instance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8071/",
-  withCredentials: true,  // 이 옵션을 추가해주세요
+  withCredentials: true,
   headers: {
     "Content-Type": "application/json",
   },

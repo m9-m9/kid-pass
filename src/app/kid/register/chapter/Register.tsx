@@ -11,10 +11,12 @@ import Chapter5 from "./Chapter5";
 import axios from "axios";
 import useAuth from "@/hook/useAuth";
 import Chapter6 from "./Chapter6";
+import instance from "@/utils/axios";
 
 const Register: React.FC = () => {
     const { getToken } = useAuth();
     const [token, setToken] = useState();
+
 
     useEffect(() => {
         const accessToken = getToken();
@@ -64,7 +66,7 @@ const Register: React.FC = () => {
                     chldrnMemo: chldrnMemo,
                 };
 
-                const response = await axios.post(
+                const response = await instance.post(
                     "http://localhost:8071/api/v1/chldrn/createChldrnInfo",
                     body,
                     {
@@ -84,14 +86,7 @@ const Register: React.FC = () => {
                         response: error.response?.data,
                         status: error.response?.status,
                     });
-                    alert(
-                        `저장 중 오류가 발생했습니다: ${
-                            error.response?.data?.message || error.message
-                        }`,
-                    );
-                } else {
-                    console.error("Unknown Error:", error);
-                    alert("알 수 없는 오류가 발생했습니다.");
+
                 }
             }
         },
@@ -100,22 +95,22 @@ const Register: React.FC = () => {
     return (
         <div>
             {chapter === 1 && (
-                <Chapter1 onNext={nextChapter} goToChapter={() => {}} />
+                <Chapter1 onNext={nextChapter} goToChapter={() => { }} />
             )}
             {chapter === 2 && (
-                <Chapter2 onNext={nextChapter} goToChapter={() => {}} />
+                <Chapter2 onNext={nextChapter} goToChapter={() => { }} />
             )}
             {chapter === 3 && (
-                <Chapter3 onNext={nextChapter} goToChapter={() => {}} />
+                <Chapter3 onNext={nextChapter} goToChapter={() => { }} />
             )}
             {chapter === 4 && (
                 <Chapter4 onNext={nextChapter} goToChapter={goToChapter} />
             )}
             {chapter === 5 && (
-                <Chapter5 onNext={nextChapter} goToChapter={() => {}} />
+                <Chapter5 onNext={nextChapter} goToChapter={() => { }} />
             )}
             {chapter === 6 && (
-                <Chapter6 onNext={nextChapter} goToChapter={() => {}} />
+                <Chapter6 onNext={nextChapter} goToChapter={() => { }} />
             )}
         </div>
     );
