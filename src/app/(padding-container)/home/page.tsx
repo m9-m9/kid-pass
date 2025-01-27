@@ -64,7 +64,7 @@ const App: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [kidsData, setKidsData] = useState<KidRecord[]>([]);
   const [currentKidIndex, setCurrentKidIndex] = useState(0);
-  const { setChldrnList } = useChldrnListStore();
+  const { setChldrnList, setCurrentKid } = useChldrnListStore();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -91,15 +91,16 @@ const App: React.FC = () => {
         );
 
         const childInfo = response.data?.data?.chldrnInfo;
-        console.log(childInfo)
 
         if (childInfo) {
 
 
           localStorage.setItem("currentkid", childInfo[0].chldrnNo)
-          const childrenToStore = childInfo.map(child => ({
+          setCurrentKid(childInfo[0].chldrnNo.toString());
+          const childrenToStore = childInfo.map((child: { chldrnNo: string; chldrnNm: string; chldrnSexdstn: string; }) => ({
             chldrnNo: child.chldrnNo,
-            chldrnNm: child.chldrnNm
+            chldrnNm: child.chldrnNm,
+            chldrnSexdstn: child.chldrnSexdstn
           }));
 
           setChldrnList(childrenToStore);

@@ -8,6 +8,7 @@ import useAuth from "@/hook/useAuth";
 import { useEffect, useState } from "react";
 import instance from "@/utils/axios";
 import ProfileHeader from "@/components/header/ProfileHeader";
+import useChldrnListStore from "@/store/useChldrnListStore";
 
 
 
@@ -23,16 +24,18 @@ export interface VacntnInfo {
 }
 
 
-
 const App = () => {
-
     const { getToken } = useAuth();
     const token = getToken();
-    const [vacntnInfo, setVacntnInfo] = useState<VacntnInfo[]>([])
-    const [totalVacntnCnt, setTotalVacntnCnt] = useState(0)
-    const [totalVacntnOdr, setTotalVacntnOdr] = useState(0)
-    const currentKid = localStorage.getItem("currentkid");
+    const [vacntnInfo, setVacntnInfo] = useState<VacntnInfo[]>([]);
+    const [totalVacntnCnt, setTotalVacntnCnt] = useState(0);
+    const [totalVacntnOdr, setTotalVacntnOdr] = useState(0);
+
+    // Zustand store에서 currentKid 가져오기
+    const currentKid = useChldrnListStore((state) => state.currentKid);
+
     useEffect(() => {
+        console.log(currentKid)
         const fetchData = async () => {
             if (currentKid) {
                 try {
@@ -55,13 +58,9 @@ const App = () => {
             }
         };
 
+        // 컴포넌트 마운트 시 초기 데이터 로드
         fetchData();
-    }, [currentKid]);
-
-
-    useEffect(() => {
-
-    }, [])
+    }, [currentKid, token]);
 
     const calculateVaccineSums = (vacntnInfo: any[]) => {
         if (!Array.isArray(vacntnInfo)) {
@@ -76,11 +75,8 @@ const App = () => {
     };
 
     const calculatePercentage = () => {
-
-
         return Math.round((totalVacntnOdr / totalVacntnCnt) * 100);
     };
-
 
 
 
