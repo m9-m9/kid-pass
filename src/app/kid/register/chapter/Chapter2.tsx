@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { useProfileStore } from "@/store/useProfileStore";
+import { useChldrnInfoStore } from "@/store/useChldrnInfoStore";
 import { Label } from "@/elements/label/Label";
 import { ChapterProps } from "@/hook/useChapter";
 import styles from "../kid.module.css";
@@ -9,8 +9,8 @@ import Grid from "@/elements/grid/Grid";
 import Spacer from "@/elements/spacer/Spacer";
 
 const Chapter1: React.FC<ChapterProps> = ({ onNext }) => {
-    const setAge = useProfileStore((state) => state.setAge);
-    const ageTypes = ["NWNBB", "BABY", "INFANT", "CHILD"] as const;
+    const setChldrnSexdstn = useChldrnInfoStore((state) => state.setChldrnSexdstn);
+    const chldrnSexdstnType = ["M", "F"] as const;
 
     const texts = [
         <>
@@ -27,8 +27,8 @@ const Chapter1: React.FC<ChapterProps> = ({ onNext }) => {
         </>,
     ];
 
-    const handleAgeSelection = (index: number) => {
-        setAge(ageTypes[index]);
+    const handleSexSelection = (index: number) => {
+        setChldrnSexdstn(chldrnSexdstnType[index]);
         onNext();
     };
 
@@ -41,7 +41,7 @@ const Chapter1: React.FC<ChapterProps> = ({ onNext }) => {
     }) => (
         <div
             className={styles.gender_item}
-            onClick={() => handleAgeSelection(index)}
+            onClick={() => handleSexSelection(index)}
         >
             {children}
         </div>

@@ -7,7 +7,7 @@ import Button from "@/elements/button/Button";
 import Container from "@/elements/container/Container";
 import Spacer from "@/elements/spacer/Spacer";
 import useFetch from "@/hook/useFetch";
-import useUsrStore from "@/store/useUsrStore";
+import useAuthStore from "@/store/useAuthStore";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import styles from "./login.module.css";
@@ -16,7 +16,7 @@ import instance from "@/utils/axios";
 const App: React.FC = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const { setAccessToken, setRefreshToken } = useUsrStore();
+  const { setAccessToken, setRefreshToken } = useAuthStore();
 
   const [mberId, setMberId] = useState("");
   const [mberPw, setMberPw] = useState("");
@@ -29,9 +29,8 @@ const App: React.FC = () => {
         const { data } = res.data;
         setAccessToken(data.accessToken);
         setRefreshToken(data.refreshToken);
-        document.cookie = `refreshToken=${data.refreshToken}; path=/; max-age=${
-          7 * 24 * 60 * 60
-        }; secure`;
+        document.cookie = `refreshToken=${data.refreshToken}; path=/; max-age=${7 * 24 * 60 * 60
+          }; secure`;
         router.push("/home");
       }
     } catch (e) {
@@ -42,7 +41,7 @@ const App: React.FC = () => {
   return (
     <Container className="container" full>
       <LoadingFullScreen />
-      <Header title="이메일 로그인" onBack={() => {}} />
+      <Header title="이메일 로그인" onBack={() => { }} />
       <Spacer height={50} />
       <form
         onSubmit={handleLogin}

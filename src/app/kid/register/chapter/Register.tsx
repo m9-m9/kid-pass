@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useProfileStore } from "@/store/useProfileStore";
 import useChapter from "@/hook/useChapter";
 import Chapter1 from "./Chapter1";
 import Chapter2 from "./Chapter2";
@@ -11,10 +10,13 @@ import Chapter5 from "./Chapter5";
 import axios from "axios";
 import useAuth from "@/hook/useAuth";
 import Chapter6 from "./Chapter6";
+import instance from "@/utils/axios";
+import { useChldrnInfoStore } from "@/store/useChldrnInfoStore";
 
 const Register: React.FC = () => {
     const { getToken } = useAuth();
     const [token, setToken] = useState();
+
 
     useEffect(() => {
         const accessToken = getToken();
@@ -24,11 +26,12 @@ const Register: React.FC = () => {
         totalChapters: 6,
         onComplete: async () => {
             try {
-                const age = useProfileStore.getState().age;
-                const details = useProfileStore.getState().details;
-                const symptmsNm = useProfileStore.getState().symptom;
-                const allrgyNm = useProfileStore.getState().allergic;
-                const chldrnMemo = useProfileStore.getState().etc;
+                const age = useChldrnInfoStore.getState().age;
+                const details = useChldrnInfoStore.getState().details;
+                const symptmsNm = useChldrnInfoStore.getState().symptom;
+                const allrgyNm = useChldrnInfoStore.getState().allergic;
+                const chldrnMemo = useChldrnInfoStore.getState().etc;
+                const chldrnSexdstn = useChldrnInfoStore.getState().chldrnSexdstn;
 
                 const [
                     chldrnNm,
@@ -54,6 +57,7 @@ const Register: React.FC = () => {
                     chldrnTy: age,
                     chldrnNm: chldrnNm,
                     chldrnBrthdy: chldrnBrthdy,
+                    chldrnSexdstn: chldrnSexdstn,
                     chldrnBdwgh: parseFloat(chldrnBdwgh) || 0,
                     chldrnHeight: parseFloat(chldrnHeight) || 0,
                     chldrnHead: parseFloat(chldrnHead) || 0,
@@ -62,9 +66,7 @@ const Register: React.FC = () => {
                     chldrnMemo: chldrnMemo,
                 };
 
-                console.log("Sending data:", JSON.stringify(body, null, 2));
-
-                const response = await axios.post(
+                const response = await instance.post(
                     "http://localhost:8071/api/v1/chldrn/createChldrnInfo",
                     body,
                     {
@@ -75,7 +77,8 @@ const Register: React.FC = () => {
                     },
                 );
 
-                console.log(response.data);
+                const currentKid = response.data.data.chldrnNo;
+                localStorage.setItem("currentKid", currentKid);
             } catch (error) {
                 if (axios.isAxiosError(error)) {
                     console.error("API Error:", {
@@ -83,14 +86,7 @@ const Register: React.FC = () => {
                         response: error.response?.data,
                         status: error.response?.status,
                     });
-                    alert(
-                        `저장 중 오류가 발생했습니다: ${
-                            error.response?.data?.message || error.message
-                        }`,
-                    );
-                } else {
-                    console.error("Unknown Error:", error);
-                    alert("알 수 없는 오류가 발생했습니다.");
+
                 }
             }
         },
@@ -99,22 +95,22 @@ const Register: React.FC = () => {
     return (
         <div>
             {chapter === 1 && (
-                <Chapter1 onNext={nextChapter} goToChapter={() => {}} />
+                <Chapter1 onNext={nextChapter} goToChapter={() => { }} />
             )}
             {chapter === 2 && (
-                <Chapter2 onNext={nextChapter} goToChapter={() => {}} />
+                <Chapter2 onNext={nextChapter} goToChapter={() => { }} />
             )}
             {chapter === 3 && (
-                <Chapter3 onNext={nextChapter} goToChapter={() => {}} />
+                <Chapter3 onNext={nextChapter} goToChapter={() => { }} />
             )}
             {chapter === 4 && (
                 <Chapter4 onNext={nextChapter} goToChapter={goToChapter} />
             )}
             {chapter === 5 && (
-                <Chapter5 onNext={nextChapter} goToChapter={() => {}} />
+                <Chapter5 onNext={nextChapter} goToChapter={() => { }} />
             )}
             {chapter === 6 && (
-                <Chapter6 onNext={nextChapter} goToChapter={() => {}} />
+                <Chapter6 onNext={nextChapter} goToChapter={() => { }} />
             )}
         </div>
     );

@@ -16,6 +16,7 @@
     background-color: #ffffff;
     padding: 4px 8px;
     border-radius: 8px;
+    cursor: pointer;
 }
 
 .vaccineCount p {
@@ -36,4 +37,34 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 32px;
+}
+
+
+/* 예방접종 상셒페이지 */
+
+.container {
+
+    margin-top: 40px;
+
+}
+
+.title {
+
+    font-size: var(--font-size-32);
+    font-weight: var(--font-weight-bold);
+}
+
+.vacccineStatus {
+
+    margin: 36px auto 16px auto;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.vacccineStatus_Count {
+
+    display: flex;
+    gap: 8px;
+    
 }

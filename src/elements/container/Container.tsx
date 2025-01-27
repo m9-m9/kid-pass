@@ -6,14 +6,17 @@ export interface ContainerProps {
   className?: string;
   backgroundColor?: string;
   style?: React.CSSProperties;
-  full?: boolean;
+  onClick?: () => void;
+  full?: boolean
 }
+
 
 const Container: React.FC<ContainerProps> = ({
   style,
   children,
   className,
   backgroundColor,
+  onClick,
   full,
 }) => {
   // 클래스명 조합
@@ -23,6 +26,7 @@ const Container: React.FC<ContainerProps> = ({
     .join(" ");
 
   return (
+
     <div
       className={classNames}
       style={{
@@ -30,6 +34,8 @@ const Container: React.FC<ContainerProps> = ({
         ...style,
         ...(full && { height: "100vh" }),
       }}
+      onClick={onClick}
+
     >
       {children}
     </div>
