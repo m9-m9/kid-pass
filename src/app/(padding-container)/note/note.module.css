@@ -4,11 +4,11 @@
     border-radius: 50%;
 }
 
-.dosesCompleted {
+.vaccineComplete {
     background-color: #729bed;
 }
 
-.dosesRemaining {
+.vaccineIncomplete {
     background-color: #d9d9d9;
 }
 
@@ -50,13 +50,12 @@
 
 .title {
 
-    font-size: var(--font-size-32);
+    font-size: var(--font-size-24);
     font-weight: var(--font-weight-bold);
 }
 
 .vacccineStatus {
 
-    margin: 36px auto 16px auto;
     display: flex;
     justify-content: space-between;
     width: 100%;
@@ -67,4 +66,56 @@
     display: flex;
     gap: 8px;
     
+}
+
+.divider {
+
+    display: inline-block;
+    border-left: 1px solid #D9D9D9;
+    height: 16px;
+    vertical-align: middle;
+}
+
+.vaccineRecords {
+
+    width: 100%;
+    border : 1px solid #729BED;
+    border-radius: 8px;
+    padding: 32px 16px;
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.completeVaccineRecords {
+    width: 100%;
+    border : none;
+    background-color: #BFBFBF;
+    border-radius: 8px;
+    padding: 32px 16px;
+    display: flex;
+    justify-content: space-between;
+    
+}
+
+
+.addVaccine ,.completeVaccine{
+
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+
+.addVaccine p {
+
+    font-size: var(--font-size-20);
+    font-weight: var(--font-weight-bold);
+    color :#729BED;
+}
+
+.completeVaccine p {
+    font-size: var(--font-size-20);
+    font-weight: var(--font-weight-bold);
+    color :white;
+
 }

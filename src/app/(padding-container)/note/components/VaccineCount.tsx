@@ -12,6 +12,8 @@ interface VaccineCountProps {
 }
 
 const VaccineCount = ({ vacntnInfo }: VaccineCountProps) => {
+
+
     const router = useRouter();
     const [currentKid, setCurrentKid] = useState<string>('');
 

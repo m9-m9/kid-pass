@@ -234,6 +234,22 @@
     color: #000000;
 }
 
+/* 아기수첩 상세 페이지*/
+
+.completed {
+
+    font-size: var(--font-size-18);
+    font-weight: var(--font-weight-semiBold);
+    color : #729bed;
+}
+
+.incomplete {
+    font-size: var(--font-size-18);
+    font-weight: var(--font-weight-semiBold);
+    color : #BFBFBF;
+}
+
+
 /* 프로필 페이지 */
 
 .profileLabel {
@@ -260,3 +276,5 @@
     font-weight: var(--font-weight-bold);
     color: #222222;
 }
+
+

@@ -97,3 +97,16 @@
   color: var(--primary-color);
   border-color: var(--primary-color);
 }
+
+.vaccnineOrderBtn {
+  background-color: #EFF5FF;
+  color: #729BED;
+  
+} 
+
+.completeVaccnineOrderBtn {
+  background-color: #BFBFBF;
+  color:white;
+  border:1px solid white;
+}
+
