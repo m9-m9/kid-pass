@@ -35,7 +35,7 @@ const App = () => {
     const currentKid = useChldrnListStore((state) => state.currentKid);
 
     useEffect(() => {
-        console.log(currentKid)
+
         const fetchData = async () => {
             if (currentKid) {
                 try {
@@ -82,7 +82,7 @@ const App = () => {
 
     return (
         <>
-            <ProfileHeader />
+            <ProfileHeader icon={<i className="ri-calendar-line" />} />
             <Label text="예방접종 진행률" css="metricsValue" />
             <Container className="rateContainer" backgroundColor="#F4F4F4">
                 <div className="horizonFlexbox space-between">

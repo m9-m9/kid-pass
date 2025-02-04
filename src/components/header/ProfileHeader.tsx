@@ -9,7 +9,13 @@ import useChldrnListStore, { ChildInfo } from "@/store/useChldrnListStore";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
 
-const ProfileHeader = () => {
+
+interface ProfileHeaderProps {
+    icon: React.ReactNode;
+}
+
+
+const ProfileHeader = ({ icon }: ProfileHeaderProps) => {
     const [showModal, setShowModal] = useState(false);
     const modalRef = useRef<HTMLDivElement>(null);
     const profileRef = useRef<HTMLButtonElement>(null);
@@ -61,13 +67,17 @@ const ProfileHeader = () => {
                     <div className="divider"></div>
                     <Label text={`${currentChild?.chldrnNm} D+32`} css="countDown"></Label>
                 </div>
-                <button
-                    ref={profileRef}
-                    className={styles.profileWrapper}
-                    onClick={() => setShowModal(!showModal)}
-                >
-                    <Profile />
-                </button>
+                <div className={styles.rightSection}>
+                    {icon}
+                    <button
+                        ref={profileRef}
+                        className={styles.profileWrapper}
+                        onClick={() => setShowModal(!showModal)}
+                    >
+                        <Profile />
+                    </button>
+                </div>
+
             </div>
 
             {showModal && (
