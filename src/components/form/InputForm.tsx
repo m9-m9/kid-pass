@@ -85,7 +85,7 @@ const InputForm = memo(
           </div>
           {passwordToggleButton}
         </div>
-        {errorMessage && <span>{errorMessage}</span>}
+        {errorMessage && <span className={styles.error}>{errorMessage}</span>}
       </div>
     );
   }
