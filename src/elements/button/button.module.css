@@ -125,3 +125,10 @@
   color : #FFFFFF;
   background-color: #729BED;
 }
+
+.errorBtn {
+  background-color: #FFFFFF;
+  color: #729BED;
+  border: 1px solid #729BED;
+  border-radius: 24px;
+}

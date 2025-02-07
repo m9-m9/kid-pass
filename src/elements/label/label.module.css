@@ -277,4 +277,13 @@
     color: #222222;
 }
 
+/* 에러페이지 */
+
+.errorText {
+    font-size: var(--font-size-20);
+    font-weight: var(--font-weight-semiBold);
+    color: #222222;
+    text-align: center;
+    line-height: 1.2;
+}
 
