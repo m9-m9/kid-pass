@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react';
-import S from "../picker.module.css"
+import S from "../styles/picker.module.css"
 import { useDateStore } from '@/store/useDateStore';
 
 interface WheelStyles {

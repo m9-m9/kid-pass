@@ -107,16 +107,6 @@ const App = () => {
 
                 <ProgressBar completed={calculatePercentage()} total={100} />
             </Container>
-            {/* <div className="horizonFlexbox gap-8">
-                <div className={styles.noteBtn}>
-                    <Label text="달력보기" css="noteBtn"></Label>
-                    <img src="/vaccineCalander.svg" />
-                </div>
-                <div className={styles.noteBtn}>
-                    <Label text="알림설정" css="noteBtn"></Label>
-                    <img src="/vaccineAlarm.svg" />
-                </div>
-            </div> */}
             <Label text="예방접종 자세히 보기" css="metricsValue" />
             <VaccineCount vacntnInfo={vacntnInfo} />
         </>

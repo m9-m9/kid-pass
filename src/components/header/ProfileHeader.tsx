@@ -8,6 +8,7 @@ import useChldrnList from "@/hook/useChldrnList";
 import useChldrnListStore, { ChildInfo } from "@/store/useChldrnListStore";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
+import { useRouter } from "next/navigation";
 
 
 interface ProfileHeaderProps {
@@ -16,6 +17,7 @@ interface ProfileHeaderProps {
 
 
 const ProfileHeader = ({ icon }: ProfileHeaderProps) => {
+    const router = useRouter();
     const [showModal, setShowModal] = useState(false);
     const modalRef = useRef<HTMLDivElement>(null);
     const profileRef = useRef<HTMLButtonElement>(null);
@@ -59,6 +61,10 @@ const ProfileHeader = ({ icon }: ProfileHeaderProps) => {
         }
     }, [setCurrentKid]);
 
+    const handleCalendarClick = () => {
+        router.push('/note/calendar');
+    };
+
     return (
         <div className={styles.container}>
             <div className={styles.infoBarWrapper}>
@@ -68,7 +74,9 @@ const ProfileHeader = ({ icon }: ProfileHeaderProps) => {
                     <Label text={`${currentChild?.chldrnNm} D+32`} css="countDown"></Label>
                 </div>
                 <div className={styles.rightSection}>
-                    {icon}
+                    <div onClick={handleCalendarClick}>
+                        {icon}
+                    </div>
                     <button
                         ref={profileRef}
                         className={styles.profileWrapper}

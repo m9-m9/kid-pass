@@ -1,7 +1,7 @@
 'use client'
 
 import Wheel from './Wheel'
-import S from "../picker.module.css"
+import S from "../styles/picker.module.css"
 
 const ScrollPicker = () => {
 
