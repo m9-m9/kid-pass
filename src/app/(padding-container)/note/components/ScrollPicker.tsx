@@ -20,7 +20,7 @@ const ScrollPicker = () => {
     <div className={S.DatePicker}>
       <Wheel
         startNum={2010}
-        endNum={2025}
+        endNum={2040}
         initialValue={currentYear}
         styles={wheelStyles}
       />
@@ -29,12 +29,14 @@ const ScrollPicker = () => {
         endNum={12}
         initialValue={currentMonth}
         styles={wheelStyles}
+        isRepeating={true}
       />
       <Wheel
         startNum={1}
         endNum={31}
         initialValue={currentDate}
         styles={wheelStyles}
+        isRepeating={true}
       />
     </div>
   )

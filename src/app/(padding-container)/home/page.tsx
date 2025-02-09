@@ -185,11 +185,6 @@ const App: React.FC = () => {
 
   return (
     <>
-      <Button label="Home" />
-      <Button
-        label="login"
-        onClick={() => sendToRn({ type: "NAV", data: { uri: "auth" } })}
-      />
       <div className="horizonFlexbox align-center space-between">
         <Label text="오늘의아이" css="Logo" />
         <img src="https://heidimoon.cafe24.com/renwal/test2/Bell.svg" />
@@ -206,7 +201,7 @@ const App: React.FC = () => {
         <Label text="오늘의 아이 증상 기록하기" css="home_1" />
         <img
           className={styles.homepage_image_1}
-          src="https://heidimoon.cafe24.com/renwal/test2/Frame%2039.png"
+          src="/record.png"
         />
       </Container>
 

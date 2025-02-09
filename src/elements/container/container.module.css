@@ -198,11 +198,13 @@
 
 .vaccineCount {
   display: flex;
+  flex-direction: column;
   width: 100%;
   justify-content: space-between;
   box-shadow: var(--box-shadow);
+  margin-top: 16px;
   border-radius: 8px;
-  padding: 20px;
+  padding: 0 16px 16px 16px;
 }
 
 .vaccinationRate {
