@@ -7,113 +7,94 @@ import Chapter2 from "./Chapter2";
 import Chapter3 from "./Chapter3";
 import Chapter4 from "./Chapter4";
 import Chapter5 from "./Chapter5";
-import axios from "axios";
 import useAuth from "@/hook/useAuth";
 import Chapter6 from "./Chapter6";
-import instance from "@/utils/axios";
 import { useChldrnInfoStore } from "@/store/useChldrnInfoStore";
 
 const Register: React.FC = () => {
-    const { getToken } = useAuth();
-    const [token, setToken] = useState();
+  const { getToken } = useAuth();
+  const [token, setToken] = useState();
 
+  useEffect(() => {
+    const fetchToken = async () => {
+      const accessToken = await getToken();
+      setToken(accessToken);
+    };
 
-    useEffect(() => {
-        const accessToken = getToken();
-        setToken(accessToken);
-    }, []);
-    const { chapter, nextChapter, goToChapter } = useChapter({
-        totalChapters: 6,
-        onComplete: async () => {
-            try {
-                const age = useChldrnInfoStore.getState().age;
-                const details = useChldrnInfoStore.getState().details;
-                const symptmsNm = useChldrnInfoStore.getState().symptom;
-                const allrgyNm = useChldrnInfoStore.getState().allergic;
-                const chldrnMemo = useChldrnInfoStore.getState().etc;
-                const chldrnSexdstn = useChldrnInfoStore.getState().chldrnSexdstn;
+    fetchToken();
+  }, []);
 
-                const [
-                    chldrnNm,
-                    chldrnBrthdy,
-                    chldrnBdwgh,
-                    chldrnHeight,
-                    chldrnHead,
-                ] = details;
+  const { chapter, nextChapter, goToChapter } = useChapter({
+    totalChapters: 6,
+    onComplete: async () => {
+      try {
+        const store = useChldrnInfoStore.getState();
+        const [chldrnNm, chldrnBrthdy, chldrnBdwgh, chldrnHeight, chldrnHead] =
+          store.details;
 
-                const sanitizeArray = (arr: string[]) => {
-                    if (!Array.isArray(arr)) return [];
-                    // 중복 제거, 빈 문자열 제거, 공백 제거
-                    return [
-                        ...new Set(
-                            arr
-                                .filter((item) => item && item.trim())
-                                .map((item) => item.trim()),
-                        ),
-                    ];
-                };
+        // YYYYMMDD 형식을 YYYY-MM-DD로 변환
+        const formattedBirthday = `${chldrnBrthdy.substring(
+          0,
+          4
+        )}-${chldrnBrthdy.substring(4, 6)}-${chldrnBrthdy.substring(6, 8)}`;
 
-                const body = {
-                    chldrnTy: age,
-                    chldrnNm: chldrnNm,
-                    chldrnBrthdy: chldrnBrthdy,
-                    chldrnSexdstn: chldrnSexdstn,
-                    chldrnBdwgh: parseFloat(chldrnBdwgh) || 0,
-                    chldrnHeight: parseFloat(chldrnHeight) || 0,
-                    chldrnHead: parseFloat(chldrnHead) || 0,
-                    allrgyNm: sanitizeArray(allrgyNm),
-                    symptmsNm: sanitizeArray(symptmsNm),
-                    chldrnMemo: chldrnMemo,
-                };
+        const response = await fetch("/api/child/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            name: chldrnNm,
+            birthDate: formattedBirthday,
+            gender: store.chldrnSexdstn,
+            weight: parseFloat(chldrnBdwgh),
+            height: parseFloat(chldrnHeight),
+            headCircumference: parseFloat(chldrnHead),
+            ageType: store.age,
+            allergies: store.allergic,
+            symptoms: store.symptom,
+            memo: store.etc,
+          }),
+        });
 
-                const response = await instance.post(
-                    "http://localhost:8071/api/v1/chldrn/createChldrnInfo",
-                    body,
-                    {
-                        headers: {
-                            "Content-Type": "application/json",
-                            Authorization: `Bearer ${token}`,
-                        },
-                    },
-                );
+        const data = await response.json();
 
-                const currentKid = response.data.data.chldrnNo;
-                localStorage.setItem("currentKid", currentKid);
-            } catch (error) {
-                if (axios.isAxiosError(error)) {
-                    console.error("API Error:", {
-                        message: error.message,
-                        response: error.response?.data,
-                        status: error.response?.status,
-                    });
+        if (response.ok) {
+          const childId = data.data.id;
+          localStorage.setItem("currentKid", childId);
+        } else {
+          throw new Error(data.message);
+        }
+      } catch (error) {
+        console.error("아이 등록 에러:", error);
+        alert("아이 정보 등록에 실패했습니다.");
+      }
+    },
+  });
 
-                }
-            }
-        },
-    });
-
-    return (
-        <div>
-            {chapter === 1 && (
-                <Chapter1 onNext={nextChapter} goToChapter={() => { }} />
-            )}
-            {chapter === 2 && (
-                <Chapter2 onNext={nextChapter} goToChapter={() => { }} />
-            )}
-            {chapter === 3 && (
-                <Chapter3 onNext={nextChapter} goToChapter={() => { }} />
-            )}
-            {chapter === 4 && (
-                <Chapter4 onNext={nextChapter} goToChapter={goToChapter} />
-            )}
-            {chapter === 5 && (
-                <Chapter5 onNext={nextChapter} goToChapter={() => { }} />
-            )}
-            {chapter === 6 && (
-                <Chapter6 onNext={nextChapter} goToChapter={() => { }} />
-            )}
-        </div>
-    );
+  return (
+    <div>
+      {chapter === 1 && (
+        <Chapter1 onNext={nextChapter} goToChapter={() => {}} />
+      )}
+      {chapter === 2 && (
+        <Chapter2 onNext={nextChapter} goToChapter={() => {}} />
+      )}
+      {chapter === 3 && (
+        <Chapter3 onNext={nextChapter} goToChapter={() => {}} />
+      )}
+      {chapter === 4 && (
+        <Chapter4 onNext={nextChapter} goToChapter={goToChapter} />
+      )}
+      {chapter === 5 && (
+        <Chapter5 onNext={nextChapter} goToChapter={() => {}} />
+      )}
+      {chapter === 6 && (
+        <Chapter6 onNext={nextChapter} goToChapter={() => {}} />
+      )}
+    </div>
+  );
 };
 
 export default Register;

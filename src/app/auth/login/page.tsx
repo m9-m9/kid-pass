@@ -6,64 +6,77 @@ import LoadingFullScreen from "@/components/loading/LoadingFullScreen";
 import Button from "@/elements/button/Button";
 import Container from "@/elements/container/Container";
 import Spacer from "@/elements/spacer/Spacer";
-import useFetch from "@/hook/useFetch";
 import useAuthStore from "@/store/useAuthStore";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import styles from "./login.module.css";
-import instance from "@/utils/axios";
 
-const App: React.FC = () => {
-  const searchParams = useSearchParams();
+const LoginPage = () => {
   const router = useRouter();
   const { setAccessToken, setRefreshToken } = useAuthStore();
 
-  const [mberId, setMberId] = useState("");
-  const [mberPw, setMberPw] = useState("");
+  const [userId, setUserId] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
+
     try {
-      const res = await instance.post("authenticate/login", { mberId, mberPw });
-      if (res.status === 200) {
-        const { data } = res.data;
-        setAccessToken(data.accessToken);
-        setRefreshToken(data.refreshToken);
-        document.cookie = `refreshToken=${data.refreshToken}; path=/; max-age=${7 * 24 * 60 * 60
-          }; secure`;
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setAccessToken(data.data.accessToken);
+        setRefreshToken(data.data.refreshToken);
+        document.cookie = `refreshToken=${
+          data.data.refreshToken
+        }; path=/; max-age=${7 * 24 * 60 * 60}; secure`;
         router.push("/home");
+      } else {
+        alert(data.message);
       }
-    } catch (e) {
-      console.error(e);
+    } catch (error) {
+      alert("로그인 중 오류가 발생했습니다.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <Container className="container" full>
-      <LoadingFullScreen />
-      <Header title="이메일 로그인" onBack={() => { }} />
+      <LoadingFullScreen isVisible={loading} />
+      <Header title="로그인" onBack={() => {}} />
       <Spacer height={50} />
       <form
         onSubmit={handleLogin}
         style={{ display: "flex", flexDirection: "column", flex: 1 }}
       >
         <InputForm
-          labelText="이메일 아이디"
-          placeholder="todayschild@mail.com"
+          labelText="아이디"
+          placeholder="아이디를 입력해주세요"
           labelCss="inputForm"
-          value={mberId}
-          onChange={setMberId}
+          value={userId}
+          onChange={setUserId}
         />
         <Spacer height={32} />
         <InputForm
           labelText="비밀번호"
-          placeholder="문자와 숫자를 포함한 8~20자"
+          placeholder="비밀번호를 입력해주세요"
           labelCss="inputForm"
-          value={mberPw}
-          onChange={setMberPw}
+          value={password}
+          onChange={setPassword}
+          type="password"
         />
 
-        {/* Email Login */}
         <div
           style={{
             display: "flex",
@@ -73,14 +86,19 @@ const App: React.FC = () => {
             marginTop: 24,
           }}
         >
-          <p className={styles.signupButton}>회원가입하기</p>
+          <p
+            className={styles.signupButton}
+            onClick={() => router.push("/auth/signup")}
+          >
+            회원가입하기
+          </p>
         </div>
 
         <div style={{ flex: 1 }} />
-        <Button type="submit" label="다음" />
+        <Button type="submit" label="로그인" />
       </form>
     </Container>
   );
 };
 
-export default App;
+export default LoginPage;
