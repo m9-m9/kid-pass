@@ -38,3 +38,12 @@
 .label {
   font-size: 12px;
 }
+
+.active {
+  color: #4285f4;
+}
+
+.active .icon {
+  filter: invert(32%) sepia(97%) saturate(1486%) hue-rotate(212deg)
+    brightness(97%) contrast(98%);
+}
