@@ -3,6 +3,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import styles from "./DateCarousel.module.css";
 import Button from "@/elements/button/Button";
 import { Label } from "@/elements/label/Label";
+import ProfileHeader from "../header/ProfileHeader";
 
 interface DayInfo {
   date: Date;
@@ -31,12 +32,20 @@ const DayCell: React.FC<{
         ${isSelected ? styles.selectedDay : ""}`}
       onClick={onSelect}
     >
-      <div className={`${styles.dayNumber} ${isSelected ? styles.selected : ""}`}>{date.getDate()}</div>
+      <div
+        className={`${styles.dayNumber} ${isSelected ? styles.selected : ""}`}
+      >
+        {date.getDate()}
+      </div>
     </div>
   );
 };
 
-const WeekView: React.FC<WeekProps> = ({ weekStart, selectedDate, onDateSelect }) => {
+const WeekView: React.FC<WeekProps> = ({
+  weekStart,
+  selectedDate,
+  onDateSelect,
+}) => {
   const getDayInfo = (currentDate: Date): DayInfo => {
     const today = new Date();
 
@@ -56,7 +65,11 @@ const WeekView: React.FC<WeekProps> = ({ weekStart, selectedDate, onDateSelect }
   return (
     <div className={styles.weekContainer}>
       {days.map((dayInfo) => (
-        <DayCell key={dayInfo.date.toISOString()} dayInfo={dayInfo} onSelect={() => onDateSelect(dayInfo.date)} />
+        <DayCell
+          key={dayInfo.date.toISOString()}
+          dayInfo={dayInfo}
+          onSelect={() => onDateSelect(dayInfo.date)}
+        />
       ))}
     </div>
   );
@@ -126,19 +139,8 @@ const WeeklyCalendar: React.FC = () => {
 
   return (
     <div>
-      {/* 상단 */}
-      <div className={styles.header}>
-        <Button label="오늘" onClick={handleTodayClick} />
-        <p className={styles.monthHeader}>{getCurrentMonth()}</p>
-      </div>
-
-      {/* 요일 헤더 */}
-      <div className={styles.dayHeader}>
-        {DAY_NAMES.map((day) => (
-          <div key={day} className={styles.dayName}>
-            {day}
-          </div>
-        ))}
+      <div style={{ padding: "16px 16px 0 16px" }}>
+        <ProfileHeader />
       </div>
 
       {/* 날짜 슬라이더 */}
