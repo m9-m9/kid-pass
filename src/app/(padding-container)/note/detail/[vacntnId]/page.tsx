@@ -2,7 +2,7 @@
 
 import Header from '@/components/header/Header';
 import useAuth from '@/hook/useAuth';
-import styles from "../../note.module.css";
+import styles from "../../styles/note.module.css";
 import { useParams, useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { Label } from '@/elements/label/Label';

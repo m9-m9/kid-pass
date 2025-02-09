@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import instance from "@/utils/axios";
 import ProfileHeader from "@/components/header/ProfileHeader";
 import useChldrnListStore from "@/store/useChldrnListStore";
+import { getTotalRequiredVaccinations } from './vaccine';
 
 
 
@@ -28,7 +29,7 @@ const App = () => {
     const { getToken } = useAuth();
     const token = getToken();
     const [vacntnInfo, setVacntnInfo] = useState<VacntnInfo[]>([]);
-    const [totalVacntnCnt, setTotalVacntnCnt] = useState(0);
+    const totalVacntnCnt = getTotalRequiredVaccinations();
     const [totalVacntnOdr, setTotalVacntnOdr] = useState(0);
 
     // Zustand store에서 currentKid 가져오기
@@ -47,8 +48,9 @@ const App = () => {
 
                     if (response.data.data.vacntnInfo) {
                         setVacntnInfo(response.data.data.vacntnInfo);
+                        console.log(response.data.data.vacntnInfo)
+
                         const sums = calculateVaccineSums(response.data.data.vacntnInfo);
-                        setTotalVacntnCnt(sums.cntSum);
                         setTotalVacntnOdr(sums.odrSum);
                     }
 
