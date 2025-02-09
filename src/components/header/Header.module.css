@@ -45,6 +45,12 @@
   align-items: center;
 }
 
+.rightSection {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
 .profileWrapper {
   background: none;
   border: none;

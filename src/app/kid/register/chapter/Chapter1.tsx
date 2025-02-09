@@ -14,25 +14,32 @@ const Chapter1: React.FC<ChapterProps> = ({ onNext }) => {
 
     const texts = [
         <>
-            신생아
-            <br />
-            (태아 ~ 1개월)
+            <img src="/images/nwnbb.png" />
+            <div className={styles.desc}>
+                <p className={styles.title}>신생아</p>
+                <p className={styles.age}>(태아 ~ 1개월)</p>
+            </div>
+        </>
+        ,
+        <><img src="/images/baby.png" />
+            <div className={styles.desc}>
+                <p className={styles.title}>영아</p>
+                <p className={styles.age}>(1개월 ~ 1년)</p>
+            </div>
         </>,
         <>
-            영아
-            <br />
-            (1개월 ~ 1년)
-        </>,
+            <img src="/images/infant.png" />
+            <div className={styles.desc}>
+                <p className={styles.title}>유아</p>
+                <p className={styles.age}>(1년 ~ 6년)</p>
+            </div></>,
         <>
-            유아
-            <br />
-            (1년~6년)
-        </>,
-        <>
-            소아
-            <br />
-            (6년~12년)
-        </>,
+            <img src="/images/child.png" />
+            <div className={styles.desc}>
+                <p className={styles.title}>소아</p>
+                <p className={styles.age}>(6년 ~ 12년)</p>
+            </div>
+        </>
     ];
 
     const handleAgeSelection = (index: number) => {
@@ -48,7 +55,7 @@ const Chapter1: React.FC<ChapterProps> = ({ onNext }) => {
         index: number;
     }) => (
         <div
-            className={styles.profileContainer_item}
+            className={styles.ageContainer_item}
             onClick={() => handleAgeSelection(index)}
         >
             {children}

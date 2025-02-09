@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from "react";
-import styles from "../note.module.css";
+import styles from "../styles/note.module.css";
 import Container from "@/elements/container/Container";
 import { Label } from "@/elements/label/Label";
 import { VacntnInfo } from "../page";
@@ -12,6 +12,8 @@ interface VaccineCountProps {
 }
 
 const VaccineCount = ({ vacntnInfo }: VaccineCountProps) => {
+
+
     const router = useRouter();
     const [currentKid, setCurrentKid] = useState<string>('');
 

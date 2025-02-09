@@ -2,16 +2,18 @@
 
 import React from "react";
 import styles from "./modal.module.css";
-import Button from "../../elements/button/Button";
 import { useModalStore } from "@/store/useModalStore";
 
 const CustomModal: React.FC = () => {
-  const { isOpen, closeModal, comp } = useModalStore();
-  if (!isOpen) return;
+  const { isOpen, closeModal, comp, position } = useModalStore();
+  if (!isOpen) return null;
 
   return (
-    <div className={styles.modalbackDrop} onClick={closeModal}>
-      <div className={styles.modalContainer} onClick={(e) => e.stopPropagation()}>
+    <div className={`${styles.modalbackDrop} ${position === 'center' ? styles.centerAlign : ''}`} onClick={closeModal}>
+      <div
+        className={`${styles.modalContainer} ${position === 'center' ? styles.centerContainer : ''}`}
+        onClick={(e) => e.stopPropagation()}
+      >
         {comp && comp}
       </div>
     </div>

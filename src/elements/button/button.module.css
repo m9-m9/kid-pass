@@ -97,3 +97,38 @@
   color: var(--primary-color);
   border-color: var(--primary-color);
 }
+
+.vaccnineOrderBtn {
+  background-color: #EFF5FF;
+  color: #729BED;
+  
+} 
+
+.completeVaccnineOrderBtn {
+  background-color: #BFBFBF;
+  color:white;
+  border:1px solid white;
+}
+
+.pickerCancel, .pickerSubmit {
+  border-radius: 0;
+  font-size: var(--font-16);
+  font-weight: var(--font-weight-bold);
+}
+
+.pickerCancel {
+  color : #222;
+  background-color: #F4F4F4;
+}
+
+.pickerSubmit {
+  color : #FFFFFF;
+  background-color: #729BED;
+}
+
+.errorBtn {
+  background-color: #FFFFFF;
+  color: #729BED;
+  border: 1px solid #729BED;
+  border-radius: 24px;
+}

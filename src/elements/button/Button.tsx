@@ -21,9 +21,8 @@ const Button: React.FC<ButtonProps> = ({
 }) => {
   return (
     <button
-      className={`${styles.button} ${
-        size === "L" ? styles.buttonLarge : styles.buttonSmall
-      } ${css ? styles[css] : ""}`}
+      className={`${styles.button} ${size === "L" ? styles.buttonLarge : styles.buttonSmall
+        } ${css ? styles[css] : ""}`}
       onClick={onClick}
       style={{
         ...style,

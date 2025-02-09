@@ -1,0 +1,26 @@
+
+.container {
+
+   padding:160px 20px 0 20px;;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+
+}
+
+.container img {
+
+  width: auto;
+  margin: 0 auto;
+}
+
+.btnArea {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap : 12px;
+  margin-top: 36px;
+}
+
+
+

@@ -48,16 +48,16 @@ const calculateDistance = (
     const a =
         Math.sin(dLat / 2) * Math.sin(dLat / 2) +
         Math.cos(lat1 * (Math.PI / 180)) *
-            Math.cos(lat2 * (Math.PI / 180)) *
-            Math.sin(dLon / 2) *
-            Math.sin(dLon / 2);
+        Math.cos(lat2 * (Math.PI / 180)) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     return R * c;
 };
 
 const KakaoMap = () => {
     const [loading] = useKakaoLoader({
-        appkey: "e6b8e90e2018f56090316a82ae7588f2",
+        appkey: process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY as string,
     });
     const [hospitalData, setHospitalData] = useState<HospitalData[] | null>(
         null,
@@ -139,11 +139,11 @@ const KakaoMap = () => {
                     // 현재 위치와 병원 위치 사이의 거리 계산
                     const distance = location
                         ? calculateDistance(
-                              location.latitude,
-                              location.longitude,
-                              data.wgs84Lat,
-                              data.wgs84Lon,
-                          )
+                            location.latitude,
+                            location.longitude,
+                            data.wgs84Lat,
+                            data.wgs84Lon,
+                        )
                         : 0;
 
                     return (

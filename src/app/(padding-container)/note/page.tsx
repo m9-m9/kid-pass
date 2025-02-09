@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import instance from "@/utils/axios";
 import ProfileHeader from "@/components/header/ProfileHeader";
 import useChldrnListStore from "@/store/useChldrnListStore";
+import { getTotalRequiredVaccinations } from './vaccine';
 
 
 
@@ -28,14 +29,14 @@ const App = () => {
     const { getToken } = useAuth();
     const token = getToken();
     const [vacntnInfo, setVacntnInfo] = useState<VacntnInfo[]>([]);
-    const [totalVacntnCnt, setTotalVacntnCnt] = useState(0);
+    const totalVacntnCnt = getTotalRequiredVaccinations();
     const [totalVacntnOdr, setTotalVacntnOdr] = useState(0);
 
     // Zustand store에서 currentKid 가져오기
     const currentKid = useChldrnListStore((state) => state.currentKid);
 
     useEffect(() => {
-        console.log(currentKid)
+
         const fetchData = async () => {
             if (currentKid) {
                 try {
@@ -47,8 +48,9 @@ const App = () => {
 
                     if (response.data.data.vacntnInfo) {
                         setVacntnInfo(response.data.data.vacntnInfo);
+                        console.log(response.data.data.vacntnInfo)
+
                         const sums = calculateVaccineSums(response.data.data.vacntnInfo);
-                        setTotalVacntnCnt(sums.cntSum);
                         setTotalVacntnOdr(sums.odrSum);
                     }
 
@@ -82,7 +84,7 @@ const App = () => {
 
     return (
         <>
-            <ProfileHeader />
+            <ProfileHeader icon={<i className="ri-calendar-line" />} path="/note/calendar" />
             <Label text="예방접종 진행률" css="metricsValue" />
             <Container className="rateContainer" backgroundColor="#F4F4F4">
                 <div className="horizonFlexbox space-between">
@@ -107,16 +109,6 @@ const App = () => {
 
                 <ProgressBar completed={calculatePercentage()} total={100} />
             </Container>
-            {/* <div className="horizonFlexbox gap-8">
-                <div className={styles.noteBtn}>
-                    <Label text="달력보기" css="noteBtn"></Label>
-                    <img src="/vaccineCalander.svg" />
-                </div>
-                <div className={styles.noteBtn}>
-                    <Label text="알림설정" css="noteBtn"></Label>
-                    <img src="/vaccineAlarm.svg" />
-                </div>
-            </div> */}
             <Label text="예방접종 자세히 보기" css="metricsValue" />
             <VaccineCount vacntnInfo={vacntnInfo} />
         </>
