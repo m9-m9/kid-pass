@@ -1,97 +1,116 @@
 "use client";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import InputForm from "@/components/form/InputForm";
-import Header from "@/components/header/Header";
-import LoadingFullScreen from "@/components/loading/LoadingFullScreen";
 import Button from "@/elements/button/Button";
 import Container from "@/elements/container/Container";
 import Spacer from "@/elements/spacer/Spacer";
-import useFetch from "@/hook/useFetch";
-import useAuthStore from "@/store/useAuthStore";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import Header from "@/components/header/Header";
 
-const App: React.FC = () => {
-  const searchParams = useSearchParams();
-  const { setAccessToken, setRefreshToken } = useAuthStore();
+const SignupPage = () => {
   const router = useRouter();
+  const [userId, setUserId] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [name, setName] = useState("");
 
-  const [mberId, setMberId] = useState("");
-  const [mberPw, setMberPw] = useState("");
-  const [mberPwChk, setMberPwChk] = useState("");
-
-  const { sendRequest, responseData, loading, destroy } = useFetch<any>();
-
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const body = {
-      mberId,
-      mberPw,
-      mberSexdstn: "F",
-      mberSttus: "PLAN",
-    };
-    const formData = new FormData();
-    formData.append("Member", JSON.stringify(body));
-    formData.append("file", "");
-
-    sendRequest({
-      url: "authenticate/signup",
-      method: "POST",
-      body: formData,
-    });
-  };
-
-  useEffect(() => {
-    if (responseData) {
-      if (responseData && responseData.msg === "succes") {
-        setAccessToken(responseData.data.accessToken);
-        setRefreshToken(responseData.data.refreshToken);
-      }
+    if (password !== passwordConfirm) {
+      alert("비밀번호가 일치하지 않습니다.");
+      return;
     }
-  }, [responseData]);
+
+    const signupData = {
+      userId,
+      email,
+      password,
+      name,
+    };
+
+    console.log("회원가입 요청 데이터:", signupData); // 디버깅용 로그
+
+    try {
+      const response = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(signupData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert("회원가입이 완료되었습니다.");
+        router.push("/auth/login");
+      } else {
+        alert(data.message);
+      }
+    } catch (error) {
+      alert("회원가입 중 오류가 발생했습니다.");
+    }
+  };
 
   return (
     <Container className="container" full>
-      <LoadingFullScreen isVisible={loading} />
       <Header title="회원가입" onBack={() => router.back()} />
-      {/* <Spacer height={50} /> */}
+      <Spacer height={50} />
       <form
-        onSubmit={(e) => handleLogin(e)}
+        onSubmit={handleSignup}
         style={{ display: "flex", flexDirection: "column", flex: 1 }}
       >
         <InputForm
-          labelText="이메일"
-          placeholder="todayschild@mail.com"
+          labelText="아이디"
+          placeholder="아이디를 입력해주세요"
           labelCss="inputForm"
-          value={mberId}
-          onChange={setMberId}
+          value={userId}
+          onChange={setUserId}
+          type="text"
+        />
+        <Spacer height={32} />
+        <InputForm
+          labelText="이메일"
+          placeholder="이메일을 입력해주세요"
+          labelCss="inputForm"
+          value={email}
+          onChange={setEmail}
+          type="email"
         />
         <Spacer height={32} />
         <InputForm
           labelText="비밀번호"
-          placeholder="문자와 숫자를 포함한 8~20자"
+          placeholder="비밀번호를 입력해주세요"
           labelCss="inputForm"
-          value={mberPw}
-          onChange={setMberPw}
+          value={password}
+          onChange={setPassword}
           type="password"
-          showPasswordToggle
         />
         <Spacer height={32} />
         <InputForm
           labelText="비밀번호 확인"
-          placeholder="문자와 숫자를 포함한 8~20자"
+          placeholder="비밀번호를 다시 입력해주세요"
           labelCss="inputForm"
-          value={mberPw}
-          onChange={setMberPw}
+          value={passwordConfirm}
+          onChange={setPasswordConfirm}
           type="password"
-          showPasswordToggle
+        />
+        <Spacer height={32} />
+        <InputForm
+          labelText="이름"
+          placeholder="이름을 입력해주세요"
+          labelCss="inputForm"
+          value={name}
+          onChange={setName}
         />
         <div style={{ flex: 1 }} />
-        <Button type="submit" label="다음" />
+        <Button type="submit" label="가입하기" />
       </form>
     </Container>
   );
 };
 
-export default App;
+export default SignupPage;
