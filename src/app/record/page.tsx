@@ -15,6 +15,7 @@ import FloatingBtn from "@/components/floatingBtn/FloatingBtn";
 import Link from "next/link";
 import BottomNavigation from "@/components/bottomNavigation/BottomNavigation";
 import useAuth from "@/hook/useAuth";
+import instance from "@/utils/axios";
 
 const SLIDES = [
   "수면",
@@ -73,7 +74,7 @@ const RECORDS = [
   {
     title: "기타",
     src: "/images/etc.png",
-    path: "/record/feeding",
+    path: "/record/etc",
   },
 ];
 
@@ -88,6 +89,15 @@ const App: React.FC = () => {
   const { openModal, closeModal, setComp } = useModalStore();
 
   const { getCrtChldNo } = useAuth();
+
+  const fetchRecords = async () => {
+    const res = await instance.post(`/report/getTotHist`);
+    console.log(res);
+  };
+
+  useEffect(() => {
+    fetchRecords();
+  }, []);
 
   const items = RECORDS.map((v) => (
     <Link href={v.path} onClick={() => closeModal()}>
@@ -239,33 +249,35 @@ const App: React.FC = () => {
 
   return (
     <Container className="mapContainer">
-      <div
-        style={{
-          position: "sticky",
-          top: 0,
-          zIndex: 10,
-          backgroundColor: "white",
-        }}
-      >
-        <WeeklyCalendar />
-      </div>
-      <Carousel
-        slides={SLIDES}
-        options={{
-          useButton: false,
-          useIndex: false,
-          dragFree: true,
-          selectedItems: selectedItems,
-          onSelect: handleSelect,
-        }}
-      />
+      <div style={{ backgroundColor: "white" }}>
+        <div
+          style={{
+            position: "sticky",
+            top: 0,
+            zIndex: 10,
+            backgroundColor: "white",
+          }}
+        >
+          <WeeklyCalendar />
+        </div>
+        <Carousel
+          slides={SLIDES}
+          options={{
+            useButton: false,
+            useIndex: false,
+            dragFree: true,
+            selectedItems: selectedItems,
+            onSelect: handleSelect,
+          }}
+        />
 
-      <div style={{ marginBottom: 60 }}>
-        <Schedule schedules={scheduleData} />
-      </div>
-      <FloatingBtn onClick={() => openModal()} />
+        <div style={{ marginBottom: 60 }}>
+          <Schedule schedules={scheduleData} />
+        </div>
+        <FloatingBtn onClick={() => openModal()} />
 
-      <BottomNavigation />
+        <BottomNavigation />
+      </div>
     </Container>
   );
 };

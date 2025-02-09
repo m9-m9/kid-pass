@@ -1,35 +1,36 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import styles from "./style.module.css";
 import Image from "next/image";
 
 const BottomNavigation = () => {
   const router = useRouter();
+  const pathname = usePathname();
 
   const navItems = [
     {
-      icon: "/images/icons/ruler.png",
+      icon: "/images/icons/home.svg",
       label: "홈",
       path: "/home",
     },
     {
-      icon: "/images/icons/ruler.png",
+      icon: "/images/icons/ruler.svg",
       label: "아이기록",
       path: "/record",
     },
     {
-      icon: "/images/icons/book.png",
+      icon: "/images/icons/book.svg",
       label: "아기수첩",
       path: "/note",
     },
     {
-      icon: "/images/icons/hospital.png",
+      icon: "/images/icons/cross_icon.svg",
       label: "병원기록",
       path: "/hospital",
     },
     {
-      icon: "/images/icons/more.png",
+      icon: "/images/icons/more.svg",
       label: "더보기",
       path: "/more",
     },
@@ -40,7 +41,9 @@ const BottomNavigation = () => {
       {navItems.map((item) => (
         <button
           key={item.path}
-          className={styles.navItem}
+          className={`${styles.navItem} ${
+            pathname.startsWith(item.path) ? styles.active : ""
+          }`}
           onClick={() => router.push(item.path)}
         >
           <Image
