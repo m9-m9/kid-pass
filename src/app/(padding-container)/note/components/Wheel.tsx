@@ -15,11 +15,11 @@ interface WheelProps {
   endNum: number;
   initialValue: number;
   styles?: WheelStyles;
+  isRepeating?: boolean;
   onChange?: (value: number) => void;
 }
 
-const Wheel = ({ startNum, endNum, initialValue, styles, onChange }: WheelProps) => {
-
+const Wheel = ({ startNum, endNum, initialValue, styles, isRepeating = false, onChange }: WheelProps) => {
   const { setYear, setMonth, setDay } = useDateStore();
   const initialIndex = initialValue - startNum;
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
@@ -31,19 +31,32 @@ const Wheel = ({ startNum, endNum, initialValue, styles, onChange }: WheelProps)
   const isWheeling = useRef(false);
   const wheelTimeout = useRef<NodeJS.Timeout>();
 
-  const numbers = Array.from(
+  const ITEM_HEIGHT = 40;
+  const REPEAT_COUNT = 5; // 반복할 횟수
+
+  // 기본 숫자 배열 생성
+  const baseNumbers = Array.from(
     { length: endNum - startNum + 1 },
     (_, i) => startNum + i
   );
 
-  const ITEM_HEIGHT = 40;
+  // 반복된 숫자 배열 생성
+  const numbers = isRepeating
+    ? Array.from({ length: baseNumbers.length * REPEAT_COUNT }, (_, i) =>
+      baseNumbers[i % baseNumbers.length]
+    )
+    : baseNumbers;
 
-  // 스크롤 위치를 기반으로 아이템 인덱스와 값을 업데이트하는 함수
+  // 실제 값 계산 함수
+  const getRealValue = (index: number) => {
+    if (!isRepeating) return numbers[index];
+    return baseNumbers[index % baseNumbers.length];
+  };
+
   const updateSelectedItem = (newScrollTop: number) => {
     if (!containerRef.current || !highlightRef.current) return;
 
     const containerRect = containerRef.current.getBoundingClientRect();
-    const highlightRect = highlightRef.current.getBoundingClientRect();
     const centerY = containerRect.top + containerRect.height / 2;
 
     const items = containerRef.current.getElementsByClassName(S.wheelItem);
@@ -53,7 +66,6 @@ const Wheel = ({ startNum, endNum, initialValue, styles, onChange }: WheelProps)
       const itemRect = item.getBoundingClientRect();
       const itemCenterY = itemRect.top + itemRect.height / 2;
 
-      // 아이템의 중심이 하이라이트 영역 안에 있는지 확인
       if (Math.abs(itemCenterY - centerY) < ITEM_HEIGHT / 2) {
         selectedIndex = index;
       }
@@ -61,18 +73,17 @@ const Wheel = ({ startNum, endNum, initialValue, styles, onChange }: WheelProps)
 
     if (selectedIndex !== currentIndex) {
       setCurrentIndex(selectedIndex);
-      onChange?.(numbers[selectedIndex]);
-      handleChange(numbers[selectedIndex]);
-      // console.log('Current Value:', numbers[selectedIndex]);
+      const realValue = getRealValue(selectedIndex);
+      onChange?.(realValue);
+      handleChange(realValue);
     }
 
     return selectedIndex;
   };
 
-  // 스크롤 위치 스냅 함수
   const snapToItem = (index: number) => {
-    const newScrollTop = index * ITEM_HEIGHT;
-    setScrollTop(newScrollTop);
+    setCurrentIndex(index);
+    setScrollTop(index * ITEM_HEIGHT);
   };
 
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -119,48 +130,46 @@ const Wheel = ({ startNum, endNum, initialValue, styles, onChange }: WheelProps)
     snapToItem(currentIndex);
   };
 
-  const WHEEL_SENSITIVITY = 0.5;  // 휠 감도 조절용 상수
-
-  // handleWheel 함수를 수정
   const handleWheel = (e: React.WheelEvent) => {
     if (isWheeling.current) return;
     isWheeling.current = true;
 
-    // 휠 델타를 더 세밀하게 조절
     const direction = e.deltaY > 0 ? 1 : -1;
-    const newIndex = Math.min(
-      Math.max(currentIndex + direction, 0),
-      numbers.length - 1
-    );
+    const newIndex = Math.min(Math.max(currentIndex + direction, 0), numbers.length - 1);
 
     setCurrentIndex(newIndex);
     const newScrollTop = newIndex * ITEM_HEIGHT;
     setScrollTop(newScrollTop);
-    onChange?.(numbers[newIndex]);
-    handleChange(numbers[newIndex]);
-    // console.log('Current Selected Value:', numbers[newIndex]);
 
-    // 디바운스 시간을 줄임
+    const realValue = getRealValue(newIndex);
+    onChange?.(realValue);
+    handleChange(realValue);
+
     if (wheelTimeout.current) {
       clearTimeout(wheelTimeout.current);
     }
     wheelTimeout.current = setTimeout(() => {
       isWheeling.current = false;
-    }, 20);  // 더 빠른 응답을 위해 타임아웃 시간 감소
+    }, 20);
   };
 
   const handleChange = (value: number) => {
     onChange?.(value);
-    if (startNum === 2010) setYear(value); // 연도 휠
-    else if (startNum === 1 && endNum === 12) setMonth(value); // 월 휠
-    else if (startNum === 1 && endNum === 31) setDay(value); // 일 휠
+    if (startNum === 2010) setYear(value);
+    else if (startNum === 1 && endNum === 12) setMonth(value);
+    else if (startNum === 1 && endNum === 31) setDay(value);
   };
 
-  // 마운트 시 초기 스냅
   useEffect(() => {
-    const initialScrollTop = initialIndex * ITEM_HEIGHT;
+    // 초기 위치를 중앙으로 설정
+    const middleIndex = isRepeating
+      ? Math.floor(numbers.length / 2)
+      : initialIndex;
+    const initialScrollTop = middleIndex * ITEM_HEIGHT;
     setScrollTop(initialScrollTop);
+    setCurrentIndex(middleIndex);
   }, []);
+
   return (
     <div
       ref={containerRef}
@@ -188,7 +197,7 @@ const Wheel = ({ startNum, endNum, initialValue, styles, onChange }: WheelProps)
       >
         {numbers.map((number, index) => (
           <div
-            key={number}
+            key={`${number}-${index}`}
             className={`${S.wheelItem} ${index === currentIndex ? S.selected : ''}`}
             style={{
               fontSize: styles?.fontSize || '16px',
