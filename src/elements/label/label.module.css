@@ -87,9 +87,14 @@
 
 .treatmentType,
 .drugName,
-.vaccine,
 .symtomMetrics {
     font-size: var(--font-size-18);
+    font-weight: var(--font-weight-semiBold);
+    color: #000000;
+}
+
+.vaccine {
+     font-size: var(--font-size-16);
     font-weight: var(--font-weight-semiBold);
     color: #000000;
 }

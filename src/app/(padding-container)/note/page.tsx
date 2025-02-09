@@ -37,6 +37,8 @@ const App = () => {
 
     useEffect(() => {
 
+
+
         const fetchData = async () => {
             if (currentKid) {
                 try {
@@ -48,7 +50,6 @@ const App = () => {
 
                     if (response.data.data.vacntnInfo) {
                         setVacntnInfo(response.data.data.vacntnInfo);
-                        console.log(response.data.data.vacntnInfo)
 
                         const sums = calculateVaccineSums(response.data.data.vacntnInfo);
                         setTotalVacntnOdr(sums.odrSum);
