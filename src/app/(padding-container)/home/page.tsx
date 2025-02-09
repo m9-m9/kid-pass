@@ -1,8 +1,6 @@
 "use client";
 
 import { Label } from "@/elements/label/Label";
-import Button from "../../../elements/button/Button";
-import sendToRn from "../../../utils/sendToRn";
 import Container from "@/elements/container/Container";
 import PlusIcon from "@/elements/svg/Plus";
 import styles from "./home.module.css";
@@ -15,18 +13,11 @@ import { useRouter } from "next/navigation";
 import BottomNavigation from "@/components/bottomNavigation/BottomNavigation";
 import useChldrnListStore from "@/store/useChldrnListStore";
 
-type OpenStates = {
-  sleep: boolean;
-  meal: boolean;
-  urination: boolean;
-  temp: boolean;
-};
-
 interface PhysicalStats {
   chldrnBdwgh: number;
   chldrnHead: number;
   chldrnHeight: number;
-  chldrnNo: number;
+  chldrnNo: string;
 }
 
 export interface KidProfile {
@@ -35,7 +26,7 @@ export interface KidProfile {
   chldrnBrthdy?: string;
   chldrnInfoList: [PhysicalStats];
   chldrnNm: string;
-  chldrnNo: number;
+  chldrnNo: string;
   days: number;
   weeks: number;
 }
@@ -127,7 +118,7 @@ const App: React.FC = () => {
           }
 
           const childrenToStore = children.map((child) => ({
-            chldrnNo: parseInt(child.id),
+            chldrnNo: child.id,
             chldrnNm: child.name,
             chldrnSexdstn: child.gender,
           }));
@@ -178,7 +169,7 @@ const App: React.FC = () => {
                 chldrnBrthdy: child.birthDate,
                 ageType: child.ageType || "",
                 age: age,
-                chldrnNo: parseInt(child.id),
+                chldrnNo: child.id,
                 atchCode: "",
                 days,
                 weeks,
@@ -187,14 +178,13 @@ const App: React.FC = () => {
                     chldrnBdwgh: child.weight || 0,
                     chldrnHead: child.headCircumference || 0,
                     chldrnHeight: child.height || 0,
-                    chldrnNo: parseInt(child.id),
+                    chldrnNo: child.id,
                   },
                 ] as [PhysicalStats],
               },
               metrics: mockMetrics(child.name, index),
             };
           });
-
           setKidsData(kidsWithMetrics);
         }
       } catch (error) {
@@ -247,10 +237,7 @@ const App: React.FC = () => {
       <Container className="homepage_1 gap-4">
         <PlusIcon color="#FFFFFF" size={12} strokeWidth={4} />
         <Label text="오늘의 아이 증상 기록하기" css="home_1" />
-        <img
-          className={styles.homepage_image_1}
-          src="/record.png"
-        />
+        <img className={styles.homepage_image_1} src="/record.png" />
       </Container>
 
       <div className="horizonFlexbox gap-16 align-center">

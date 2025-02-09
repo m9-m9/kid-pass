@@ -7,12 +7,17 @@ import { useRouter } from "next/navigation";
 import { hospitalRecord } from "./type/hospital";
 import Container from "@/elements/container/Container";
 import BottomNavigation from "@/components/bottomNavigation/BottomNavigation";
+import ProfileHeader from "@/components/header/ProfileHeader";
 
 const Hospital = () => {
   const router = useRouter();
 
   return (
     <Container className="container">
+      <ProfileHeader
+        icon={<i className="ri-calendar-line" />}
+        path="/hospital"
+      />
       {sampleRecords.map((record, index) => (
         <Item key={record.hsptlNo} {...record} />
       ))}
