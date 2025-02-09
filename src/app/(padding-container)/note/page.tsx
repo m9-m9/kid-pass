@@ -82,7 +82,7 @@ const App = () => {
 
     return (
         <>
-            <ProfileHeader icon={<i className="ri-calendar-line" />} />
+            <ProfileHeader icon={<i className="ri-calendar-line" />} path="/note/calendar" />
             <Label text="예방접종 진행률" css="metricsValue" />
             <Container className="rateContainer" backgroundColor="#F4F4F4">
                 <div className="horizonFlexbox space-between">

@@ -13,10 +13,11 @@ import { useRouter } from "next/navigation";
 
 interface ProfileHeaderProps {
     icon: React.ReactNode;
+    path: string;
 }
 
 
-const ProfileHeader = ({ icon }: ProfileHeaderProps) => {
+const ProfileHeader = ({ icon, path }: ProfileHeaderProps) => {
     const router = useRouter();
     const [showModal, setShowModal] = useState(false);
     const modalRef = useRef<HTMLDivElement>(null);
@@ -61,8 +62,8 @@ const ProfileHeader = ({ icon }: ProfileHeaderProps) => {
         }
     }, [setCurrentKid]);
 
-    const handleCalendarClick = () => {
-        router.push('/note/calendar');
+    const handlePath = () => {
+        router.push(path);
     };
 
     return (
@@ -74,7 +75,7 @@ const ProfileHeader = ({ icon }: ProfileHeaderProps) => {
                     <Label text={`${currentChild?.chldrnNm} D+32`} css="countDown"></Label>
                 </div>
                 <div className={styles.rightSection}>
-                    <div onClick={handleCalendarClick}>
+                    <div onClick={handlePath}>
                         {icon}
                     </div>
                     <button
