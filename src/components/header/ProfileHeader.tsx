@@ -18,25 +18,33 @@ interface ProfileHeaderProps {
 const ProfileHeader = ({ icon, path }: ProfileHeaderProps) => {
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
   const profileRef = useRef<HTMLButtonElement>(null);
   const { getChldrnList } = useChldrnList();
   const setCurrentKid = useChldrnListStore((state) => state.setCurrentKid);
   const currentKid = useChldrnListStore((state) => state.currentKid);
   const today = format(new Date(), "M월 d일", { locale: ko });
-  const childrenList = getChldrnList();
+  const childrenList = mounted ? getChldrnList() : [];
 
-  // 현재 선택된 아이 정보 찾기
-  const currentChild =
-    childrenList?.find(
-      (child: { chldrnNo: { toString: () => string | null } }) =>
-        child.chldrnNo.toString() === currentKid
-    ) || childrenList?.[0];
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // 현재 선택된 아이 정보 찾기 (null 체크 추가)
+  const currentChild = mounted
+    ? childrenList?.find(
+        (child: { chldrnNo: { toString: () => string | null } }) =>
+          child.chldrnNo.toString() === currentKid
+      ) || childrenList?.[0]
+    : null;
 
   const handleChildSelect = (childNo: string) => {
-    setCurrentKid(childNo);
-    localStorage.setItem("currentkid", childNo);
-    setShowModal(false);
+    if (mounted) {
+      setCurrentKid(childNo);
+      localStorage.setItem("currentkid", childNo);
+      setShowModal(false);
+    }
   };
 
   useEffect(() => {
@@ -57,11 +65,13 @@ const ProfileHeader = ({ icon, path }: ProfileHeaderProps) => {
   }, []);
 
   useEffect(() => {
-    const storedKid = localStorage.getItem("currentkid");
-    if (storedKid) {
-      setCurrentKid(storedKid);
+    if (mounted) {
+      const storedKid = localStorage.getItem("currentkid");
+      if (storedKid) {
+        setCurrentKid(storedKid);
+      }
     }
-  }, [setCurrentKid]);
+  }, [mounted, setCurrentKid]);
 
   const handlePath = () => {
     if (path) {
