@@ -1,0 +1,71 @@
+.container {
+  padding: 20px;
+}
+
+.infoItem {
+  display: flex;
+  padding: 16px;
+  border-bottom: 1px solid #f4f4f4;
+}
+
+.label {
+  flex: 1;
+  color: #666;
+  font-size: 15px;
+}
+
+.value {
+  flex: 2;
+  font-size: 15px;
+  text-align: right;
+}
+
+.memo {
+  margin-top: 20px;
+  padding: 16px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
+
+.memoLabel {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.memoText {
+  font-size: 15px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+.buttonContainer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px 20px;
+  display: flex;
+  gap: 8px;
+  background: white;
+  border-top: 1px solid #f4f4f4;
+}
+
+.button {
+  flex: 1;
+  height: 48px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+}
+
+.editButton {
+  background-color: #f4f4f4;
+  color: #1a1a1a;
+}
+
+.deleteButton {
+  background-color: #ff4d4f;
+  color: white;
+}

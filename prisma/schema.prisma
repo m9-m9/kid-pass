@@ -26,6 +26,31 @@ model User {
   @@map("users")
 }
 
+model Record {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  childId     String   @db.ObjectId
+  child       Child    @relation(fields: [childId], references: [id])
+  type        String   // FEEDING, SLEEP, DIAPER 등
+  // 공통 필드
+  startTime   DateTime // 시작 시간
+  endTime     DateTime? // 종료 시간 (선택)
+  memo        String?  // 메모
+  
+  // 수유 관련
+  mealType    String?  // 모유, 분유, 이유식, 혼합
+  amount      Float?   // 수유량
+  unit        String?  // 단위 (ml 등)
+  
+  // 기저귀 관련
+  diaperType  String?  // 대변, 소변
+  diaperState String?  // 상태
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("records")
+}
+
 model Child {
   id               String   @id @default(auto()) @map("_id") @db.ObjectId
   name             String
@@ -42,6 +67,7 @@ model Child {
   userId           String   @db.ObjectId
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
+  records          Record[]
 
   @@map("children")
 }
