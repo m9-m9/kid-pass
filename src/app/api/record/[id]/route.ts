@@ -1,11 +1,11 @@
 import { PrismaClient } from "@prisma/client";
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import jwt from "jsonwebtoken";
 
 const prisma = new PrismaClient();
 
 export async function GET(
-  request: Request,
+  request: NextRequest,
   context: { params: { id: string } }
 ) {
   try {
@@ -67,7 +67,7 @@ export async function GET(
 }
 
 export async function DELETE(
-  request: Request,
+  request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
@@ -109,7 +109,7 @@ export async function DELETE(
 }
 
 export async function PUT(
-  request: Request,
+  request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
