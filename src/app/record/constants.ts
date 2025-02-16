@@ -15,47 +15,56 @@ export const RECORDS = [
   {
     title: "수유",
     src: "/images/feeding.png",
-    path: "/record/feeding",
+    path: "/record/FEEDING",
+    type: "FEEDING",
   },
   {
-    title: "배설",
+    title: "배변",
     src: "/images/diaper.png",
-    path: "/record/buHist",
+    path: "/record/DIAPER",
+    type: "DIAPER",
   },
   {
     title: "수면",
     src: "/images/sleep.png",
-    path: "/record/sleep",
+    path: "/record/SLEEP",
+    type: "SLEEP",
   },
   {
     title: "체온",
     src: "/images/temperature.png",
-    path: "/record/heat",
+    path: "/record/TEMPERATURE",
+    type: "TEMPERATURE",
   },
   {
     title: "몸무게/키/머리둘레",
     src: "/images/scale.png",
-    path: "/record/hgWgh",
+    path: "/record/GROWTH",
+    type: "GROWTH",
   },
   {
     title: "감정",
     src: "/images/heart.png",
-    path: "/record/emotion",
+    path: "/record/EMOTION",
+    type: "EMOTION",
   },
   {
     title: "특이증상",
     src: "/images/info.png",
-    path: "/record/symptm",
+    path: "/record/SYMPTOM",
+    type: "SYMPTOM",
   },
   {
     title: "약",
     src: "/images/medicine.png",
-    path: "/record/takngHist",
+    path: "/record/MEDICINE",
+    type: "MEDICINE",
   },
   {
     title: "기타",
     src: "/images/etc.png",
-    path: "/record/etc",
+    path: "/record/ETC",
+    type: "ETC",
   },
 ] as const;
 
@@ -70,4 +79,16 @@ export const TYPE_PATH_MAP = {
   특이증상: "/record/symptm",
   약: "/record/takngHist",
   기타: "/record/etc",
+} as const;
+
+export const TYPE_MAP = {
+  FEEDING: "수유",
+  DIAPER: "배변",
+  SLEEP: "수면",
+  TEMPERATURE: "체온",
+  GROWTH: "성장",
+  EMOTION: "감정",
+  SYMPTOM: "특이증상",
+  MEDICINE: "투약",
+  ETC: "기타",
 } as const;
