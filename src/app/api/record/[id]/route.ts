@@ -1,13 +1,17 @@
 import { PrismaClient } from "@prisma/client";
-import { NextResponse, NextRequest } from "next/server";
+import { NextResponse } from "next/server";
+import { type NextRequest } from "next/server";
 import jwt from "jsonwebtoken";
 
 const prisma = new PrismaClient();
 
-export async function GET(
-  request: NextRequest,
-  context: { params: { id: string } }
-) {
+interface RouteContext {
+  params: {
+    id: string;
+  };
+}
+
+export async function GET(request: NextRequest, { params }: RouteContext) {
   try {
     const authHeader = request.headers.get("authorization");
     if (!authHeader?.startsWith("Bearer ")) {
@@ -36,7 +40,7 @@ export async function GET(
     // 기록 조회
     const record = await prisma.record.findFirst({
       where: {
-        id: context.params.id,
+        id: params.id,
         type,
         child: {
           user: {
@@ -66,10 +70,7 @@ export async function GET(
   }
 }
 
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(request: NextRequest, { params }: RouteContext) {
   try {
     const authHeader = request.headers.get("authorization");
     if (!authHeader?.startsWith("Bearer ")) {
@@ -108,10 +109,7 @@ export async function DELETE(
   }
 }
 
-export async function PUT(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function PUT(request: NextRequest, { params }: RouteContext) {
   try {
     const authHeader = request.headers.get("authorization");
     if (!authHeader?.startsWith("Bearer ")) {
