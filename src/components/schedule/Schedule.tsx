@@ -1,5 +1,7 @@
 import React from "react";
 import styles from "./Schedule.module.css";
+import { useRouter } from "next/navigation";
+import { TYPE_PATH_MAP } from "@/app/record/constants";
 
 export interface ScheduleItem {
   time: string;
@@ -7,6 +9,8 @@ export interface ScheduleItem {
   content: keyof typeof CategoryMapColor;
   duration?: string;
   amount?: string;
+  id: string;
+  type: string;
 }
 
 export interface DaySchedule {
@@ -33,6 +37,12 @@ const CategoryMapColor = {
 };
 
 const Schedule: React.FC<ScheduleProps> = ({ schedules }) => {
+  const router = useRouter();
+
+  const handleItemClick = (item: ScheduleItem) => {
+    router.push(`/record/${item.type}/${item.id}`);
+  };
+
   return (
     <div className={styles.scheduleContainer}>
       {schedules.map((daySchedule, dayIndex) => (
@@ -43,13 +53,24 @@ const Schedule: React.FC<ScheduleProps> = ({ schedules }) => {
           </div>
           <div className={styles.itemList}>
             {daySchedule.items.map((item, itemIndex) => (
-              <div key={itemIndex} className={styles.scheduleItem}>
+              <div
+                key={itemIndex}
+                className={styles.scheduleItem}
+                onClick={() => handleItemClick(item)}
+                style={{
+                  cursor: "pointer",
+                  WebkitTapHighlightColor: "transparent",
+                }}
+              >
                 <div className={styles.timeContainer}>
                   <span className={styles.time}>{item.time}</span>
                   <span className={styles.ampm}>{item.ampm}</span>
                 </div>
                 <div className={styles.contentContainer}>
-                  <span className={styles.content} style={{ color: CategoryMapColor[item.content] }}>
+                  <span
+                    className={styles.content}
+                    style={{ color: CategoryMapColor[item.content] }}
+                  >
                     {item.content}
                   </span>
                   {(item.duration || item.amount) && (

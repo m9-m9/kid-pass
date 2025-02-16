@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useCallback } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import styles from "./DateCarousel.module.css";
-import Button from "@/elements/button/Button";
-import { Label } from "@/elements/label/Label";
+
 import ProfileHeader from "../header/ProfileHeader";
+import { DateType } from "@/hook/useDatePicker";
 
 interface DayInfo {
   date: Date;
@@ -15,6 +15,10 @@ interface WeekProps {
   weekStart: Date;
   selectedDate: Date;
   onDateSelect: (date: Date) => void;
+}
+
+interface WeeklyCalendarProps {
+  onDateChange?: (date: DateType) => void;
 }
 
 const DAY_NAMES: readonly string[] = ["일", "월", "화", "수", "목", "금", "토"];
@@ -75,7 +79,7 @@ const WeekView: React.FC<WeekProps> = ({
   );
 };
 
-const WeeklyCalendar: React.FC = () => {
+const WeeklyCalendar: React.FC<WeeklyCalendarProps> = ({ onDateChange }) => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [weeks, setWeeks] = useState<Date[]>([]);
   const [currentWeekIndex, setCurrentWeekIndex] = useState<number>(10); // 기본값은 중간 주
@@ -137,6 +141,17 @@ const WeeklyCalendar: React.FC = () => {
     return `${middleOfWeek.getFullYear()}년 ${middleOfWeek.getMonth() + 1}월`;
   };
 
+  const handleDateSelect = (date: Date) => {
+    setSelectedDate(date);
+    if (onDateChange) {
+      onDateChange({
+        year: date.getFullYear(),
+        month: date.getMonth() + 1,
+        date: date.getDate(),
+      });
+    }
+  };
+
   return (
     <div>
       <div style={{ padding: "16px 16px 0 16px" }}>
@@ -151,7 +166,7 @@ const WeeklyCalendar: React.FC = () => {
               key={weekStart.toISOString()}
               weekStart={weekStart}
               selectedDate={selectedDate}
-              onDateSelect={setSelectedDate}
+              onDateSelect={handleDateSelect}
             />
           ))}
         </div>

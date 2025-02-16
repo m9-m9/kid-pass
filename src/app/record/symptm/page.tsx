@@ -1,18 +1,24 @@
 "use client";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Header from "@/components/header/Header";
 import Container from "@/elements/container/Container";
 import { Label } from "@/elements/label/Label";
-import { useEffect, useState } from "react";
 import Spacer from "@/elements/spacer/Spacer";
 import Button from "@/elements/button/Button";
-import useFetch from "@/hook/useFetch";
-import Header from "@/components/header/Header";
-import { useRouter } from "next/navigation";
-import SearchListPicker from "@/components/searchListPicker/SearchListPicker";
 import Grid from "@/elements/grid/Grid";
+import SearchListPicker from "@/components/searchListPicker/SearchListPicker";
+import useAuth from "@/hook/useAuth";
+import CustomDateTimePicker from "@/components/customDateTimePicker/CustomDateTimePicker";
 import styles from "./styles.module.css";
 
-const symptoms = [
+interface SearchItem {
+  id: string;
+  name: string;
+}
+
+const SYMPTOMS = [
   { id: "1", name: "수유 거부" },
   { id: "2", name: "설사" },
   { id: "3", name: "발진" },
@@ -35,39 +41,57 @@ const symptoms = [
   { id: "20", name: "중이염" },
 ];
 
-const STR = ["약함", "보통", "심함"];
+const SEVERITY = ["약함", "보통", "심함"];
 
 const App: React.FC = () => {
   const router = useRouter();
+  const { getToken } = useAuth();
 
-  const [mealAmount, setMealAmount] = useState("");
-  const [mealTy, setMealTy] = useState("");
-  const [mealMemo, setMealMemo] = useState("");
+  const [selectedDate, setSelectedDate] = useState<Date>();
+  const [symptom, setSymptom] = useState("");
+  const [severity, setSeverity] = useState("");
 
-  const { sendRequest, responseData, loading } = useFetch();
-
-  const onSubmit = (e: any) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    sendRequest({
-      url: "report/createMealHist",
-      method: "POST",
-      body: {
-        mealTy,
-        mealAmount,
-        mealUnit: "ml",
-        mealMemo,
-      },
-    });
+    try {
+      const token = await getToken();
+      const currentKid = localStorage.getItem("currentKid");
+
+      if (!token || !currentKid || !selectedDate) {
+        return;
+      }
+
+      const response = await fetch("/api/record", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          childId: currentKid,
+          type: "SYMPTOM",
+          startTime: selectedDate,
+          symptom,
+          severity,
+        }),
+      });
+
+      if (response.ok) {
+        router.back();
+      }
+    } catch (error) {
+      console.error("기록 저장 에러:", error);
+    }
   };
 
-  const strs = STR.map((v, i) => (
+  const severityButtons = SEVERITY.map((v, i) => (
     <button
       key={i}
       className={`${styles.kindButton} ${
-        mealMemo === v ? styles.selected : ""
+        severity === v ? styles.selected : ""
       }`}
-      onClick={() => setMealMemo(v)}
+      onClick={() => setSeverity(v)}
       type="button"
     >
       {v}
@@ -79,21 +103,32 @@ const App: React.FC = () => {
       <Header title="특이증상 기록하기" onBack={() => router.back()} />
       <Spacer height={30} />
       <form
-        onSubmit={onSubmit}
+        onSubmit={handleSubmit}
         style={{ display: "flex", flexDirection: "column", flex: 1 }}
       >
-        <Label text="특이증상" css="inputForm" />
+        <Label css="inputForm" text="일시" />
         <Spacer height={10} />
-        <SearchListPicker
-          items={symptoms}
-          mode={"single"}
-          onSelect={() => {}}
+        <CustomDateTimePicker
+          selected={selectedDate}
+          onSelect={(date) => setSelectedDate(date)}
         />
 
         <Spacer height={30} />
-        <Label css="inputForm" text="기타 사항" />
+        <Label text="특이증상" css="inputForm" />
         <Spacer height={10} />
-        <Grid items={strs} column={3} />
+        <SearchListPicker
+          items={SYMPTOMS}
+          mode="single"
+          onSelect={(selected: SearchItem | SearchItem[]) => {
+            const items = Array.isArray(selected) ? selected : [selected];
+            setSymptom(items[0]?.name || "");
+          }}
+        />
+
+        <Spacer height={30} />
+        <Label css="inputForm" text="증상 정도" />
+        <Spacer height={10} />
+        <Grid items={severityButtons} column={3} />
 
         <div style={{ flex: 1 }} />
         <Button label="등록하기" size="L" />

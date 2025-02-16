@@ -1,37 +1,54 @@
 "use client";
 
-import InputForm from "@/components/form/InputForm";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Header from "@/components/header/Header";
 import Container from "@/elements/container/Container";
 import { Label } from "@/elements/label/Label";
-import { useState } from "react";
 import Spacer from "@/elements/spacer/Spacer";
 import Button from "@/elements/button/Button";
-import useFetch from "@/hook/useFetch";
-import Header from "@/components/header/Header";
-import { useRouter } from "next/navigation";
+import InputForm from "@/components/form/InputForm";
+import useAuth from "@/hook/useAuth";
+import CustomDateTimePicker from "@/components/customDateTimePicker/CustomDateTimePicker";
 
 const App: React.FC = () => {
   const router = useRouter();
+  const { getToken } = useAuth();
 
-  const [mealAmount, setMealAmount] = useState("");
-  const [mealTy, setMealTy] = useState("");
-  const [mealMemo, setMealMemo] = useState("");
+  const [temperature, setTemperature] = useState("");
+  const [selectedDate, setSelectedDate] = useState<Date>();
 
-  const { sendRequest, responseData, loading } = useFetch();
-
-  const onSubmit = (e: any) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    sendRequest({
-      url: "report/createMealHist",
-      method: "POST",
-      body: {
-        mealTy,
-        mealAmount,
-        mealUnit: "ml",
-        mealMemo,
-      },
-    });
+    try {
+      const token = await getToken();
+      const currentKid = localStorage.getItem("currentKid");
+
+      if (!token || !currentKid || !selectedDate) {
+        return;
+      }
+
+      const response = await fetch("/api/record", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          childId: currentKid,
+          type: "TEMPERATURE",
+          startTime: selectedDate,
+          temperature: parseFloat(temperature),
+        }),
+      });
+
+      if (response.ok) {
+        router.back();
+      }
+    } catch (error) {
+      console.error("기록 저장 에러:", error);
+    }
   };
 
   return (
@@ -39,13 +56,8 @@ const App: React.FC = () => {
       <Header title="체온 기록하기" onBack={() => router.back()} />
       <Spacer height={30} />
       <form
-        onSubmit={onSubmit}
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          flex: 1,
-          height: "100vh",
-        }}
+        onSubmit={handleSubmit}
+        style={{ display: "flex", flexDirection: "column", flex: 1 }}
       >
         <Label
           text={`다음의 경우 즉시 병원 방문을 권장합니다.`}
@@ -57,13 +69,22 @@ const App: React.FC = () => {
         <Label text={`심한 탈수 증상이 있을 때`} css={"home_2"} />
         <Spacer height={30} />
 
+        <Label css="inputForm" text="체온 기록 시간" />
+        <Spacer height={10} />
+        <CustomDateTimePicker
+          selected={selectedDate}
+          onSelect={(date) => setSelectedDate(date)}
+        />
+        <Spacer height={30} />
+
         <InputForm
           labelText="체온"
-          placeholder=""
+          placeholder="체온을 입력하세요"
           labelCss="inputForm"
-          value={mealAmount}
-          onChange={setMealAmount}
+          value={temperature}
+          onChange={setTemperature}
           unit="℃"
+          type="number"
         />
         <div style={{ flex: 1 }} />
         <Button label="등록하기" size="L" />

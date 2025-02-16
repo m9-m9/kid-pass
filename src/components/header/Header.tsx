@@ -11,7 +11,12 @@ const Header: React.FC<HeaderProps> = ({ title, onBack, className = "" }) => {
   return (
     <header className={`${styles.header} ${className}`}>
       {onBack && (
-        <button type="button" className={styles.backButton} onClick={onBack} aria-label="뒤로 가기">
+        <button
+          type="button"
+          className={styles.backButton}
+          onClick={onBack}
+          aria-label="뒤로 가기"
+        >
           <i className="ri-arrow-left-s-line" style={{ fontSize: "24px" }} />
         </button>
       )}

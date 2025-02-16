@@ -1,19 +1,23 @@
 "use client";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Header from "@/components/header/Header";
 import Container from "@/elements/container/Container";
 import { Label } from "@/elements/label/Label";
-import { useEffect, useState } from "react";
 import Spacer from "@/elements/spacer/Spacer";
 import Button from "@/elements/button/Button";
-import useFetch from "@/hook/useFetch";
-import Header from "@/components/header/Header";
-import { useRouter } from "next/navigation";
 import SearchListPicker from "@/components/searchListPicker/SearchListPicker";
-import styles from "./styles.module.css";
-import CustomDateTimePicker from "@/components/customDateTimePicker/CustomDateTimePicker";
 import TextAreaForm from "@/components/textArea/TextArea";
+import CustomDateTimePicker from "@/components/customDateTimePicker/CustomDateTimePicker";
+import useAuth from "@/hook/useAuth";
 
-const medicines = [
+interface SearchItem {
+  id: string;
+  name: string;
+}
+
+const MEDICINES = [
   { id: "1", name: "타이레놀 시럽" },
   { id: "2", name: "아티푸스 시럽" },
   { id: "3", name: "케토라신 시럽" },
@@ -33,28 +37,44 @@ const medicines = [
 
 const App: React.FC = () => {
   const router = useRouter();
+  const { getToken } = useAuth();
 
   const [selectedDate, setSelectedDate] = useState<Date>();
-  const [mealAmount, setMealAmount] = useState("");
-  const [mealTy, setMealTy] = useState("");
-  const [mealMemo, setMealMemo] = useState("");
+  const [medicine, setMedicine] = useState("");
   const [memo, setMemo] = useState("");
 
-  const { sendRequest, responseData, loading } = useFetch();
-
-  const onSubmit = (e: any) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    sendRequest({
-      url: "report/createMealHist",
-      method: "POST",
-      body: {
-        mealTy,
-        mealAmount,
-        mealUnit: "ml",
-        mealMemo,
-      },
-    });
+    try {
+      const token = await getToken();
+      const currentKid = localStorage.getItem("currentKid");
+
+      if (!token || !currentKid || !selectedDate) {
+        return;
+      }
+
+      const response = await fetch("/api/record", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          childId: currentKid,
+          type: "MEDICINE",
+          startTime: selectedDate,
+          medicine,
+          memo,
+        }),
+      });
+
+      if (response.ok) {
+        router.back();
+      }
+    } catch (error) {
+      console.error("기록 저장 에러:", error);
+    }
   };
 
   return (
@@ -62,7 +82,7 @@ const App: React.FC = () => {
       <Header title="약 기록하기" onBack={() => router.back()} />
       <Spacer height={30} />
       <form
-        onSubmit={onSubmit}
+        onSubmit={handleSubmit}
         style={{ display: "flex", flexDirection: "column", flex: 1 }}
       >
         <Label css="inputForm" text="복용 시간" />
@@ -76,9 +96,17 @@ const App: React.FC = () => {
         <Label text="어떤 약을 먹었나요?" css="inputForm" />
         <Spacer height={10} />
         <SearchListPicker
-          items={medicines}
-          mode={"single"}
-          onSelect={() => {}}
+          items={MEDICINES}
+          mode="single"
+          onSelect={(selected: SearchItem | SearchItem[]) => {
+            const items = Array.isArray(selected) ? selected : [selected];
+            setMedicine(items[0]?.name || "");
+          }}
+          selectedItems={
+            medicine
+              ? MEDICINES.find((item) => item.name === medicine)
+              : undefined
+          }
         />
 
         <Spacer height={30} />
