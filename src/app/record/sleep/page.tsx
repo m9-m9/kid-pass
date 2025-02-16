@@ -1,49 +1,66 @@
 "use client";
 
-import InputForm from "@/components/form/InputForm";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Header from "@/components/header/Header";
 import Container from "@/elements/container/Container";
 import { Label } from "@/elements/label/Label";
-import { useState } from "react";
 import Spacer from "@/elements/spacer/Spacer";
 import Button from "@/elements/button/Button";
-import useFetch from "@/hook/useFetch";
-import Header from "@/components/header/Header";
-import { useRouter } from "next/navigation";
-import CustomDateTimePicker from "@/components/customDateTimePicker/CustomDateTimePicker";
 import Grid from "@/elements/grid/Grid";
 import ButtonChecked from "@/elements/button/Button.checked";
 import TextAreaForm from "@/components/textArea/TextArea";
+import CustomDateTimePicker from "@/components/customDateTimePicker/CustomDateTimePicker";
+import useAuth from "@/hook/useAuth";
 
 const TYPES = ["낮잠", "밤잠"];
 
 const App: React.FC = () => {
   const router = useRouter();
+  const { getToken } = useAuth();
 
-  const [mealAmount, setMealAmount] = useState("");
-  const [mealTy, setMealTy] = useState("");
-  const [mealMemo, setMealMemo] = useState("");
-  const [selectedDate, setSelectedDate] = useState<Date>();
+  const [sleepType, setSleepType] = useState("");
+  const [startTime, setStartTime] = useState<Date>();
+  const [endTime, setEndTime] = useState<Date>();
   const [memo, setMemo] = useState("");
 
-  const { sendRequest, responseData, loading } = useFetch();
-
-  const onSubmit = (e: any) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    sendRequest({
-      url: "report/createMealHist",
-      method: "POST",
-      body: {
-        mealTy,
-        mealAmount,
-        mealUnit: "ml",
-        mealMemo,
-      },
-    });
+    try {
+      const token = await getToken();
+      const currentKid = localStorage.getItem("currentKid");
+
+      if (!token || !currentKid || !startTime) {
+        return;
+      }
+
+      const response = await fetch("/api/record", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          childId: currentKid,
+          type: "SLEEP",
+          startTime,
+          endTime,
+          sleepType,
+          memo,
+        }),
+      });
+
+      if (response.ok) {
+        router.back();
+      }
+    } catch (error) {
+      console.error("기록 저장 에러:", error);
+    }
   };
 
   const types = TYPES.map((v, i) => (
-    <ButtonChecked v={v} i={i} state={mealMemo} setState={setMealMemo} />
+    <ButtonChecked v={v} i={i} state={sleepType} setState={setSleepType} />
   ));
 
   return (
@@ -51,7 +68,7 @@ const App: React.FC = () => {
       <Header title="수면 기록하기" onBack={() => router.back()} />
       <Spacer height={30} />
       <form
-        onSubmit={onSubmit}
+        onSubmit={handleSubmit}
         style={{
           display: "flex",
           flexDirection: "column",
@@ -62,16 +79,16 @@ const App: React.FC = () => {
         <Label css="inputForm" text="취침 시작" />
         <Spacer height={10} />
         <CustomDateTimePicker
-          selected={selectedDate}
-          onSelect={(date) => setSelectedDate(date)}
+          selected={startTime}
+          onSelect={(date) => setStartTime(date)}
         />
 
         <Spacer height={10} />
         <Label css="inputForm" text="취침 종료" />
         <Spacer height={10} />
         <CustomDateTimePicker
-          selected={selectedDate}
-          onSelect={(date) => setSelectedDate(date)}
+          selected={endTime}
+          onSelect={(date) => setEndTime(date)}
         />
 
         <Spacer height={30} />

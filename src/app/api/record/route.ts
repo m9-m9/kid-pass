@@ -31,7 +31,27 @@ export async function POST(request: Request) {
       unit,
       // 기저귀 관련
       diaperType,
-      diaperState,
+      diaperColor,
+      diaperShape,
+      diaperAmount,
+      // 수면 관련
+      sleepType,
+      // 체온 관련
+      temperature,
+      // 성장 관련
+      weight,
+      height,
+      headSize,
+      // 감정 관련
+      emotion,
+      special,
+      // 특이증상 관련
+      symptom,
+      severity,
+      // 약 관련
+      medicine,
+      // 기타 관련
+      category,
     } = await request.json();
 
     // 사용자 확인 및 아이와의 관계 확인
@@ -65,7 +85,27 @@ export async function POST(request: Request) {
         unit,
         // 기저귀 관련
         diaperType,
-        diaperState,
+        diaperColor,
+        diaperShape,
+        diaperAmount,
+        // 수면 관련
+        sleepType,
+        // 체온 관련
+        temperature: temperature ? parseFloat(temperature) : null,
+        // 성장 관련
+        headSize: headSize ? parseFloat(headSize) : null,
+        weight: weight ? parseFloat(weight) : null,
+        height: height ? parseFloat(height) : null,
+        // 감정 관련
+        emotion,
+        special,
+        // 특이증상 관련
+        symptom,
+        severity,
+        // 약 관련
+        medicine,
+        // 기타 관련
+        category,
       },
     });
 
@@ -105,7 +145,6 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const childId = searchParams.get("childId");
     const startDate = searchParams.get("startDate");
-    const endDate = searchParams.get("endDate");
     const type = searchParams.get("type");
 
     // 사용자 확인 및 아이와의 관계 확인
@@ -125,18 +164,26 @@ export async function GET(request: Request) {
       );
     }
 
+    // startDate를 기준으로 이전 7일의 날짜 계산
+    const endDate = new Date(startDate!);
+    endDate.setHours(23, 59, 59, 999); // 해당 일자의 마지막 시간으로 설정
+
+    const beginDate = new Date(startDate!);
+    beginDate.setDate(beginDate.getDate() - 7); // 7일 전 날짜
+    beginDate.setHours(0, 0, 0, 0); // 시작일의 처음 시간으로 설정
+
     // 기록 조회
     const records = await prisma.record.findMany({
       where: {
         childId: childId!,
         type: type || undefined,
         startTime: {
-          gte: startDate ? new Date(startDate) : undefined,
-          lte: endDate ? new Date(endDate) : undefined,
+          gte: beginDate, // 7일 전부터
+          lte: endDate, // 선택한 날짜까지
         },
       },
       orderBy: {
-        startTime: "desc",
+        startTime: "desc", // 최신 순으로 정렬
       },
     });
 

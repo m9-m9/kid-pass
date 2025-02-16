@@ -13,6 +13,7 @@ import CustomDateTimePicker from "@/components/customDateTimePicker/CustomDateTi
 import styles from "./buHist.module.css";
 import Grid from "@/elements/grid/Grid";
 import ButtonChecked from "@/elements/button/Button.checked";
+import useAuth from "@/hook/useAuth";
 
 const BUS = ["대변", "소변"];
 const COLORS = ["노란색", "갈색", "검은색", "빨간색", "흰색", "회색"];
@@ -29,31 +30,54 @@ const AMTS = ["적음", "보통", "많음"];
 
 const App: React.FC = () => {
   const router = useRouter();
+  const { getToken } = useAuth();
 
-  const [mealAmount, setMealAmount] = useState("");
-  const [mealTy, setMealTy] = useState("");
-  const [mealMemo, setMealMemo] = useState("");
+  const [diaperType, setDiaperType] = useState(""); // 대변/소변
+  const [diaperColor, setDiaperColor] = useState(""); // 색깔
+  const [diaperShape, setDiaperShape] = useState(""); // 형태
+  const [diaperAmount, setDiaperAmount] = useState(""); // 양
   const [selectedDate, setSelectedDate] = useState<Date>();
 
   const { sendRequest, responseData, loading } = useFetch();
 
-  const onSubmit = (e: any) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    sendRequest({
-      url: "report/createMealHist",
-      method: "POST",
-      body: {
-        mealTy,
-        mealAmount,
-        mealUnit: "ml",
-        mealMemo,
-      },
-    });
+    try {
+      const token = await getToken();
+      const currentKid = localStorage.getItem("currentKid");
+
+      if (!token || !currentKid || !selectedDate) {
+        return;
+      }
+
+      const response = await fetch("/api/record", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          childId: currentKid,
+          type: "DIAPER",
+          startTime: selectedDate,
+          diaperType, // 대변/소변
+          diaperColor, // 색깔
+          diaperShape, // 형태
+          diaperAmount, // 양
+        }),
+      });
+
+      if (response.ok) {
+        router.back();
+      }
+    } catch (error) {
+      console.error("기록 저장 에러:", error);
+    }
   };
 
   const bus = BUS.map((v, i) => (
-    <ButtonChecked v={v} i={i} state={mealMemo} setState={setMealMemo} />
+    <ButtonChecked v={v} i={i} state={diaperType} setState={setDiaperType} />
   ));
 
   const colors = COLORS.map((v, i) => (
@@ -80,17 +104,22 @@ const App: React.FC = () => {
           {v}
         </div>
       }
-      state={mealMemo}
-      setState={setMealMemo}
+      state={diaperColor}
+      setState={setDiaperColor}
     />
   ));
 
   const stles = STLES.map((v, i) => (
-    <ButtonChecked v={v} i={i} state={mealMemo} setState={setMealMemo} />
+    <ButtonChecked v={v} i={i} state={diaperShape} setState={setDiaperShape} />
   ));
 
   const amts = AMTS.map((v, i) => (
-    <ButtonChecked v={v} i={i} state={mealMemo} setState={setMealMemo} />
+    <ButtonChecked
+      v={v}
+      i={i}
+      state={diaperAmount}
+      setState={setDiaperAmount}
+    />
   ));
 
   return (
@@ -98,7 +127,7 @@ const App: React.FC = () => {
       <Header title="배변 기록하기" onBack={() => router.back()} />
       <Spacer height={30} />
       <form
-        onSubmit={onSubmit}
+        onSubmit={handleSubmit}
         style={{
           display: "flex",
           flexDirection: "column",
@@ -114,7 +143,7 @@ const App: React.FC = () => {
         />
 
         <Spacer height={30} />
-        <Label css="inputForm" text="일시" />
+        <Label css="inputForm" text="종류" />
         <Spacer height={10} />
         <Grid items={bus} column={2} />
 

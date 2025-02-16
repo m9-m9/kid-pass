@@ -16,6 +16,11 @@ interface RecordDetailProps {
   }>;
 }
 
+interface RecordInfo {
+  label: string;
+  value: string | number;
+}
+
 const RecordDetail = ({ params }: RecordDetailProps) => {
   const router = useRouter();
   const { getToken } = useAuth();
@@ -96,6 +101,81 @@ const RecordDetail = ({ params }: RecordDetailProps) => {
     }
   };
 
+  const getRecordInfo = (record: any): RecordInfo[] => {
+    const info: RecordInfo[] = [
+      {
+        label: "시작 시간",
+        value: new Date(record.startTime).toLocaleString(),
+      },
+    ];
+
+    if (record.endTime) {
+      info.push({
+        label: "종료 시간",
+        value: new Date(record.endTime).toLocaleString(),
+      });
+    }
+
+    // 수유 기록
+    if (record.type === "FEEDING") {
+      info.push(
+        { label: "수유 종류", value: record.mealType },
+        { label: "수유량", value: `${record.amount}${record.unit}` }
+      );
+    }
+
+    // 배변 기록
+    if (record.type === "DIAPER") {
+      info.push(
+        { label: "종류", value: record.diaperType },
+        { label: "색깔", value: record.diaperColor },
+        { label: "형태", value: record.diaperShape },
+        { label: "양", value: record.diaperAmount }
+      );
+    }
+
+    // 수면 기록
+    if (record.type === "SLEEP") {
+      info.push({ label: "수면 종류", value: record.sleepType });
+    }
+
+    // 체온 기록
+    if (record.type === "TEMPERATURE") {
+      info.push({ label: "체온", value: record.temperature });
+    }
+
+    // 성장 기록
+    if (record.type === "GROWTH") {
+      info.push({ label: "몸무게", value: record.weight });
+      info.push({ label: "키", value: record.height });
+      info.push({ label: "두위", value: record.headSize });
+    }
+
+    // 감정 기록
+    if (record.type === "EMOTION") {
+      info.push({ label: "감정", value: record.emotion });
+      info.push({ label: "특이증상", value: record.special });
+    }
+
+    // 특이증상 기록
+    if (record.type === "SYMPTOM") {
+      info.push({ label: "증상", value: record.symptom });
+      info.push({ label: "심각도", value: record.severity });
+    }
+
+    // 약 기록
+    if (record.type === "MEDICINE") {
+      info.push({ label: "약 이름", value: record.medicine });
+    }
+
+    // 기타 기록
+    if (record.type === "ETC") {
+      info.push({ label: "카테고리", value: record.category });
+    }
+
+    return info;
+  };
+
   return (
     <Container className="container" full>
       <Header
@@ -108,29 +188,12 @@ const RecordDetail = ({ params }: RecordDetailProps) => {
       {record && (
         <>
           <div className={styles.container}>
-            <div className={styles.infoItem}>
-              <span className={styles.label}>시작 시간</span>
-              <span className={styles.value}>
-                {new Date(record.startTime).toLocaleString()}
-              </span>
-            </div>
-            {record.endTime && (
-              <div className={styles.infoItem}>
-                <span className={styles.label}>종료 시간</span>
-                <span className={styles.value}>
-                  {new Date(record.endTime).toLocaleString()}
-                </span>
+            {getRecordInfo(record).map((info, index) => (
+              <div key={index} className={styles.infoItem}>
+                <span className={styles.label}>{info.label}</span>
+                <span className={styles.value}>{info.value}</span>
               </div>
-            )}
-            {record.amount && (
-              <div className={styles.infoItem}>
-                <span className={styles.label}>수유량</span>
-                <span className={styles.value}>
-                  {record.amount}
-                  {record.unit}
-                </span>
-              </div>
-            )}
+            ))}
             {record.memo && (
               <div className={styles.memo}>
                 <div className={styles.memoLabel}>메모</div>
