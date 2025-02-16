@@ -1,4 +1,4 @@
-.kindButton {
+.button {
   padding: 15px;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -14,7 +14,6 @@
   border-color: var(--primary-color);
 }
 
-/* 터치 피드백을 위한 active 상태 */
-.kindButton:active {
+.button:active {
   opacity: 0.8;
 }

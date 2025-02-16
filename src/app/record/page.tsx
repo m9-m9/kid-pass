@@ -15,109 +15,48 @@ import FloatingBtn from "@/components/floatingBtn/FloatingBtn";
 import Link from "next/link";
 import BottomNavigation from "@/components/bottomNavigation/BottomNavigation";
 import useAuth from "@/hook/useAuth";
-import instance from "@/utils/axios";
+import Empty from "@/components/empty/Empty";
+import { formatRecordData } from "./utils";
+import { RECORDS, SLIDES } from "./constants";
 
-const SLIDES = [
-  "수면",
-  "수유",
-  "배변",
-  "체온",
-  "몸무게/키",
-  "머리둘레",
-  "감정",
-  "특이증상",
-  "약",
-  "기타",
-];
-
-const RECORDS = [
-  {
-    title: "수유",
-    src: "/images/feeding.png",
-    path: "/record/feeding",
-  },
-  {
-    title: "배설",
-    src: "/images/diaper.png",
-    path: "/record/buHist",
-  },
-  {
-    title: "수면",
-    src: "/images/sleep.png",
-    path: "/record/sleep",
-  },
-  {
-    title: "체온",
-    src: "/images/temperature.png",
-    path: "/record/heat",
-  },
-  {
-    title: "몸무게/키/머리둘레",
-    src: "/images/scale.png",
-    path: "/record/hgWgh",
-  },
-  {
-    title: "감정",
-    src: "/images/heart.png",
-    path: "/record/emotion",
-  },
-  {
-    title: "특이증상",
-    src: "/images/info.png",
-    path: "/record/symptm",
-  },
-  {
-    title: "약",
-    src: "/images/medicine.png",
-    path: "/record/takngHist",
-  },
-  {
-    title: "기타",
-    src: "/images/etc.png",
-    path: "/record/etc",
-  },
-];
-
-const App: React.FC = () => {
+const RecordPage = () => {
+  const { getToken } = useAuth();
   const [date, setDate] = useState<DateType>({
-    year: 2024,
-    month: 11,
-    date: 2,
+    year: new Date().getFullYear(),
+    month: new Date().getMonth() + 1,
+    date: new Date().getDate(),
   });
-
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
+  const [scheduleData, setScheduleData] = useState<DaySchedule[]>([]);
   const { openModal, closeModal, setComp } = useModalStore();
 
-  const { getCrtChldNo } = useAuth();
-
   const fetchRecords = async () => {
-    const res = await instance.post(`/report/getTotHist`);
-    console.log(res);
+    try {
+      const token = await getToken();
+      const currentKid = localStorage.getItem("currentKid");
+
+      if (!token || !currentKid) {
+        return;
+      }
+
+      const response = await fetch(
+        `/api/record?childId=${currentKid}&startDate=${date.year}-${date.month}-${date.date}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.ok) {
+        const { data } = await response.json();
+        const formattedData = formatRecordData(data);
+        setScheduleData(formattedData);
+      }
+    } catch (error) {
+      console.error("기록 조회 에러:", error);
+    }
   };
-
-  useEffect(() => {
-    fetchRecords();
-  }, []);
-
-  const items = RECORDS.map((v) => (
-    <Link href={v.path} onClick={() => closeModal()}>
-      <div className={styles.card}>
-        <Image src={v.src} alt="Record picture" width={32} height={32} />
-        <span className={styles.cardText}>{v.title}</span>
-      </div>
-    </Link>
-  ));
-
-  useEffect(() => {
-    setComp(
-      <>
-        <div className={styles.titleContainer}>
-          <span className={styles.modalTitle}>오늘의 아이 기록하기</span>
-        </div>
-        <Grid items={items} column={3} />
-      </>
-    );
-  }, []);
 
   const handleSelect = (index: number) => {
     setSelectedItems((prev) => {
@@ -128,124 +67,34 @@ const App: React.FC = () => {
     });
   };
 
-  const scheduleData: DaySchedule[] = [
-    {
-      date: "9월 15일",
-      dayOfWeek: "일요일",
-      items: [
-        {
-          time: "09:47",
-          ampm: "AM",
-          content: "수유",
-          duration: "15분",
-          amount: "90ml",
-        },
-        {
-          time: "10:25",
-          ampm: "AM",
-          content: "수면",
-          duration: "1시간 10분",
-        },
-        {
-          time: "09:47",
-          ampm: "AM",
-          content: "체온",
-          duration: "15분",
-          amount: "90ml",
-        },
-        {
-          time: "10:25",
-          ampm: "AM",
-          content: "몸무게/키",
-          duration: "1시간 10분",
-        },
-        {
-          time: "09:47",
-          ampm: "AM",
-          content: "머리둘레",
-          duration: "15분",
-          amount: "90ml",
-        },
-        {
-          time: "10:25",
-          ampm: "AM",
-          content: "약",
-          duration: "1시간 10분",
-        },
-        {
-          time: "09:47",
-          ampm: "AM",
-          content: "특이증상",
-          duration: "15분",
-          amount: "90ml",
-        },
-        {
-          time: "10:25",
-          ampm: "AM",
-          content: "감정",
-          duration: "1시간 10분",
-        },
-      ],
-    },
-    {
-      date: "9월 14일",
-      dayOfWeek: "토요일",
-      items: [
-        {
-          time: "09:47",
-          ampm: "AM",
-          content: "수유",
-          duration: "15분",
-          amount: "90ml",
-        },
-        {
-          time: "10:25",
-          ampm: "AM",
-          content: "수면",
-          duration: "1시간 10분",
-        },
-        {
-          time: "09:47",
-          ampm: "AM",
-          content: "체온",
-          duration: "15분",
-          amount: "90ml",
-        },
-        {
-          time: "10:25",
-          ampm: "AM",
-          content: "몸무게/키",
-          duration: "1시간 10분",
-        },
-        {
-          time: "09:47",
-          ampm: "AM",
-          content: "머리둘레",
-          duration: "15분",
-          amount: "90ml",
-        },
-        {
-          time: "10:25",
-          ampm: "AM",
-          content: "약",
-          duration: "1시간 10분",
-        },
-        {
-          time: "09:47",
-          ampm: "AM",
-          content: "특이증상",
-          duration: "15분",
-          amount: "90ml",
-        },
-        {
-          time: "10:25",
-          ampm: "AM",
-          content: "감정",
-          duration: "1시간 10분",
-        },
-      ],
-    },
-  ];
+  const renderRecordItems = () =>
+    RECORDS.map((record) => (
+      <Link key={record.path} href={record.path} onClick={() => closeModal()}>
+        <div className={styles.card}>
+          <Image src={record.src} alt={record.title} width={32} height={32} />
+          <span className={styles.cardText}>{record.title}</span>
+        </div>
+      </Link>
+    ));
+
+  const handleDateChange = (newDate: DateType) => {
+    setDate(newDate);
+  };
+
+  useEffect(() => {
+    fetchRecords();
+  }, [date]);
+
+  useEffect(() => {
+    setComp(
+      <>
+        <div className={styles.titleContainer}>
+          <span className={styles.modalTitle}>오늘의 아이 기록하기</span>
+        </div>
+        <Grid items={renderRecordItems()} column={3} />
+      </>
+    );
+  }, []);
 
   return (
     <Container className="mapContainer">
@@ -258,7 +107,7 @@ const App: React.FC = () => {
             backgroundColor: "white",
           }}
         >
-          <WeeklyCalendar />
+          <WeeklyCalendar onDateChange={handleDateChange} />
         </div>
         <Carousel
           slides={SLIDES}
@@ -272,14 +121,17 @@ const App: React.FC = () => {
         />
 
         <div style={{ marginBottom: 60 }}>
-          <Schedule schedules={scheduleData} />
+          {scheduleData.length > 0 ? (
+            <Schedule schedules={scheduleData} />
+          ) : (
+            <Empty text="아직 기록된 데이터가 없습니다." />
+          )}
         </div>
         <FloatingBtn onClick={() => openModal()} />
-
         <BottomNavigation />
       </div>
     </Container>
   );
 };
 
-export default App;
+export default RecordPage;

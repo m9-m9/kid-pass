@@ -3,21 +3,51 @@
   width: 100%;
 }
 
-.input {
-  width: 100%;
+.inputContainer {
+  align-items: center;
+  gap: 8px;
   padding: 12px;
-  border: 1px solid #4285f4;
+  border: 1px solid #ddd;
   border-radius: 8px;
   background: white;
-  color: #4285f4;
+}
+
+.inputWrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.label {
+  font-size: 1.6rem;
+  color: #222;
+  font-weight: 500;
+  min-width: 32px;
+}
+
+.input {
+  width: 100%;
+  border: none;
+  background: none;
+  color: #222;
   cursor: pointer;
-  text-align: center;
+  font-size: 1.6rem;
+  padding: 0;
+}
+
+.input::placeholder {
+  color: #999;
 }
 
 .input:focus {
   outline: none;
-  border-color: #4285f4;
-  box-shadow: 0 0 0 1px #4285f4;
+}
+
+.separator {
+  color: #ddd;
+  font-size: 1.6rem;
+  padding: 0 4px;
 }
 
 .pickerContainer {
@@ -30,6 +60,7 @@
   padding: 16px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   z-index: 1000;
+  width: 100%;
 }
 
 .timeContainer {
@@ -46,4 +77,11 @@
   border: 1px solid #e0e0e0;
   border-radius: 4px;
   background: white;
+  font-size: 1.4rem;
+  color: #222;
+}
+
+.timeSelect:focus {
+  outline: none;
+  border-color: var(--primary-color);
 }

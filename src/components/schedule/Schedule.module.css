@@ -24,6 +24,8 @@
   display: flex;
   gap: 16px;
   align-items: flex-start;
+  padding: 8px 0;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .timeContainer {
