@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
   try {
     const authHeader = request.headers.get("authorization");
@@ -36,7 +36,7 @@ export async function GET(
     // 기록 조회
     const record = await prisma.record.findFirst({
       where: {
-        id: params.id,
+        id: context.params.id,
         type,
         child: {
           user: {
