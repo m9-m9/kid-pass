@@ -85,9 +85,11 @@
 }
 
 .cardText {
-  font-size: var(--font-size-16);
+  padding-top: 8px;
+  font-size: var(--font-size-12);
   font-weight: var(--font-weight-bold);
   text-align: center;
+  color: var(--basic-color);
 }
 
 .titleContainer {
