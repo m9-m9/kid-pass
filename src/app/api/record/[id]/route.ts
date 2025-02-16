@@ -6,13 +6,15 @@ import jwt from "jsonwebtoken";
 const prisma = new PrismaClient();
 
 interface RouteContext {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export async function GET(request: NextRequest, { params }: RouteContext) {
   try {
+    const { id } = await params;
+
     const authHeader = request.headers.get("authorization");
     if (!authHeader?.startsWith("Bearer ")) {
       return NextResponse.json(
@@ -40,7 +42,7 @@ export async function GET(request: NextRequest, { params }: RouteContext) {
     // 기록 조회
     const record = await prisma.record.findFirst({
       where: {
-        id: params.id,
+        id,
         type,
         child: {
           user: {
@@ -72,6 +74,8 @@ export async function GET(request: NextRequest, { params }: RouteContext) {
 
 export async function DELETE(request: NextRequest, { params }: RouteContext) {
   try {
+    const { id } = await params;
+
     const authHeader = request.headers.get("authorization");
     if (!authHeader?.startsWith("Bearer ")) {
       return NextResponse.json(
@@ -88,7 +92,7 @@ export async function DELETE(request: NextRequest, { params }: RouteContext) {
     // 기록 삭제
     await prisma.record.delete({
       where: {
-        id: params.id,
+        id,
         child: {
           user: {
             userId: decoded.userId,
@@ -111,6 +115,8 @@ export async function DELETE(request: NextRequest, { params }: RouteContext) {
 
 export async function PUT(request: NextRequest, { params }: RouteContext) {
   try {
+    const { id } = await params;
+
     const authHeader = request.headers.get("authorization");
     if (!authHeader?.startsWith("Bearer ")) {
       return NextResponse.json(
@@ -129,7 +135,7 @@ export async function PUT(request: NextRequest, { params }: RouteContext) {
     // 기록 수정
     const record = await prisma.record.update({
       where: {
-        id: params.id,
+        id,
         child: {
           user: {
             userId: decoded.userId,
