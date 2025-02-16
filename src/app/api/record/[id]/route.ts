@@ -1,19 +1,18 @@
 import { PrismaClient } from "@prisma/client";
-import { NextResponse } from "next/server";
-import { type NextRequest } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import jwt from "jsonwebtoken";
 
 const prisma = new PrismaClient();
 
 interface RouteContext {
-  params: Promise<{
+  params: {
     id: string;
-  }>;
+  };
 }
 
 export async function GET(request: NextRequest, { params }: RouteContext) {
   try {
-    const { id } = await params;
+    const { id } = params;
 
     const authHeader = request.headers.get("authorization");
     if (!authHeader?.startsWith("Bearer ")) {
@@ -74,7 +73,7 @@ export async function GET(request: NextRequest, { params }: RouteContext) {
 
 export async function DELETE(request: NextRequest, { params }: RouteContext) {
   try {
-    const { id } = await params;
+    const { id } = params;
 
     const authHeader = request.headers.get("authorization");
     if (!authHeader?.startsWith("Bearer ")) {
@@ -115,7 +114,7 @@ export async function DELETE(request: NextRequest, { params }: RouteContext) {
 
 export async function PUT(request: NextRequest, { params }: RouteContext) {
   try {
-    const { id } = await params;
+    const { id } = params;
 
     const authHeader = request.headers.get("authorization");
     if (!authHeader?.startsWith("Bearer ")) {
