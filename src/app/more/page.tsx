@@ -1,5 +1,6 @@
 import ArrowIcon from '@/elements/svg/Arrow';
 import styles from './more.module.css';
+import BottomNavigation from '@/components/bottomNavigation/BottomNavigation';
 
 const App = () => {
     return (
@@ -60,6 +61,7 @@ const App = () => {
                     </div>
                 </section>
             </div>
+            <BottomNavigation />
         </div>
     );
 };
