@@ -14,13 +14,11 @@ import BottomNavigation from '@/components/bottomNavigation/BottomNavigation';
 import Spacer from '@/elements/spacer/Spacer';
 
 export interface VacntnInfo {
-    vacntnCnt: number;
-    vacntnEra: string;
-    vacntnIctsd: string;
-    vacntnInoclDt: string;
-    vacntnMthNo: number;
-    vacntnNo: number;
-    vacntnOdr: number;
+    vacntnTotalCnt: number; // 총 접종 횟수
+    vacntnEra: string; // 다음 접종 날짜
+    vacntnIctsd: string; // 백신 종류
+    vacntnInoclDt: string[]; // 접종 받은 날짜들
+    vacntnOdr: number; // 접종 횟수
 }
 
 const App = () => {
@@ -38,7 +36,7 @@ const App = () => {
             if (currentKid) {
                 try {
                     const response = await instance.get(
-                        `/chldrn/findChldrnProfileInfo?chldrnNo=${currentKid}`,
+                        `/child/vacntnInfo?chldrnNo=${currentKid}`,
                         {
                             headers: {
                                 Authorization: `Bearer ${token}`,
@@ -62,7 +60,7 @@ const App = () => {
 
         // 컴포넌트 마운트 시 초기 데이터 로드
         fetchData();
-    }, [currentKid, token]);
+    }, [currentKid]);
 
     const calculateVaccineSums = (vacntnInfo: any[]) => {
         if (!Array.isArray(vacntnInfo)) {

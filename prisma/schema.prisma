@@ -35,12 +35,12 @@ model Record {
   startTime   DateTime // 시작 시간
   endTime     DateTime? // 종료 시간 (선택)
   memo        String?  // 메모
-  
+
   // 수유 관련
   mealType    String?  // 모유, 분유, 이유식, 혼합
   amount      Float?   // 수유량
   unit        String?  // 단위 (ml 등)
-  
+
   // 기저귀 관련
   diaperType   String?  // 대변, 소변
   diaperState  String?  // 상태 (기존 필드 유지)
@@ -50,29 +50,29 @@ model Record {
 
   // 수면 관련
   sleepType    String?  // 낮잠, 밤잠
-  
+
   // 체온 관련
   temperature Float?    // 체온 (36.5 등)
-  
+
   // 성장 관련
   weight      Float?    // 몸무게 (kg)
   height      Float?    // 키 (cm)
   headSize    Float?    // 두위 (cm)
-  
+
   // 감정 관련
   emotion     String?   // 행복해요, 활발해요, 평온해요 등
   special     String?   // 놀이를 했어요, 외출했어요 등
-  
+
   // 특이증상 관련
   symptom     String?   // 수유 거부, 설사, 발진 등
   severity    String?   // 약함, 보통, 심함
-  
+
   // 약 관련
   medicine    String?   // 타이레놀 시럽, 아티푸스 시럽 등
-  
+
   // 기타 관련
   category    String?   // 신생아 반사행동, 성장 행동
-  
+
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -96,8 +96,31 @@ model Child {
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
   records          Record[]
+  vacntnInfo       VacntnInfo[]
 
   @@map("children")
 }
 
 
+model VacntnInfo {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  vacntnTotalCnt  Int      // 총 접종 횟수
+  vacntnEra       String   // 다음 접종 날짜
+  vacntnIctsd     String   // 백신 종류
+  vacntnInoclDt   String[] // 접종 받은 날짜들
+  vacntnOdr       Int      // 접종 횟수
+
+  // Child 모델과의 관계 설정
+  child           Child    @relation(fields: [childId], references: [id])
+  childId         String   @db.ObjectId
+
+  // 생성/수정 시간 추적
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("vaccine_info")
+}
+
+model VacntnList {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+}
