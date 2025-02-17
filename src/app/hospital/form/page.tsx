@@ -47,8 +47,8 @@ const HospitalForm = () => {
       <Label text="진찰 받은 날짜" css="inputForm" />
       <Spacer height={10} />
       <CustomDateTimePicker
-        selected={selectedDate}
-        onSelect={(date) => setSelectedDate(date)}
+        startDate={selectedDate}
+        onStartDateSelect={setSelectedDate}
       />
 
       <Spacer height={36} />

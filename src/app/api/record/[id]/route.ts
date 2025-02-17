@@ -1,17 +1,16 @@
 import { PrismaClient } from "@prisma/client";
-import { NextResponse } from "next/server";
-import { type NextRequest } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import jwt from "jsonwebtoken";
 
 const prisma = new PrismaClient();
 
-interface RouteContext {
+type Props = {
   params: Promise<{
     id: string;
   }>;
-}
+};
 
-export async function GET(request: NextRequest, { params }: RouteContext) {
+export async function GET(request: NextRequest, { params }: Props) {
   try {
     const { id } = await params;
 
@@ -72,7 +71,7 @@ export async function GET(request: NextRequest, { params }: RouteContext) {
   }
 }
 
-export async function DELETE(request: NextRequest, { params }: RouteContext) {
+export async function DELETE(request: NextRequest, { params }: Props) {
   try {
     const { id } = await params;
 
@@ -113,7 +112,7 @@ export async function DELETE(request: NextRequest, { params }: RouteContext) {
   }
 }
 
-export async function PUT(request: NextRequest, { params }: RouteContext) {
+export async function PUT(request: NextRequest, { params }: Props) {
   try {
     const { id } = await params;
 
