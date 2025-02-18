@@ -104,11 +104,14 @@ model Child {
 
 model VacntnInfo {
   id              String   @id @default(auto()) @map("_id") @db.ObjectId
-  vacntnTotalCnt  Int      // 총 접종 횟수
-  vacntnEra       String   // 다음 접종 날짜
-  vacntnIctsd     String   // 백신 종류
-  vacntnInoclDt   String[] // 접종 받은 날짜들
-  vacntnOdr       Int      // 접종 횟수
+
+  // 백신 기본 정보
+  vacntnId        String   // 백신 질병 ID (VACCINE_LIST의 id 참조)
+  vacntnIctsd     String   // 백신 종류 코드 (DTaP, Tdap 등)
+
+  // 접종 상태 정보
+  vacntnDoseNumber Int      // 현재 접종 차수 (1차, 2차...)
+  vacntnInoclDt   String    // 접종 날짜 (ISO 형식의 날짜 문자열)
 
   // Child 모델과의 관계 설정
   child           Child    @relation(fields: [childId], references: [id])
@@ -119,8 +122,4 @@ model VacntnInfo {
   updatedAt       DateTime @updatedAt
 
   @@map("vaccine_info")
-}
-
-model VacntnList {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
 }

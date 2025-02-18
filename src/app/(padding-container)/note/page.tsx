@@ -9,23 +9,24 @@ import { useEffect, useState } from 'react';
 import instance from '@/utils/axios';
 import ProfileHeader from '@/components/header/ProfileHeader';
 import useChldrnListStore from '@/store/useChldrnListStore';
-import { getTotalRequiredVaccinations } from './vaccine';
 import BottomNavigation from '@/components/bottomNavigation/BottomNavigation';
 import Spacer from '@/elements/spacer/Spacer';
 
 export interface VacntnInfo {
-    vacntnTotalCnt: number; // 총 접종 횟수
-    vacntnEra: string; // 다음 접종 날짜
-    vacntnIctsd: string; // 백신 종류
-    vacntnInoclDt: string[]; // 접종 받은 날짜들
-    vacntnOdr: number; // 접종 횟수
+    id: string; // 백신 기록 ID
+    vacntnId: string; // 백신 질병 ID (VACCINE_LIST의 id 참조)
+    vacntnIctsd: string; // 백신 종류 코드 (DTaP, Tdap 등)
+    vacntnDoseNumber: number; // 현재 접종 차수 (1차, 2차...)
+    vacntnInoclDt: string; // 접종 날짜 (ISO 형식의 날짜 문자열)
+    childId: string; // 연결된 아이 ID
+    createdAt: Date; // 생성 시간
+    updatedAt: Date; // 수정 시간
 }
-
 const App = () => {
     const { getToken } = useAuth();
     const token = getToken();
     const [vacntnInfo, setVacntnInfo] = useState<VacntnInfo[]>([]);
-    const totalVacntnCnt = getTotalRequiredVaccinations();
+    const TOTALCOUNT = 57;
     const [totalVacntnOdr, setTotalVacntnOdr] = useState(0);
 
     // Zustand store에서 currentKid 가져오기
@@ -44,16 +45,27 @@ const App = () => {
                         }
                     );
 
-                    if (response.data.data.vacntnInfo) {
+                    // 데이터가 있는 경우
+                    if (
+                        response.data.data.vacntnInfo &&
+                        response.data.data.vacntnInfo.length > 0
+                    ) {
                         setVacntnInfo(response.data.data.vacntnInfo);
 
-                        const sums = calculateVaccineSums(
-                            response.data.data.vacntnInfo
-                        );
-                        setTotalVacntnOdr(sums.odrSum);
+                        // 접종 횟수 계산
+                        const completedDoses =
+                            response.data.data.vacntnInfo.length;
+                        setTotalVacntnOdr(completedDoses);
+                    } else {
+                        // 데이터가 없는 경우 - 빈 배열로 초기화
+                        setVacntnInfo([]);
+                        setTotalVacntnOdr(0);
                     }
                 } catch (error) {
                     console.error('데이터 불러오기 실패:', error);
+                    // 에러 발생 시 빈 상태로 초기화
+                    setVacntnInfo([]);
+                    setTotalVacntnOdr(0);
                 }
             }
         };
@@ -78,7 +90,7 @@ const App = () => {
     };
 
     const calculatePercentage = () => {
-        return Math.round((totalVacntnOdr / totalVacntnCnt) * 100);
+        return Math.round((totalVacntnOdr / TOTALCOUNT) * 100);
     };
 
     return (
@@ -103,7 +115,7 @@ const App = () => {
                             backgroundColor="#BFBFBF"
                         >
                             <Label text="미접종" css="vaccinationTF" />
-                            <Label text={totalVacntnCnt} css="vaccinationTF" />
+                            <Label text={TOTALCOUNT} css="vaccinationTF" />
                         </Container>
                     </div>
                     <Label
