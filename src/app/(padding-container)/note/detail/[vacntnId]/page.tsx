@@ -71,32 +71,11 @@ export default function VaccineDetailPage() {
 
             fetchVaccineRecords();
         }
-    }, [currentKid, vaccineId, token, vaccineData]);
-
-    // 모달 설정
-    useEffect(() => {
-        setComp(
-            <div className={styles.pickerContainer}>
-                <div className={styles.pickerTitle}>
-                    <p>접종일</p>
-                </div>
-                <div className={styles.pickerContents}>
-                    <ScrollPicker />
-                </div>
-                <div className={styles.subbitArea}>
-                    <Button label="취소" css="pickerCancel"></Button>
-                    <Button
-                        label="확인"
-                        css="pickerSubmit"
-                        onClick={handleConfirm}
-                    ></Button>
-                </div>
-            </div>,
-            'center'
-        );
-    }, [setComp]);
+    }, [currentKid, vaccineId, vaccineData]);
 
     const handleConfirm = async () => {
+        console.log(1);
+
         try {
             const { year, month, day } = useDateStore.getState();
             const formattedDate = `${year}-${month
@@ -151,6 +130,37 @@ export default function VaccineDetailPage() {
         } catch (error) {
             console.error('백신 접종 기록 생성 중 오류 발생:', error);
         }
+    };
+
+    const setupModalContent = () => {
+        const handleButtonClick = () => {
+            console.log('확인 버튼 클릭됨');
+            handleConfirm();
+        };
+
+        setComp(
+            <div className={styles.pickerContainer}>
+                <div className={styles.pickerTitle}>
+                    <p>접종일</p>
+                </div>
+                <div className={styles.pickerContents}>
+                    <ScrollPicker />
+                </div>
+                <div className={styles.subbitArea}>
+                    <Button
+                        label="취소"
+                        css="pickerCancel"
+                        onClick={() => useModalStore.getState().closeModal()}
+                    />
+                    <Button
+                        label="확인"
+                        css="pickerSubmit"
+                        onClick={handleButtonClick}
+                    />
+                </div>
+            </div>,
+            'center'
+        );
     };
 
     // 백신 ID가 유효하지 않으면 에러 메시지 표시
@@ -250,6 +260,7 @@ export default function VaccineDetailPage() {
                             <div
                                 className={styles.vaccineRecords}
                                 onClick={() => {
+                                    setupModalContent();
                                     openModal();
                                 }}
                             >
