@@ -1,6 +1,6 @@
 /* src/styles/global.css */
-@import "variables.css";
-@import "remixicon/fonts/remixicon.css";
+@import 'variables.css';
+@import 'remixicon/fonts/remixicon.css';
 
 /* Reset default styles */
 * {
@@ -20,11 +20,10 @@ html {
 /* Base styles */
 body {
     margin: 0;
-    font-family: "Arial", sans-serif;
+    font-family: 'Arial', sans-serif;
     font-size: 2rem;
     line-height: 1.6;
     color: var(--text-color);
-    background-color: var(--background-color);
 }
 
 /* Typography */
