@@ -12,8 +12,8 @@ import Button from '@/elements/button/Button';
 import { useModalStore } from '@/store/useModalStore';
 import ScrollPicker from '../../components/ScrollPicker';
 import { useDateStore } from '@/store/useDateStore';
-import { VACCINE_LIST, getVaccineTotalCount } from '../../vaccine';
 
+// 백신 기록 데이터 타입
 interface VacntnInfo {
 	id: string;
 	vacntnId: string;
@@ -23,12 +23,28 @@ interface VacntnInfo {
 	childId: string;
 }
 
-interface VacntnDetail {
+// 접종 차수별 상태 정보
+interface DoseStatus {
 	doseNumber: number;
 	vaccineCode: string;
 	vaccineName: string;
 	isCompleted: boolean;
 	vaccinationDate: string | null;
+	recordId: string | null;
+}
+
+// 백신 상세 정보 응답 타입
+interface VaccineDetailResponse {
+	vaccineId: number;
+	vaccineName: string;
+	totalDoses: number;
+	completedDoses: number;
+	doseStatus: DoseStatus[];
+	nextVaccineInfo: {
+		vaccineCode: string;
+		doseNumber: number;
+	} | null;
+	vaccineRecords: VacntnInfo[];
 }
 
 export default function VaccineDetailPage() {
@@ -36,26 +52,24 @@ export default function VaccineDetailPage() {
 	const token = getToken();
 	const params = useParams();
 	const searchParams = useSearchParams();
-	const [vaccineRecords, setVaccineRecords] = useState<VacntnInfo[]>([]);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState<string | null>(null);
+	const [vaccineDetail, setVaccineDetail] =
+		useState<VaccineDetailResponse | null>(null);
 	const { openModal, setComp, closeModal } = useModalStore();
 
-	// URL에서 vaccineId 추출 (문자열에서 숫자로 변환)
-	const vaccineId = parseInt(params?.vacntnId as string, 10);
+	// URL에서 vaccineId 추출
+	const vaccineId = params?.vacntnId as string;
 	const currentKid = searchParams.get('currentKid');
 
-	// 백신 ID가 유효한지 확인
-	const vaccineData = VACCINE_LIST.find((v) => v.id === vaccineId);
-
-	// 백신의 총 접종 횟수 계산
-	const totalDoses = vaccineData ? getVaccineTotalCount(vaccineId) : 0;
-
-	// 백신 기록 가져오기
-	const fetchVaccineRecords = useCallback(async () => {
-		if (!vaccineData || !currentKid) return;
+	// 백신 상세 정보 가져오기
+	const fetchVaccineDetail = useCallback(async () => {
+		if (!vaccineId || !currentKid) return;
 
 		try {
+			setLoading(true);
 			const response = await instance.get(
-				`/child/vacntnInfo?chldrnNo=${currentKid}`,
+				`/child/vacntnDetail?chldrnNo=${currentKid}&vaccineId=${vaccineId}`,
 				{
 					headers: {
 						Authorization: `Bearer ${token}`,
@@ -63,80 +77,63 @@ export default function VaccineDetailPage() {
 				}
 			);
 
-			if (response.data?.data?.vacntnInfo) {
-				// vacntnId가 현재 백신 ID와 일치하는 기록만 필터링
-				const records = response.data.data.vacntnInfo.filter(
-					(record: VacntnInfo) =>
-						record.vacntnId === vaccineId.toString()
-				);
-				setVaccineRecords(records);
+			if (response.data?.data) {
+				setVaccineDetail(response.data.data);
 			}
+			setError(null);
 		} catch (error) {
-			console.error('백신 데이터 가져오기 실패:', error);
+			console.error('백신 상세 정보 가져오기 실패:', error);
+			setError('백신 정보를 불러오는데 실패했습니다.');
+		} finally {
+			setLoading(false);
 		}
-	}, [currentKid, vaccineId, vaccineData, token]);
+	}, [currentKid, vaccineId]);
 
 	useEffect(() => {
-		fetchVaccineRecords();
-	}, [fetchVaccineRecords]);
+		fetchVaccineDetail();
+	}, [fetchVaccineDetail]);
 
 	// 백신 접종 등록
 	const handleConfirm = useCallback(async () => {
+		if (!vaccineDetail?.nextVaccineInfo || !currentKid) return;
+
 		try {
 			const { year, month, day } = useDateStore.getState();
 			const formattedDate = `${year}-${month
 				.toString()
 				.padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
 
-			// 다음 접종 차수 계산 (기존 접종 기록 + 1)
-			const nextDoseNumber = vaccineRecords.length + 1;
-
-			if (!vaccineData) return;
-
-			// 다음 접종에 사용할 백신 코드 결정
-			let nextVaccineCode = '';
-			let foundDose = false;
-
-			// 백신과 차수에 맞는 코드 찾기
-			for (const vaccine of vaccineData.vaccines) {
-				for (const dose of vaccine.doses) {
-					if (dose.doseNumber === nextDoseNumber) {
-						nextVaccineCode = vaccine.code;
-						foundDose = true;
-						break;
-					}
-				}
-				if (foundDose) break;
-			}
-
-			// 백신 코드를 찾지 못했으면 첫 번째 백신 코드 사용
-			if (!nextVaccineCode && vaccineData.vaccines.length > 0) {
-				nextVaccineCode = vaccineData.vaccines[0].code;
-			}
-
 			const body = {
 				childId: currentKid,
 				vaccinationData: {
-					vacntnId: vaccineId.toString(),
-					vacntnIctsd: nextVaccineCode,
-					vacntnDoseNumber: nextDoseNumber,
+					vacntnId: vaccineId,
+					vacntnIctsd: vaccineDetail.nextVaccineInfo.vaccineCode,
+					vacntnDoseNumber: vaccineDetail.nextVaccineInfo.doseNumber,
 					vacntnInoclDt: formattedDate,
 				},
 			};
 
-			await instance.post('/child/vacntnInfo', body, {
+			await instance.post('/child/vacntnDetail', body, {
 				headers: {
 					'Content-Type': 'application/json',
 					Authorization: `Bearer ${token}`,
 				},
 			});
 
-			// 성공 후 페이지 새로고침
-			window.location.reload();
+			// 성공 후 데이터 다시 불러오기
+			await fetchVaccineDetail();
+			closeModal();
 		} catch (error) {
 			console.error('백신 접종 기록 생성 중 오류 발생:', error);
 		}
-	}, [vaccineRecords, vaccineData, currentKid, vaccineId, token]);
+	}, [
+		vaccineDetail,
+		currentKid,
+		vaccineId,
+		token,
+		fetchVaccineDetail,
+		closeModal,
+	]);
 
 	// 모달 콘텐츠 설정 및 열기
 	const handleOpenVaccineModal = useCallback(() => {
@@ -167,49 +164,32 @@ export default function VaccineDetailPage() {
 		openModal();
 	}, [setComp, openModal, closeModal, handleConfirm]);
 
-	// 백신 ID가 유효하지 않으면 에러 메시지 표시
-	if (!vaccineData) {
+	// 로딩 중 화면
+	if (loading) {
 		return (
 			<>
 				<Header title="예방접종 기록" />
 				<div className={styles.container}>
-					<p>유효하지 않은 백신 정보입니다.</p>
+					<p>백신 정보를 불러오는 중입니다...</p>
 				</div>
 			</>
 		);
 	}
 
-	// 완료된 접종 횟수
-	const completedDoses = vaccineRecords.length;
-
-	// 각 접종 차수별 상태 계산
-	const doseStatus = [];
-	let currentDoseNumber = 1;
-
-	// 모든 백신 종류와 접종 차수 순회
-	for (const vaccine of vaccineData.vaccines) {
-		for (const dose of vaccine.doses) {
-			// 해당 차수의 접종 기록 찾기
-			const record = vaccineRecords.find(
-				(r) =>
-					r.vacntnDoseNumber === dose.doseNumber &&
-					r.vacntnIctsd === vaccine.code
-			);
-
-			doseStatus.push({
-				doseNumber: currentDoseNumber,
-				vaccineCode: vaccine.code,
-				vaccineName: vaccine.name,
-				isCompleted: !!record,
-				vaccinationDate: record?.vacntnInoclDt || null,
-			});
-
-			currentDoseNumber++;
-		}
+	// 에러 화면
+	if (error || !vaccineDetail) {
+		return (
+			<>
+				<Header title="예방접종 기록" />
+				<div className={styles.container}>
+					<p>{error || '유효하지 않은 백신 정보입니다.'}</p>
+				</div>
+			</>
+		);
 	}
 
 	// 완료된 백신 렌더링
-	const renderCompletedVaccine = (dose: VacntnDetail) => (
+	const renderCompletedVaccine = (dose: DoseStatus) => (
 		<div className={styles.completeVaccineRecords}>
 			<Button
 				size="S"
@@ -230,7 +210,7 @@ export default function VaccineDetailPage() {
 	);
 
 	// 미완료 백신 렌더링
-	const renderIncompleteVaccine = (dose: VacntnDetail) => (
+	const renderIncompleteVaccine = (dose: DoseStatus) => (
 		<div className={styles.vaccineRecords} onClick={handleOpenVaccineModal}>
 			<Button
 				size="S"
@@ -253,42 +233,48 @@ export default function VaccineDetailPage() {
 		<>
 			<Header title="예방접종 기록" />
 			<div className={styles.container}>
-				<h1 className={styles.title}>{vaccineData.name}</h1>
+				<h1 className={styles.title}>{vaccineDetail.vaccineName}</h1>
 				<Spacer height={36} />
 				<div className={styles.vacccineStatus}>
 					<div className={styles.vacccineStatus_Count}>
 						<Label
-							text={`완료 ${completedDoses}`}
+							text={`완료 ${vaccineDetail.completedDoses}`}
 							css="completed"
 						/>
 						<div className="divider"></div>
 						<Label
-							text={`미접종 ${totalDoses - completedDoses}`}
+							text={`미접종 ${
+								vaccineDetail.totalDoses -
+								vaccineDetail.completedDoses
+							}`}
 							css="incomplete"
 						/>
 					</div>
 					<div className="horizonFlexbox align-center gap-8">
-						{Array.from({ length: totalDoses }).map((_, index) => (
-							<span
-								key={`circle-${index}`}
-								className={`${styles.circle} ${
-									index < completedDoses
-										? styles.vaccineComplete
-										: styles.vaccineIncomplete
-								}`}
-							/>
-						))}
+						{Array.from({ length: vaccineDetail.totalDoses }).map(
+							(_, index) => (
+								<span
+									key={`circle-${index}`}
+									className={`${styles.circle} ${
+										index < vaccineDetail.completedDoses
+											? styles.vaccineComplete
+											: styles.vaccineIncomplete
+									}`}
+								/>
+							)
+						)}
 					</div>
 				</div>
 				<Spacer height={16} />
-				{doseStatus.map((dose, index) => (
-					<React.Fragment key={`vaccine-${dose.doseNumber}차`}>
-						{dose.isCompleted
-							? renderCompletedVaccine(dose)
-							: renderIncompleteVaccine(dose)}
-						<Spacer height={16} />
-					</React.Fragment>
-				))}
+				{vaccineDetail.doseStatus &&
+					vaccineDetail.doseStatus.map((dose, index) => (
+						<React.Fragment key={`vaccine-${dose.doseNumber}차`}>
+							{dose.isCompleted
+								? renderCompletedVaccine(dose)
+								: renderIncompleteVaccine(dose)}
+							<Spacer height={16} />
+						</React.Fragment>
+					))}
 			</div>
 		</>
 	);
