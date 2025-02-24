@@ -12,6 +12,7 @@ import Button from '@/elements/button/Button';
 import { useModalStore } from '@/store/useModalStore';
 import ScrollPicker from '../../components/ScrollPicker';
 import { useDateStore } from '@/store/useDateStore';
+import LoadingFullScreen from '@/components/loading/LoadingFullScreen';
 
 // 백신 기록 데이터 타입
 interface VacntnInfo {
@@ -169,9 +170,7 @@ export default function VaccineDetailPage() {
 		return (
 			<>
 				<Header title="예방접종 기록" />
-				<div className={styles.container}>
-					<p>백신 정보를 불러오는 중입니다...</p>
-				</div>
+				<LoadingFullScreen />
 			</>
 		);
 	}
