@@ -1,30 +1,30 @@
 // src/lib/axios.ts (또는 src/api/axios.ts)
-import axios from "axios";
+import axios from 'axios';
 
 const instance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8071/",
-  withCredentials: true,
-  headers: {
-    "Content-Type": "application/json",
-  },
+	baseURL: '/api',
+	withCredentials: true,
+	headers: {
+		'Content-Type': 'application/json',
+	},
 });
 
 // 요청 인터셉터
 instance.interceptors.request.use(
-  (config) => {
-    // 요청 보내기 전 수행할 작업
+	(config) => {
+		// 요청 보내기 전 수행할 작업
 
-    const localStorageKid = localStorage.getItem("kidlove");
-    const token = JSON.parse(localStorageKid ?? "{}").state.accessToken;
+		const localStorageKid = localStorage.getItem('kidlove');
+		const token = JSON.parse(localStorageKid ?? '{}').state.accessToken;
 
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
+		if (token) {
+			config.headers.Authorization = `Bearer ${token}`;
+		}
+		return config;
+	},
+	(error) => {
+		return Promise.reject(error);
+	}
 );
 
 // 응답 인터셉터
