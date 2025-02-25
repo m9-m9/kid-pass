@@ -8,5 +8,6 @@ interface PageProps {
 
 export default async function RecordFormPage({ params }: PageProps) {
   const { type } = await params;
+
   return <RecordForm type={type} />;
 }

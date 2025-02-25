@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import useAuth from "@/hook/useAuth";
 import { TYPE_PATH_MAP } from "../../constants";
 import styles from "./page.module.css";
+import Button from "@/elements/button/Button";
 
 interface RecordDetailProps {
   params: Promise<{
@@ -59,18 +60,17 @@ const RecordDetail = ({ params }: RecordDetailProps) => {
   }, [resolvedParams.id, resolvedParams.type]);
 
   const handleEdit = () => {
-    // 수정 페이지 대신 등록 페이지로 이동하면서 id 전달
     const pathMap = {
-      FEEDING: "/record/feeding",
-      SLEEP: "/record/sleep",
-      DIAPER: "/record/buHist",
-      TEMPERATURE: "/record/heat",
-      GROWTH: "/record/hgWgh",
-      HEAD: "/record/hgWgh",
-      EMOTION: "/record/emotion",
-      SYMPTOM: "/record/symptm",
-      MEDICINE: "/record/takngHist",
-      ETC: "/record/etc",
+      FEEDING: "/record/FEEDING",
+      SLEEP: "/record/SLEEP",
+      DIAPER: "/record/DIAPER",
+      TEMPERATURE: "/record/TEMPERATURE",
+      GROWTH: "/record/GROWTH",
+      HEAD: "/record/HEAD",
+      EMOTION: "/record/EMOTION",
+      SYMPTOM: "/record/SYMPTOM",
+      MEDICINE: "/record/MEDICINE",
+      ETC: "/record/ETC",
     } as const;
 
     const path = pathMap[resolvedParams.type as keyof typeof pathMap];
@@ -187,7 +187,7 @@ const RecordDetail = ({ params }: RecordDetailProps) => {
       />
       {record && (
         <>
-          <div className={styles.container}>
+          <div>
             {getRecordInfo(record).map((info, index) => (
               <div key={index} className={styles.infoItem}>
                 <span className={styles.label}>{info.label}</span>
@@ -201,19 +201,19 @@ const RecordDetail = ({ params }: RecordDetailProps) => {
               </div>
             )}
           </div>
+
           <div className={styles.buttonContainer}>
-            <button
-              className={`${styles.button} ${styles.editButton}`}
+            <Button
+              label="수정하기"
+              size="L"
+              style={{ backgroundColor: "#F4F4F4", color: "#1A1A1A" }}
               onClick={handleEdit}
-            >
-              수정
-            </button>
-            <button
-              className={`${styles.button} ${styles.deleteButton}`}
-              onClick={handleDelete}
-            >
-              삭제
-            </button>
+            />
+            <Button
+              label="삭제하기"
+              size="L"
+              style={{ backgroundColor: "red" }}
+            />
           </div>
         </>
       )}

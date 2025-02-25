@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Container from "@/elements/container/Container";
 import Header from "@/components/header/Header";
 import CustomDateTimePicker from "@/components/customDateTimePicker/CustomDateTimePicker";
@@ -25,11 +25,12 @@ import { Label } from "@/elements/label/Label";
 
 interface RecordFormProps {
   type: string;
-  id?: string;
 }
 
-const RecordForm = ({ type, id }: RecordFormProps) => {
+const RecordForm = ({ type }: RecordFormProps) => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id");
   const { getToken } = useAuth();
 
   const [startDate, setStartDate] = useState<Date>();
