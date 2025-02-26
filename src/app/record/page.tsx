@@ -1,26 +1,23 @@
 "use client";
 
-import { DateType } from "@/hook/useDatePicker";
 import { useEffect, useState } from "react";
-import "react-day-picker/dist/style.css";
-import WeeklyCalendar from "@/components/datePicker/DateCarousel";
-import Container from "@/elements/container/Container";
-import Carousel from "@/components/carousel/Carousel";
-import Schedule, { DaySchedule } from "@/components/schedule/Schedule";
-import { useModalStore } from "@/store/useModalStore";
-import Grid from "@/elements/grid/Grid";
-import styles from "./record.module.css";
-import Image from "next/image";
-import FloatingBtn from "@/components/floatingBtn/FloatingBtn";
-import Link from "next/link";
-import BottomNavigation from "@/components/bottomNavigation/BottomNavigation";
+import { Grid, Box, Text, Button, Image, Stack, Card } from "@mantine/core";
+import { useRouter } from "next/navigation";
 import useAuth from "@/hook/useAuth";
-import Empty from "@/components/empty/Empty";
+import { modals } from "@mantine/modals";
+import { DateType } from "@/hook/useDatePicker";
+import Schedule, { DaySchedule } from "@/components/schedule/Schedule";
 import { formatRecordData } from "./utils";
 import { RECORDS, SLIDES } from "./constants";
+import MobileLayout from "@/app/mantine/MobileLayout";
+import WeeklyCalendar from "@/components/datePicker/DateCarousel"; // Keeping this assuming it's a custom component
+import Carousel from "@/components/carousel/Carousel"; // Keeping this assuming it's a custom component
+import Empty from "@/components/empty/Empty"; // Keeping this assuming it's a custom component
+import { RiAddLine } from "@remixicon/react";
 
 const RecordPage = () => {
   const { getToken } = useAuth();
+  const router = useRouter();
   const [date, setDate] = useState<DateType>({
     year: new Date().getFullYear(),
     month: new Date().getMonth() + 1,
@@ -28,7 +25,6 @@ const RecordPage = () => {
   });
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
   const [scheduleData, setScheduleData] = useState<DaySchedule[]>([]);
-  const { openModal, closeModal, setComp } = useModalStore();
 
   const fetchRecords = async () => {
     try {
@@ -67,15 +63,63 @@ const RecordPage = () => {
     });
   };
 
-  const renderRecordItems = () =>
-    RECORDS.map((record) => (
-      <Link key={record.path} href={record.path} onClick={() => closeModal()}>
-        <div className={styles.card}>
-          <Image src={record.src} alt={record.title} width={32} height={32} />
-          <span className={styles.cardText}>{record.title}</span>
-        </div>
-      </Link>
-    ));
+  const openRecordModal = () => {
+    modals.open({
+      title: "오늘의 아이 기록하기",
+      centered: false,
+      fullScreen: false,
+      withCloseButton: true,
+      trapFocus: true,
+      closeOnEscape: true,
+      styles: {
+        root: {
+          alignItems: "flex-end",
+        },
+        content: {
+          height: "60%",
+          width: "100%",
+          maxWidth: "100%",
+          margin: 0,
+          borderTopLeftRadius: "16px",
+          borderTopRightRadius: "16px",
+          borderBottomLeftRadius: 0,
+          borderBottomRightRadius: 0,
+        },
+      },
+      children: (
+        <Box p="md">
+          <Grid>
+            {RECORDS.map((record) => (
+              <Grid.Col span={4} key={record.path}>
+                <Card
+                  p="md"
+                  radius="md"
+                  withBorder
+                  onClick={() => {
+                    modals.closeAll();
+                    router.push(record.path);
+                  }}
+                  style={{ cursor: "pointer" }}
+                >
+                  <Stack align="center" gap="xs">
+                    <Image
+                      src={record.src}
+                      alt={record.title}
+                      width={32}
+                      height={32}
+                    />
+                    <Text size="sm" ta="center">
+                      {record.title}
+                    </Text>
+                  </Stack>
+                </Card>
+              </Grid.Col>
+            ))}
+          </Grid>
+        </Box>
+      ),
+    });
+  };
 
   const handleDateChange = (newDate: DateType) => {
     setDate(newDate);
@@ -85,21 +129,16 @@ const RecordPage = () => {
     fetchRecords();
   }, [date]);
 
-  useEffect(() => {
-    setComp(
-      <>
-        <div className={styles.titleContainer}>
-          <span className={styles.modalTitle}>오늘의 아이 기록하기</span>
-        </div>
-        <Grid items={renderRecordItems()} column={3} />
-      </>
-    );
-  }, []);
-
   return (
-    <Container className="mapContainer">
-      <div style={{ backgroundColor: "white" }}>
-        <div
+    <MobileLayout
+      showHeader={true}
+      headerType="profile"
+      title="아이기록"
+      showBottomNav={true}
+      currentRoute="/record"
+    >
+      <Box bg="white" pb={60}>
+        <Box
           style={{
             position: "sticky",
             top: 0,
@@ -108,7 +147,8 @@ const RecordPage = () => {
           }}
         >
           <WeeklyCalendar onDateChange={handleDateChange} />
-        </div>
+        </Box>
+
         <Carousel
           slides={SLIDES}
           options={{
@@ -120,17 +160,32 @@ const RecordPage = () => {
           }}
         />
 
-        <div style={{ marginBottom: 60 }}>
+        <Box>
           {scheduleData.length > 0 ? (
             <Schedule schedules={scheduleData} />
           ) : (
             <Empty text="아직 기록된 데이터가 없습니다." />
           )}
-        </div>
-        <FloatingBtn onClick={() => openModal()} />
-        <BottomNavigation />
-      </div>
-    </Container>
+        </Box>
+
+        <Button
+          radius="xl"
+          size="lg"
+          color="brand"
+          style={{
+            position: "fixed",
+            bottom: 80,
+            right: 20,
+            width: 56,
+            height: 56,
+            padding: 0,
+          }}
+          onClick={openRecordModal}
+        >
+          <RiAddLine size={24} />
+        </Button>
+      </Box>
+    </MobileLayout>
   );
 };
 

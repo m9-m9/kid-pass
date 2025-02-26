@@ -48,7 +48,11 @@ const theme = createTheme({
     lg: "75em", // 1200px
     xl: "88em", // 1408px
   },
+  fontSizes: {
+    xxs: "0.5rem",
+  },
   spacing: {
+    xxs: "0.5rem",
     xs: "0.625rem",
     sm: "0.75rem",
     md: "1rem",

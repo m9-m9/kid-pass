@@ -21,6 +21,7 @@
     "@mantine/notifications": "^7.17.0",
     "@mantine/tiptap": "^7.17.0",
     "@prisma/client": "^6.3.1",
+    "@remixicon/react": "^4.6.0",
     "@tiptap/extension-link": "^2.11.5",
     "@tiptap/react": "^2.11.5",
     "@tiptap/starter-kit": "^2.11.5",
@@ -43,7 +44,6 @@
     "react-dom": "19.0.0-rc-66855b96-20241106",
     "react-kakao-maps-sdk": "^1.1.27",
     "recharts": "^2.15.1",
-    "remixicon": "^4.5.0",
     "zustand": "^5.0.1"
   },
   "devDependencies": {
