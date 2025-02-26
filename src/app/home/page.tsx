@@ -228,8 +228,6 @@ const App: React.FC = () => {
 		);
 	};
 
-	const currentKid = kidsData[currentKidIndex];
-
 	return (
 		<MobileLayout
 			showHeader={true}
@@ -239,7 +237,7 @@ const App: React.FC = () => {
 			currentRoute="/"
 		>
 			<Group justify="space-between" align="center" w="100%">
-				<Text size="xl" ff="HakgyoansimWoojuR" c="#222222">
+				<Text size="xxl" ff="HakgyoansimWoojuR" c="#222222">
 					오늘의아이
 				</Text>
 				<Image
@@ -250,7 +248,6 @@ const App: React.FC = () => {
 
 			<ProfileCarousel
 				profiles={kidsData}
-				isLoading={loading}
 				onSlideChange={setCurrentKidIndex}
 			/>
 
@@ -280,12 +277,12 @@ const App: React.FC = () => {
 				</Container>
 			</div>
 
-			{currentKid && (
+			{/* {currentKid && (
 				<MetricsSection
 					labelText={`오늘의 ${currentKid.profile.chldrnNm} 기록이에요`}
 					metricsData={currentKid.metrics}
 				/>
-			)}
+			)} */}
 			<BottomNavigation />
 		</MobileLayout>
 	);
