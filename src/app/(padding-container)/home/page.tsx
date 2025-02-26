@@ -12,6 +12,7 @@ import useAuth from "@/hook/useAuth";
 import { useRouter } from "next/navigation";
 import BottomNavigation from "@/components/bottomNavigation/BottomNavigation";
 import useChldrnListStore from "@/store/useChldrnListStore";
+import MobileLayout from "@/app/mantine/MobileLayout";
 
 interface PhysicalStats {
   chldrnBdwgh: number;
@@ -222,7 +223,13 @@ const App: React.FC = () => {
   const currentKid = kidsData[currentKidIndex];
 
   return (
-    <>
+    <MobileLayout
+      showHeader={true}
+      headerType="profile"
+      title="홈"
+      showBottomNav={true}
+      currentRoute="/"
+    >
       <div className="horizonFlexbox align-center space-between">
         <Label text="오늘의아이" css="Logo" />
         <img src="https://heidimoon.cafe24.com/renwal/test2/Bell.svg" />
@@ -264,7 +271,7 @@ const App: React.FC = () => {
         />
       )}
       <BottomNavigation />
-    </>
+    </MobileLayout>
   );
 };
 
