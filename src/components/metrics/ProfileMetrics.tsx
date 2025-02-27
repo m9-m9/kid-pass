@@ -1,14 +1,21 @@
-import { Label } from "@/elements/label/Label";
+import { Stack, Text } from '@mantine/core';
 
-type ProfileMetricsProps = {
-    label: string;
-    value: string | number;
-};
-
-const ProfileMetrics: React.FC<ProfileMetricsProps> = ({ label, value }) => (
-    <div className="verticalFlexbox gap-5">
-        <Label text={label} css="metricsLabel" />
-        <Label text={String(value)} css="metricsValue" />
-    </div>
+// ProfileMetrics를 Mantine 컴포넌트로 변환
+const ProfileMetrics = ({
+	label,
+	value,
+}: {
+	label: string;
+	value: string | number;
+}) => (
+	<Stack gap={5}>
+		<Text fz="sm" fw="600" c="#646464">
+			{label}
+		</Text>
+		<Text fz="md-lg" fw="700" c="#000000">
+			{String(value)}
+		</Text>
+	</Stack>
 );
+
 export default ProfileMetrics;

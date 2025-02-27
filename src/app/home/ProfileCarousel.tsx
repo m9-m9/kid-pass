@@ -1,94 +1,115 @@
-import CarouselContainer from '@/components/carousel/CarouselContainer';
-import ProfileMetrics from '@/components/metrics/ProfileMetrics';
-import Container from '@/elements/container/Container';
-import { Label } from '@/elements/label/Label';
-import ArrowIcon from '@/elements/svg/Arrow';
+import React from 'react';
+import { Carousel } from '@mantine/carousel';
+import { Box, Flex, Text, Image, Stack, Group } from '@mantine/core';
 import { KidRecord } from './page';
+import ProfileMetrics from '@/components/metrics/ProfileMetrics';
+import { IconChevronRight } from '@tabler/icons-react';
 
 interface ProfileCarouselProps {
 	profiles: KidRecord[];
-	isLoading: boolean;
 	onSlideChange: (index: number) => void;
 }
 
 const ProfileCarousel: React.FC<ProfileCarouselProps> = ({
 	profiles,
-	isLoading,
 	onSlideChange,
 }) => {
-	if (isLoading) {
-		return <div>Loading...</div>;
-	}
-
 	return (
-		<CarouselContainer
-			options={{
-				slidesToScroll: 1,
-				containScroll: 'trimSnaps',
+		<Carousel
+			slideSize="95%"
+			slidesToScroll={1}
+			dragFree={false}
+			containScroll="keepSnaps" // "trimSnaps" 대신 "keepSnaps" 사용
+			skipSnaps={false}
+			loop={false}
+			onSlideChange={onSlideChange}
+			withControls={false}
+			styles={{
+				root: {
+					width: '100%',
+				},
+				viewport: {
+					overflow: 'hidden',
+					width: '100%',
+				},
+				container: {
+					display: 'flex',
+					width: '100%',
+					gap: '8px', // 슬라이드 간겨
+				},
+				slide: {
+					flex: '0 0 auto',
+					width: profiles.length > 1 ? 'calc(95% - 8px)' : '100%',
+				},
 			}}
-			slideClassName={
-				profiles.length > 1 ? 'slide-ratio-95' : 'slide-ratio-100'
-			}
-			onSelect={onSlideChange}
 		>
 			{profiles.map((kidRecord) => {
 				const { profile } = kidRecord;
 				const [physicalStats] = profile.chldrnInfoList;
 
 				return (
-					<Container className="profile" key={profile.chldrnNo}>
-						<div className="horizonFlexbox space-between">
-							<div className="verticalFlexbox gap-18 space-between">
+					<Carousel.Slide key={profile.chldrnNo}>
+						<Box
+							style={{
+								borderRadius: '8px',
+							}}
+							bg="brand.0"
+							p="md"
+							mb="xl"
+						>
+							<Flex justify="space-between" mb="md">
+								<Stack gap="md">
+									<ProfileMetrics
+										label={`${profile.age} 출생`}
+										value={profile.chldrnNm}
+									/>
+									<ProfileMetrics
+										label="나이 (만)"
+										value={profile.age}
+									/>
+								</Stack>
+
+								<Stack gap={8}>
+									<Group align="center" gap={0}>
+										<Text fz="sm" fw="500" c="#9e9e9e">
+											리포트 업데이트
+										</Text>
+										<IconChevronRight
+											size={24}
+											color="#9E9E9E"
+											stroke={1.5}
+										/>
+									</Group>
+									<Flex align="end" justify="end">
+										<Image
+											src="https://heidimoon.cafe24.com/renwal/test2/barcode.png"
+											width={76}
+											height={76}
+											alt="바코드"
+										/>
+									</Flex>
+								</Stack>
+							</Flex>
+
+							<Flex align="center" justify="space-between">
 								<ProfileMetrics
-									label={`${profile.age} 출생`}
-									value={profile.chldrnNm}
+									label="몸무게"
+									value={`${physicalStats.chldrnBdwgh}kg`}
 								/>
 								<ProfileMetrics
-									label="나이 (만)"
-									value={profile.age}
+									label="키"
+									value={`${physicalStats.chldrnHeight}cm`}
 								/>
-							</div>
-
-							<div className="verticalFlexbox gap-7">
-								<div className="horizonFlexbox align-center">
-									<Label
-										text="리포트 업데이트"
-										css="rptUpdate"
-									/>
-									<ArrowIcon
-										direction="right"
-										color="#9e9e9e"
-										size={16}
-									/>
-								</div>
-								<div className="horizonFlexbox align-center justify-center">
-									<img
-										src="https://heidimoon.cafe24.com/renwal/test2/barcode.png"
-										width="76px"
-										height="76px"
-									/>
-								</div>
-							</div>
-						</div>
-
-						<div className="horizonFlexbox align-center space-between">
-							<ProfileMetrics
-								label="몸무게"
-								value={`${physicalStats.chldrnBdwgh}kg`}
-							/>
-							<ProfileMetrics
-								label="키"
-								value={`${physicalStats.chldrnHeight}cm`}
-							/>
-							<ProfileMetrics
-								label="머리 둘레"
-								value={`${physicalStats.chldrnHead}cm`}
-							/>
-						</div>
-					</Container>
+								<ProfileMetrics
+									label="머리 둘레"
+									value={`${physicalStats.chldrnHead}cm`}
+								/>
+							</Flex>
+						</Box>
+					</Carousel.Slide>
 				);
 			})}
-		</CarouselContainer>
+		</Carousel>
 	);
 };
 

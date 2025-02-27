@@ -1,61 +1,67 @@
-import React from "react";
-import styles from "./metrics.module.css";
-import Container from "@/elements/container/Container";
-import { Label } from "@/elements/label/Label";
+import React from 'react';
+import { Flex, Text, Collapse, ActionIcon, Group } from '@mantine/core';
+import {
+	IconChevronUp,
+	IconChevronDown,
+	IconCirclePlus,
+} from '@tabler/icons-react';
 
 // MetricsItem 컴포넌트
 type MetricsItemProps = {
-    title: string;
-    isOpen: boolean;
-    onToggle: () => void;
-    children: React.ReactNode;
+	title: string;
+	isOpen: boolean;
+	onToggle: () => void;
+	children: React.ReactNode;
 };
 
-// MetricsContainer
-
 const MetricsItem: React.FC<MetricsItemProps> = ({
-    title,
-    isOpen,
-    onToggle,
-    children,
-}) => (
-    <Container className="report">
-        <div className="horizonFlexbox align-center space-between">
-            <div className="horizonFlexbox align-center gap-20">
-                <Label text={title} css="symtomLabel" />
-                <svg
-                    width="22"
-                    height={isOpen ? "10" : "9"}
-                    viewBox={isOpen ? "0 0 22 10" : "0 0 22 9"}
-                    fill="none"
-                    onClick={onToggle}
-                    xmlns="http://www.w3.org/2000/svg"
-                    className={styles.toggleIcon}
-                >
-                    <path
-                        d={
-                            isOpen
-                                ? "M1 1L10.5 8.5L21 1"
-                                : "M21 8.5L11.5 0.999999L1 8.5"
-                        }
-                        stroke="black"
-                    />
-                </svg>
-            </div>
-            <img
-                src="https://heidimoon.cafe24.com/renwal/test2/circle_plus.svg"
-                width="20px"
-                height="20px"
-            />
-        </div>
-        <div
-            className={`horizonFlexbox align-center gap-16 ${
-                !isOpen && styles.closed
-            }`}
-        >
-            {children}
-        </div>
-    </Container>
-);
+	title,
+	isOpen,
+	onToggle,
+	children,
+}) => {
+	return (
+		<Flex
+			p="md"
+			bg="white"
+			direction="column"
+			gap={16}
+			styles={{
+				root: {
+					boxShadow: '0px 0px 15px 0px rgba(0, 0, 0, 0.15)',
+					borderRadius: '8px',
+				},
+			}}
+		>
+			<Flex justify="space-between" align="center">
+				<Group gap="lg">
+					<Text fw={600} fz={16} c="#222222">
+						{title}
+					</Text>
+					<ActionIcon
+						variant="transparent"
+						onClick={onToggle}
+						aria-label={isOpen ? '접기' : '펼치기'}
+					>
+						{isOpen ? (
+							<IconChevronUp size={18} />
+						) : (
+							<IconChevronDown size={18} />
+						)}
+					</ActionIcon>
+				</Group>
+				<ActionIcon variant="transparent">
+					<IconCirclePlus size={20} />
+				</ActionIcon>
+			</Flex>
+
+			<Collapse in={isOpen}>
+				<Flex align="center" gap="md">
+					{children}
+				</Flex>
+			</Collapse>
+		</Flex>
+	);
+};
 
 export { MetricsItem };
