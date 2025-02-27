@@ -10,30 +10,13 @@ import {
 	useMantineTheme,
 } from '@mantine/core';
 import { KidRecord } from './page';
-import ArrowIcon from '@/elements/svg/Arrow';
+import ProfileMetrics from '@/components/metrics/ProfileMetrics';
+import { IconChevronRight } from '@tabler/icons-react';
 
 interface ProfileCarouselProps {
 	profiles: KidRecord[];
 	onSlideChange: (index: number) => void;
 }
-
-// ProfileMetrics를 Mantine 컴포넌트로 변환
-const ProfileMetrics = ({
-	label,
-	value,
-}: {
-	label: string;
-	value: string | number;
-}) => (
-	<Stack gap={2}>
-		<Text fz="sm" fw="500" c="#646464">
-			{label}
-		</Text>
-		<Text fz="xl" fw="700" c="#000000">
-			{String(value)}
-		</Text>
-	</Stack>
-);
 
 const ProfileCarousel: React.FC<ProfileCarouselProps> = ({
 	profiles,
@@ -81,9 +64,10 @@ const ProfileCarousel: React.FC<ProfileCarouselProps> = ({
 								backgroundColor: theme.colors.brand[0],
 								padding: '16px',
 							}}
+							mb={24}
 						>
-							<Flex justify="space-between">
-								<Stack>
+							<Flex justify="space-between" mb={16}>
+								<Stack gap={18}>
 									<ProfileMetrics
 										label={`${profile.age} 출생`}
 										value={profile.chldrnNm}
@@ -94,19 +78,15 @@ const ProfileCarousel: React.FC<ProfileCarouselProps> = ({
 									/>
 								</Stack>
 
-								<Stack>
-									<Group align="center" gap={6}>
-										<Text
-											fz="var(--font-size-12)"
-											fw="var(--font-weight-semiBold)"
-											c="#9e9e9e"
-										>
+								<Stack gap={8}>
+									<Group align="center" gap={0}>
+										<Text fz="sm" fw="500" c="#9e9e9e">
 											리포트 업데이트
 										</Text>
-										<ArrowIcon
-											direction="right"
-											color="#9e9e9e"
-											size={16}
+										<IconChevronRight
+											size={24}
+											color="#9E9E9E"
+											stroke={1.5}
 										/>
 									</Group>
 									<Flex align="end" justify="end">

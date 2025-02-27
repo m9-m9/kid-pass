@@ -175,7 +175,7 @@ const App: React.FC = () => {
 							profile: {
 								chldrnNm: child.name,
 								chldrnBrthdy: child.birthDate,
-								ageType: child.ageType || '',
+								ageType: child.ageType ?? '',
 								age: age,
 								chldrnNo: child.id,
 								atchCode: '',
@@ -183,10 +183,10 @@ const App: React.FC = () => {
 								weeks,
 								chldrnInfoList: [
 									{
-										chldrnBdwgh: child.weight || 0,
+										chldrnBdwgh: child.weight ?? 0,
 										chldrnHead:
-											child.headCircumference || 0,
-										chldrnHeight: child.height || 0,
+											child.headCircumference ?? 0,
+										chldrnHeight: child.height ?? 0,
 										chldrnNo: child.id,
 									},
 								] as [PhysicalStats],
@@ -227,6 +227,8 @@ const App: React.FC = () => {
 			})
 		);
 	};
+
+	const currentKid = kidsData[currentKidIndex];
 
 	return (
 		<MobileLayout
@@ -277,12 +279,12 @@ const App: React.FC = () => {
 				</Container>
 			</div>
 
-			{/* {currentKid && (
+			{currentKid && (
 				<MetricsSection
 					labelText={`오늘의 ${currentKid.profile.chldrnNm} 기록이에요`}
 					metricsData={currentKid.metrics}
 				/>
-			)} */}
+			)}
 			<BottomNavigation />
 		</MobileLayout>
 	);
