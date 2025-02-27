@@ -1,9 +1,5 @@
 'use client';
 
-import { Label } from '@/elements/label/Label';
-import Container from '@/elements/container/Container';
-import PlusIcon from '@/elements/svg/Plus';
-import styles from './home.module.css';
 import { useEffect, useState } from 'react';
 import { MetricsSection } from '@/components/metrics/MetricsSection';
 import Link from 'next/link';
@@ -13,7 +9,8 @@ import { useRouter } from 'next/navigation';
 import BottomNavigation from '@/components/bottomNavigation/BottomNavigation';
 import useChldrnListStore from '@/store/useChldrnListStore';
 import MobileLayout from '@/app/mantine/MobileLayout';
-import { Group, Text, Image } from '@mantine/core';
+import { Group, Text, Image, Stack, Flex } from '@mantine/core';
+import { IconPlus } from '@tabler/icons-react';
 
 interface PhysicalStats {
 	chldrnBdwgh: number;
@@ -89,143 +86,156 @@ const calculateAgeInWeeksAndDays = (birthDate: string) => {
 	};
 };
 
+const createMockMetrics = (
+	kidName: string,
+	kidIndex: number,
+	toggleMetric: (kidIndex: number, metricIndex: number) => void
+) => [
+	{
+		title: '수면패턴',
+		isOpen: true,
+		onToggle: () => toggleMetric(kidIndex, 0),
+		details: [
+			{ label: '간격', value: '3회' },
+			{ label: '횟수', value: '6회' },
+		],
+	},
+	{
+		title: '식사패턴',
+		isOpen: true,
+		onToggle: () => toggleMetric(kidIndex, 1),
+		details: [
+			{ label: '간격', value: '2시간' },
+			{ label: '횟수', value: '6회' },
+		],
+	},
+	{
+		title: '배변패턴',
+		isOpen: true,
+		onToggle: () => toggleMetric(kidIndex, 2),
+		details: [
+			{ label: '대변', value: '6회' },
+			{ label: '소변', value: '6회' },
+			{
+				label: '대변색깔',
+				value: kidName === '정민규' ? '묽은 변' : '정상',
+			},
+		],
+	},
+];
+
+// 아이 데이터 가공 함수 분리
+const processChildData = (
+	children: Child[],
+	toggleMetric: (kidIndex: number, metricIndex: number) => void
+) => {
+	return children.map((child, index) => {
+		const { weeks, days, age } = calculateAgeInWeeksAndDays(
+			child.birthDate
+		);
+
+		return {
+			profile: {
+				chldrnNm: child.name,
+				chldrnBrthdy: child.birthDate,
+				ageType: child.ageType ?? '',
+				age: age,
+				chldrnNo: child.id,
+				atchCode: '',
+				days,
+				weeks,
+				chldrnInfoList: [
+					{
+						chldrnBdwgh: child.weight ?? 0,
+						chldrnHead: child.headCircumference ?? 0,
+						chldrnHeight: child.height ?? 0,
+						chldrnNo: child.id,
+					},
+				] as [PhysicalStats],
+			},
+			metrics: createMockMetrics(child.name, index, toggleMetric),
+		};
+	});
+};
+
 const App: React.FC = () => {
 	const { getToken } = useAuth();
 	const router = useRouter();
-	const [loading, setLoading] = useState(false);
 	const [kidsData, setKidsData] = useState<KidRecord[]>([]);
 	const [currentKidIndex, setCurrentKidIndex] = useState(0);
 	const { setChldrnList, setCurrentKid } = useChldrnListStore();
 
 	useEffect(() => {
-		const fetchData = async () => {
-			const token = await getToken();
-
-			if (!token) {
-				router.push('auth/login');
-				return;
-			}
-
-			try {
-				setLoading(true);
-				const response = await fetch('/api/child/getChildren', {
-					headers: {
-						Authorization: `Bearer ${token}`,
-					},
-				});
-
-				const data = await response.json();
-				if (response.ok && data.data) {
-					const children = data.data as Child[];
-					if (children.length > 0) {
-						localStorage.setItem('currentKid', children[0].id);
-						setCurrentKid(children[0].id);
-					}
-
-					const childrenToStore = children.map((child) => ({
-						chldrnNo: child.id,
-						chldrnNm: child.name,
-						chldrnSexdstn: child.gender,
-					}));
-					setChldrnList(childrenToStore);
-
-					const mockMetrics = (kidName: string, kidIndex: number) => [
-						{
-							title: '수면패턴',
-							isOpen: true,
-							onToggle: () => toggleMetric(kidIndex, 0),
-							details: [
-								{ label: '간격', value: '3회' },
-								{ label: '횟수', value: '6회' },
-							],
-						},
-						{
-							title: '식사패턴',
-							isOpen: true,
-							onToggle: () => toggleMetric(kidIndex, 1),
-							details: [
-								{ label: '간격', value: '2시간' },
-								{ label: '횟수', value: '6회' },
-							],
-						},
-						{
-							title: '배변패턴',
-							isOpen: true,
-							onToggle: () => toggleMetric(kidIndex, 2),
-							details: [
-								{ label: '대변', value: '6회' },
-								{ label: '소변', value: '6회' },
-								{
-									label: '대변색깔',
-									value:
-										kidName === '정민규'
-											? '묽은 변'
-											: '정상',
-								},
-							],
-						},
-					];
-
-					const kidsWithMetrics = children.map((child, index) => {
-						const { weeks, days, age } = calculateAgeInWeeksAndDays(
-							child.birthDate
-						);
-
-						return {
-							profile: {
-								chldrnNm: child.name,
-								chldrnBrthdy: child.birthDate,
-								ageType: child.ageType ?? '',
-								age: age,
-								chldrnNo: child.id,
-								atchCode: '',
-								days,
-								weeks,
-								chldrnInfoList: [
-									{
-										chldrnBdwgh: child.weight ?? 0,
-										chldrnHead:
-											child.headCircumference ?? 0,
-										chldrnHeight: child.height ?? 0,
-										chldrnNo: child.id,
-									},
-								] as [PhysicalStats],
-							},
-							metrics: mockMetrics(child.name, index),
-						};
-					});
-					setKidsData(kidsWithMetrics);
-				}
-			} catch (error) {
-				console.error('Error fetching data:', error);
-			} finally {
-				setLoading(false);
-			}
-		};
-
-		fetchData();
+		fetchChildrenData();
 	}, []);
 
+	const fetchChildrenData = async () => {
+		const token = await getToken();
+
+		if (!token) {
+			router.push('auth/login');
+			return;
+		}
+
+		try {
+			const response = await fetch('/api/child/getChildren', {
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			});
+
+			const data = await response.json();
+			if (response.ok && data.data) {
+				handleChildrenData(data.data);
+			}
+		} catch (error) {
+			console.error('Error fetching data:', error);
+		}
+	};
+
+	// 데이터 처리 함수를 분리
+	const handleChildrenData = (children: Child[]) => {
+		if (children.length > 0) {
+			localStorage.setItem('currentKid', children[0].id);
+			setCurrentKid(children[0].id);
+		}
+
+		const childrenToStore = children.map((child) => ({
+			chldrnNo: child.id,
+			chldrnNm: child.name,
+			chldrnSexdstn: child.gender,
+		}));
+
+		setChldrnList(childrenToStore);
+		const processedData = processChildData(children, toggleMetric);
+		setKidsData(processedData);
+	};
+	// 특정 메트릭 업데이트 함수 분리
+	const updateMetricState = (metrics: any[], metricIndex: number) => {
+		return metrics.map((metric, mIdx) => {
+			if (mIdx === metricIndex) {
+				return {
+					...metric,
+					isOpen: !metric.isOpen,
+				};
+			}
+			return metric;
+		});
+	};
+
+	// 메인 토글 함수
 	const toggleMetric = (kidIndex: number, metricIndex: number) => {
-		setKidsData((prevData) =>
-			prevData.map((kid, idx) => {
+		setKidsData((prevData) => {
+			return prevData.map((kid, idx) => {
 				if (idx === kidIndex) {
 					return {
 						...kid,
-						metrics: kid.metrics.map((metric, mIdx) => {
-							if (mIdx === metricIndex) {
-								return {
-									...metric,
-									isOpen: !metric.isOpen,
-								};
-							}
-							return metric;
-						}),
+						metrics: updateMetricState(kid.metrics, metricIndex),
 					};
 				}
 				return kid;
-			})
-		);
+			});
+		});
 	};
 
 	const currentKid = kidsData[currentKidIndex];
@@ -238,7 +248,7 @@ const App: React.FC = () => {
 			showBottomNav={true}
 			currentRoute="/"
 		>
-			<Group justify="space-between" align="center" w="100%">
+			<Group justify="space-between" align="center" w="100%" mb={16}>
 				<Text size="xxl" ff="HakgyoansimWoojuR" c="#222222">
 					오늘의아이
 				</Text>
@@ -247,38 +257,99 @@ const App: React.FC = () => {
 					alt="알림"
 				/>
 			</Group>
-
 			<ProfileCarousel
 				profiles={kidsData}
 				onSlideChange={setCurrentKidIndex}
 			/>
+			<Group
+				bg="#729bed"
+				p="lg"
+				align="center"
+				pos="relative"
+				style={{ borderRadius: '8px' }}
+			>
+				<IconPlus color="#FFFFFF" size={12} strokeWidth={4} />
+				<Text c="white" fw={700} fz="md">
+					오늘의 아이 증상 기록하기
+				</Text>
 
-			<Container className="homepage_1 gap-4">
-				<PlusIcon color="#FFFFFF" size={12} strokeWidth={4} />
-				<Label text="오늘의 아이 증상 기록하기" css="home_1" />
-				<img className={styles.homepage_image_1} src="/record.png" />
-			</Container>
+				<Image
+					src="/record.png"
+					alt=""
+					style={{
+						position: 'absolute',
+						right: '1rem',
+						width: 80,
+						height: 80,
+					}}
+				/>
+			</Group>
 
-			<div className="horizonFlexbox gap-16 align-center">
-				<Container className="homepage_2">
-					<Link
-						href={'/map'}
-						className="verticalFlexbox justify-center"
-					>
-						<Label text="지금 문 연" css="home_2" />
-						<Label text="병원/약국" css="home_2" />
-					</Link>
-					<img src="https://heidimoon.cafe24.com/renwal/test2/Group.png" />
-				</Container>
-				<Container className="homepage_2">
-					<div className="verticalFlexbox justify-center">
-						<Label text="진료받은" css="home_2" />
-						<Label text="기록" css="home_2" />
-					</div>
-					<img src="https://heidimoon.cafe24.com/renwal/test2/OBJECTS.png" />
-				</Container>
-			</div>
+			<Group gap={8} align="center" mt={16}>
+				<Flex
+					component={Link}
+					href="/map"
+					style={{ textDecoration: 'none' }}
+					p="md"
+					bg="white"
+					justify="space-between"
+					align="center"
+					styles={{
+						root: {
+							border: '1px solid #d5d5d5',
+							borderRadius: '8px',
+							flex: '1',
+						},
+					}}
+				>
+					<Stack justify="center" gap={0}>
+						<Text fw={700} fz={16} c="#222222">
+							지금 문 연
+						</Text>
+						<Text fw={700} fz={16} c="#222222">
+							병원/약국
+						</Text>
+					</Stack>
+					<Image
+						src="https://heidimoon.cafe24.com/renwal/test2/Group.png"
+						alt="병원/약국"
+						width={36}
+						height={36}
+					/>
+				</Flex>
 
+				<Flex
+					component={Link}
+					href="/map"
+					style={{ textDecoration: 'none' }}
+					p="md"
+					bg="white"
+					justify="space-between"
+					align="center"
+					styles={{
+						root: {
+							border: '1px solid #d5d5d5',
+							borderRadius: '8px',
+							flex: '1',
+						},
+					}}
+				>
+					<Stack justify="center" gap={0}>
+						<Text fw={700} fz={16} c="#222222">
+							진료받은
+						</Text>
+						<Text fw={700} fz={16} c="#222222">
+							기록
+						</Text>
+					</Stack>
+					<Image
+						src="https://heidimoon.cafe24.com/renwal/test2/OBJECTS.png"
+						alt="기록"
+						width={36}
+						height={36}
+					/>
+				</Flex>
+			</Group>
 			{currentKid && (
 				<MetricsSection
 					labelText={`오늘의 ${currentKid.profile.chldrnNm} 기록이에요`}

@@ -9,7 +9,7 @@ const ProfileMetrics = ({
 	value: string | number;
 }) => (
 	<Stack gap={5}>
-		<Text fz="sm" fw="500" c="#646464">
+		<Text fz="xs" fw="600" c="#646464">
 			{label}
 		</Text>
 		<Text fz="xl" fw="700" c="#000000">
