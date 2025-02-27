@@ -1,14 +1,6 @@
 import React from 'react';
 import { Carousel } from '@mantine/carousel';
-import {
-	Box,
-	Flex,
-	Text,
-	Image,
-	Stack,
-	Group,
-	useMantineTheme,
-} from '@mantine/core';
+import { Box, Flex, Text, Image, Stack, Group } from '@mantine/core';
 import { KidRecord } from './page';
 import ProfileMetrics from '@/components/metrics/ProfileMetrics';
 import { IconChevronRight } from '@tabler/icons-react';
@@ -22,7 +14,6 @@ const ProfileCarousel: React.FC<ProfileCarouselProps> = ({
 	profiles,
 	onSlideChange,
 }) => {
-	const theme = useMantineTheme();
 	return (
 		<Carousel
 			slideSize="95%"
@@ -61,13 +52,13 @@ const ProfileCarousel: React.FC<ProfileCarouselProps> = ({
 						<Box
 							style={{
 								borderRadius: '8px',
-								backgroundColor: theme.colors.brand[0],
-								padding: '16px',
 							}}
-							mb={24}
+							bg="brand.0"
+							p="md"
+							mb="xl"
 						>
-							<Flex justify="space-between" mb={16}>
-								<Stack gap={18}>
+							<Flex justify="space-between" mb="md">
+								<Stack gap="md">
 									<ProfileMetrics
 										label={`${profile.age} 출생`}
 										value={profile.chldrnNm}

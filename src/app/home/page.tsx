@@ -9,7 +9,15 @@ import { useRouter } from 'next/navigation';
 import BottomNavigation from '@/components/bottomNavigation/BottomNavigation';
 import useChldrnListStore from '@/store/useChldrnListStore';
 import MobileLayout from '@/app/mantine/MobileLayout';
-import { Group, Text, Image, Stack, Flex } from '@mantine/core';
+import {
+	Group,
+	Text,
+	Image,
+	Stack,
+	Flex,
+	Container,
+	useMantineTheme,
+} from '@mantine/core';
 import { IconPlus } from '@tabler/icons-react';
 
 interface PhysicalStats {
@@ -159,6 +167,7 @@ const processChildData = (
 };
 
 const App: React.FC = () => {
+	const theme = useMantineTheme();
 	const { getToken } = useAuth();
 	const router = useRouter();
 	const [kidsData, setKidsData] = useState<KidRecord[]>([]);
@@ -248,114 +257,116 @@ const App: React.FC = () => {
 			showBottomNav={true}
 			currentRoute="/"
 		>
-			<Group justify="space-between" align="center" w="100%" mb={16}>
-				<Text size="xxl" ff="HakgyoansimWoojuR" c="#222222">
-					오늘의아이
-				</Text>
-				<Image
-					src="https://heidimoon.cafe24.com/renwal/test2/Bell.svg"
-					alt="알림"
-				/>
-			</Group>
-			<ProfileCarousel
-				profiles={kidsData}
-				onSlideChange={setCurrentKidIndex}
-			/>
-			<Group
-				bg="#729bed"
-				p="lg"
-				align="center"
-				pos="relative"
-				style={{ borderRadius: '8px' }}
-			>
-				<IconPlus color="#FFFFFF" size={12} strokeWidth={4} />
-				<Text c="white" fw={700} fz="md">
-					오늘의 아이 증상 기록하기
-				</Text>
-
-				<Image
-					src="/record.png"
-					alt=""
-					style={{
-						position: 'absolute',
-						right: '1rem',
-						width: 80,
-						height: 80,
-					}}
-				/>
-			</Group>
-
-			<Group gap={8} align="center" mt={16}>
-				<Flex
-					component={Link}
-					href="/map"
-					style={{ textDecoration: 'none' }}
-					p="md"
-					bg="white"
-					justify="space-between"
-					align="center"
-					styles={{
-						root: {
-							border: '1px solid #d5d5d5',
-							borderRadius: '8px',
-							flex: '1',
-						},
-					}}
-				>
-					<Stack justify="center" gap={0}>
-						<Text fw={700} fz={16} c="#222222">
-							지금 문 연
-						</Text>
-						<Text fw={700} fz={16} c="#222222">
-							병원/약국
-						</Text>
-					</Stack>
+			<Container>
+				<Group justify="space-between" align="center" w="100%" mb="md">
+					<Text size="xl" ff="HakgyoansimWoojuR" c="#222222">
+						오늘의아이
+					</Text>
 					<Image
-						src="https://heidimoon.cafe24.com/renwal/test2/Group.png"
-						alt="병원/약국"
-						width={36}
-						height={36}
+						src="https://heidimoon.cafe24.com/renwal/test2/Bell.svg"
+						alt="알림"
 					/>
-				</Flex>
-
-				<Flex
-					component={Link}
-					href="/map"
-					style={{ textDecoration: 'none' }}
-					p="md"
-					bg="white"
-					justify="space-between"
-					align="center"
-					styles={{
-						root: {
-							border: '1px solid #d5d5d5',
-							borderRadius: '8px',
-							flex: '1',
-						},
-					}}
-				>
-					<Stack justify="center" gap={0}>
-						<Text fw={700} fz={16} c="#222222">
-							진료받은
-						</Text>
-						<Text fw={700} fz={16} c="#222222">
-							기록
-						</Text>
-					</Stack>
-					<Image
-						src="https://heidimoon.cafe24.com/renwal/test2/OBJECTS.png"
-						alt="기록"
-						width={36}
-						height={36}
-					/>
-				</Flex>
-			</Group>
-			{currentKid && (
-				<MetricsSection
-					labelText={`오늘의 ${currentKid.profile.chldrnNm} 기록이에요`}
-					metricsData={currentKid.metrics}
+				</Group>
+				<ProfileCarousel
+					profiles={kidsData}
+					onSlideChange={setCurrentKidIndex}
 				/>
-			)}
+				<Group
+					bg={theme.colors.brand[7]}
+					p="lg"
+					align="center"
+					pos="relative"
+					style={{ borderRadius: '8px' }}
+				>
+					<IconPlus color="#FFFFFF" size={12} strokeWidth={4} />
+					<Text c="white" fw={700} fz="md">
+						오늘의 아이 증상 기록하기
+					</Text>
+
+					<Image
+						src="/record.png"
+						alt=""
+						pos="absolute"
+						right="md"
+						w={80}
+						h={80}
+					/>
+				</Group>
+
+				<Group gap="xs" align="center" mt="md">
+					<Flex
+						component={Link}
+						href="/map"
+						p="md"
+						bg="white"
+						justify="space-between"
+						align="center"
+						flex={1}
+						styles={{
+							root: {
+								border: '1px solid #d5d5d5',
+								borderRadius: '8px',
+								flex: '1',
+								textDecoration: 'none',
+							},
+						}}
+					>
+						<Stack justify="center" gap={0}>
+							<Text fw={700} fz="md" c="#222222">
+								지금 문 연
+							</Text>
+							<Text fw={700} fz="md" c="#222222">
+								병원/약국
+							</Text>
+						</Stack>
+						<Image
+							src="https://heidimoon.cafe24.com/renwal/test2/Group.png"
+							alt="병원/약국"
+							width={36}
+							height={36}
+						/>
+					</Flex>
+
+					<Flex
+						component={Link}
+						href="/map"
+						p="md"
+						bg="white"
+						justify="space-between"
+						align="center"
+						styles={{
+							root: {
+								border: '1px solid #d5d5d5',
+								borderRadius: '8px',
+								flex: '1',
+								textDecoration: 'none',
+							},
+						}}
+					>
+						<Stack justify="center" gap={0}>
+							<Text fw={700} fz="md" c="#222222">
+								진료받은
+							</Text>
+							<Text fw={700} fz="md" c="#222222">
+								기록
+							</Text>
+						</Stack>
+						<Image
+							src="https://heidimoon.cafe24.com/renwal/test2/OBJECTS.png"
+							alt="기록"
+							width={36}
+							height={36}
+						/>
+					</Flex>
+				</Group>
+				{currentKid && (
+					<MetricsSection
+						labelText={`오늘의 ${currentKid.profile.chldrnNm} 기록이에요`}
+						metricsData={currentKid.metrics}
+					/>
+				)}
+			</Container>
+
 			<BottomNavigation />
 		</MobileLayout>
 	);

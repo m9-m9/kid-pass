@@ -1,8 +1,7 @@
 import React from 'react';
 import { MetricsItem } from './MetricsItem';
-import Container from '@/elements/container/Container';
 import ProfileMetrics from './ProfileMetrics';
-import { Text } from '@mantine/core';
+import { Stack, Text } from '@mantine/core';
 
 interface MetricsDetail {
 	label: string;
@@ -25,8 +24,8 @@ const MetricsSection: React.FC<MetricsSectionProps> = ({
 	metricsData,
 }) => {
 	return (
-		<Container className="sectionContainer">
-			<Text fw={700} fz={20}>
+		<Stack mt={40} mb={48} gap="md">
+			<Text fw={700} fz="lg">
 				{labelText}
 			</Text>
 			{metricsData.map((metric) => (
@@ -46,7 +45,7 @@ const MetricsSection: React.FC<MetricsSectionProps> = ({
 						))}
 				</MetricsItem>
 			))}
-		</Container>
+		</Stack>
 	);
 };
 
