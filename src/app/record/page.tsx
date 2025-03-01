@@ -1,7 +1,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Grid, Box, Text, Button, Image, Stack, Card } from "@mantine/core";
+import {
+  Grid,
+  Box,
+  Text,
+  Button,
+  Image,
+  Stack,
+  Card,
+  Space,
+} from "@mantine/core";
 import { useRouter } from "next/navigation";
 import useAuth from "@/hook/useAuth";
 import { modals } from "@mantine/modals";
@@ -10,10 +19,12 @@ import Schedule, { DaySchedule } from "@/components/schedule/Schedule";
 import { formatRecordData } from "./utils";
 import { RECORDS, SLIDES } from "./constants";
 import MobileLayout from "@/app/mantine/MobileLayout";
-import WeeklyCalendar from "@/components/datePicker/DateCarousel"; // Keeping this assuming it's a custom component
 import Carousel from "@/components/carousel/Carousel"; // Keeping this assuming it's a custom component
 import Empty from "@/components/empty/Empty"; // Keeping this assuming it's a custom component
 import { RiAddLine } from "@remixicon/react";
+import { bottomModalTheme } from "@/utils/mantine.theme";
+import WeekCarousel from "@/components/datePicker/WeekCarousel";
+import WeeklyDatePicker from "@/components/datePicker/WeekCarousel";
 
 const RecordPage = () => {
   const { getToken } = useAuth();
@@ -65,53 +76,33 @@ const RecordPage = () => {
 
   const openRecordModal = () => {
     modals.open({
+      ...bottomModalTheme,
       title: "오늘의 아이 기록하기",
-      centered: false,
-      fullScreen: false,
-      withCloseButton: true,
-      trapFocus: true,
-      closeOnEscape: true,
-      styles: {
-        root: {
-          alignItems: "flex-end",
-        },
-        content: {
-          height: "60%",
-          width: "100%",
-          maxWidth: "100%",
-          margin: 0,
-          borderTopLeftRadius: "16px",
-          borderTopRightRadius: "16px",
-          borderBottomLeftRadius: 0,
-          borderBottomRightRadius: 0,
-        },
-      },
       children: (
-        <Box p="md">
+        <Box p="sm">
           <Grid>
             {RECORDS.map((record) => (
               <Grid.Col span={4} key={record.path}>
                 <Card
-                  p="md"
                   radius="md"
-                  withBorder
+                  mah={"88"}
+                  bg="brand.0"
                   onClick={() => {
                     modals.closeAll();
                     router.push(record.path);
                   }}
-                  style={{ cursor: "pointer" }}
                 >
-                  <Stack align="center" gap="xs">
-                    <Image
-                      src={record.src}
-                      alt={record.title}
-                      width={32}
-                      height={32}
-                    />
-                    <Text size="sm" ta="center">
-                      {record.title}
-                    </Text>
-                  </Stack>
+                  <Image
+                    src={record.src}
+                    alt={record.title}
+                    width={24}
+                    style={{ objectFit: "contain" }}
+                    height={24}
+                  />
+                  <Space h={4} />
+                  <Text size="sm" ta="center">
+                    {record.title}
+                  </Text>
                 </Card>
               </Grid.Col>
             ))}
@@ -138,16 +129,8 @@ const RecordPage = () => {
       currentRoute="/record"
     >
       <Box bg="white" pb={60}>
-        <Box
-          style={{
-            position: "sticky",
-            top: 0,
-            zIndex: 10,
-            backgroundColor: "white",
-          }}
-        >
-          <WeeklyCalendar onDateChange={handleDateChange} />
-        </Box>
+        {/* <WeekCarousel onDateChange={handleDateChange} /> */}
+        <WeeklyDatePicker />
 
         <Carousel
           slides={SLIDES}

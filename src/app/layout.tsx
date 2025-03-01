@@ -101,7 +101,7 @@ const theme = createTheme({
   // 다크모드/라이트모드 컬러 스키마 관리
   colors: {
     brand: [
-      "#eef3fc", // 가장 밝은 색상
+      "#EEF7FF", // 가장 밝은 색상
       "#dce7f9",
       "#c9dbf6",
       "#b6cff3",

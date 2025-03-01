@@ -37,7 +37,7 @@ export const RECORDS = [
     type: "TEMPERATURE",
   },
   {
-    title: "몸무게/키/머리둘레",
+    title: "신체정보",
     src: "/images/scale.png",
     path: "/record/GROWTH",
     type: "GROWTH",

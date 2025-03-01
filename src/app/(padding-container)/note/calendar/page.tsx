@@ -1,11 +1,11 @@
-'use client'
+"use client";
 
-import React, { useState } from 'react';
-import styles from './calendar.module.css';
-import WeeklyCalendar from '@/components/datePicker/DateCarousel';
+import React, { useState } from "react";
+import styles from "./calendar.module.css";
+import WeeklyCalendar from "@/components/datePicker/WeekCarousel";
 
 const Calendar = () => {
-  const [viewType, setViewType] = useState('calendar');
+  const [viewType, setViewType] = useState("calendar");
   const [currentDate, setCurrentDate] = useState(new Date());
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
@@ -20,10 +20,20 @@ const Calendar = () => {
   const firstDayOfWeek = firstDay.getDay();
   const lastDate = lastDay.getDate();
 
-  const weekDays = ['일', '월', '화', '수', '목', '금', '토'];
+  const weekDays = ["일", "월", "화", "수", "목", "금", "토"];
   const monthNames = [
-    '1월', '2월', '3월', '4월', '5월', '6월',
-    '7월', '8월', '9월', '10월', '11월', '12월'
+    "1월",
+    "2월",
+    "3월",
+    "4월",
+    "5월",
+    "6월",
+    "7월",
+    "8월",
+    "9월",
+    "10월",
+    "11월",
+    "12월",
   ];
 
   // 달력에 표시할 날짜 배열 생성
@@ -35,7 +45,7 @@ const Calendar = () => {
       const prevDate = prevMonthLastDate - firstDayOfWeek + i + 1;
       dates.push({
         day: prevDate,
-        type: 'prev'
+        type: "prev",
       });
     }
 
@@ -43,7 +53,7 @@ const Calendar = () => {
     for (let i = 1; i <= lastDate; i++) {
       dates.push({
         day: i,
-        type: 'current'
+        type: "current",
       });
     }
 
@@ -52,7 +62,7 @@ const Calendar = () => {
     for (let i = 1; i <= remainingDays; i++) {
       dates.push({
         day: i,
-        type: 'next'
+        type: "next",
       });
     }
 
@@ -96,21 +106,25 @@ const Calendar = () => {
         </div>
         <div className={styles.header_right}>
           <button
-            onClick={() => setViewType('calendar')}
-            className={`${styles.tab} ${viewType === 'calendar' ? styles.selected : ''}`}
+            onClick={() => setViewType("calendar")}
+            className={`${styles.tab} ${
+              viewType === "calendar" ? styles.selected : ""
+            }`}
           >
             달력
           </button>
           <button
-            onClick={() => setViewType('list')}
-            className={`${styles.tab} ${viewType === 'list' ? styles.selected : ''}`}
+            onClick={() => setViewType("list")}
+            className={`${styles.tab} ${
+              viewType === "list" ? styles.selected : ""
+            }`}
           >
             목록
           </button>
         </div>
       </div>
 
-      {viewType === 'calendar' ? (
+      {viewType === "calendar" ? (
         <>
           <div className={styles.weekDaysGrid}>
             {weekDays.map((day) => (
@@ -126,7 +140,9 @@ const Calendar = () => {
                 {week.map((date, dateIndex) => (
                   <div
                     key={dateIndex}
-                    className={`${styles.dateCell} ${date.type !== 'current' ? styles.adjacentMonth : ''}`}
+                    className={`${styles.dateCell} ${
+                      date.type !== "current" ? styles.adjacentMonth : ""
+                    }`}
                   >
                     {date.day}
                   </div>
@@ -140,7 +156,6 @@ const Calendar = () => {
       )}
     </div>
   );
-
 };
 
 export default Calendar;
