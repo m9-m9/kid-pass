@@ -49,15 +49,20 @@ const theme = createTheme({
     xl: "88em", // 1408px
   },
   fontSizes: {
-    xxs: "0.5rem",
+    xs: "0.5rem", // 8px
+    sm: "0.75rem", // 12px
+    md: "1rem", // 16px
+    "md-lg": "1.125rem",
+    lg: "1.25rem", // 20px
+    xl: "1.5rem", // 24px
   },
   spacing: {
-    xxs: "0.5rem",
-    xs: "0.625rem",
-    sm: "0.75rem",
-    md: "1rem",
-    lg: "1.25rem",
-    xl: "1.5rem",
+    xxs: "0.25rem", // 4px
+    xs: "0.5rem", // 8px
+    sm: "0.75rem", // 12px
+    md: "1rem", // 16px
+    lg: "1.25rem", // 20px
+    xl: "1.5rem", // 24px
   },
   components: {
     Button: {
@@ -102,6 +107,7 @@ const theme = createTheme({
   colors: {
     brand: [
       "#EEF7FF", // 가장 밝은 색상
+      "#eef3fc",
       "#dce7f9",
       "#c9dbf6",
       "#b6cff3",
