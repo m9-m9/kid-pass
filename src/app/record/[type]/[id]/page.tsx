@@ -1,14 +1,24 @@
 "use client";
 
 import { use } from "react";
-import Header from "@/components/header/Header";
-import Container from "@/elements/container/Container";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import useAuth from "@/hook/useAuth";
 import { TYPE_PATH_MAP } from "../../constants";
-import styles from "./page.module.css";
-import Button from "@/elements/button/Button";
+import MobileLayout from "@/app/mantine/MobileLayout";
+import {
+  Paper,
+  Flex,
+  Stack,
+  Title,
+  Text,
+  Group,
+  Button as MantineButton,
+  AppShell,
+  Box,
+  Button,
+} from "@mantine/core";
+import dayjs from "dayjs";
 
 interface RecordDetailProps {
   params: Promise<{
@@ -105,14 +115,14 @@ const RecordDetail = ({ params }: RecordDetailProps) => {
     const info: RecordInfo[] = [
       {
         label: "시작 시간",
-        value: new Date(record.startTime).toLocaleString(),
+        value: dayjs(record.startTime).format("YYYY-MM-DD HH:mm"),
       },
     ];
 
     if (record.endTime) {
       info.push({
         label: "종료 시간",
-        value: new Date(record.endTime).toLocaleString(),
+        value: dayjs(record.endTime).format("YYYY-MM-DD HH:mm"),
       });
     }
 
@@ -177,47 +187,58 @@ const RecordDetail = ({ params }: RecordDetailProps) => {
   };
 
   return (
-    <Container className="container" full>
-      <Header
-        title={`${
-          TYPE_PATH_MAP[resolvedParams.type as keyof typeof TYPE_PATH_MAP] ??
-          "기록"
-        } 상세`}
-        onBack={() => router.back()}
-      />
+    <MobileLayout
+      showHeader={true}
+      headerType="back"
+      title={`${
+        TYPE_PATH_MAP[resolvedParams.type as keyof typeof TYPE_PATH_MAP] ??
+        "기록"
+      } 상세`}
+      onBack={() => router.back()}
+      showBottomNav={false}
+    >
       {record && (
-        <>
-          <div>
-            {getRecordInfo(record).map((info, index) => (
-              <div key={index} className={styles.infoItem}>
-                <span className={styles.label}>{info.label}</span>
-                <span className={styles.value}>{info.value}</span>
-              </div>
-            ))}
-            {record.memo && (
-              <div className={styles.memo}>
-                <div className={styles.memoLabel}>메모</div>
-                <div className={styles.memoText}>{record.memo}</div>
-              </div>
-            )}
-          </div>
+        <Stack p="md" gap="md">
+          {getRecordInfo(record).map((info, index) => (
+            <Flex
+              key={index}
+              justify="space-between"
+              align="center"
+              py={8}
+              style={{
+                borderBottom: "1px solid var(--mantine-color-gray-2)",
+              }}
+            >
+              <Text fw={500} c="gray.7">
+                {info.label}
+              </Text>
+              <Text>{info.value}</Text>
+            </Flex>
+          ))}
 
-          <div className={styles.buttonContainer}>
-            <Button
-              label="수정하기"
-              size="L"
-              style={{ backgroundColor: "#F4F4F4", color: "#1A1A1A" }}
-              onClick={handleEdit}
-            />
-            <Button
-              label="삭제하기"
-              size="L"
-              style={{ backgroundColor: "red" }}
-            />
-          </div>
-        </>
+          {record.memo && (
+            <Paper withBorder p="md" mt="md" bg="gray.0">
+              <Title order={6} mb="xs" c="gray.7">
+                메모
+              </Title>
+              <Text>{record.memo}</Text>
+            </Paper>
+          )}
+        </Stack>
       )}
-    </Container>
+      <AppShell.Footer>
+        <Box p="md">
+          <Group grow>
+            <Button c="white" bg="brand.7" onClick={handleEdit}>
+              수정하기
+            </Button>
+            <Button bg="red" c="white" onClick={handleDelete}>
+              삭제하기
+            </Button>
+          </Group>
+        </Box>
+      </AppShell.Footer>
+    </MobileLayout>
   );
 };
 

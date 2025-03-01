@@ -1,14 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Label } from "@/elements/label/Label";
-import Spacer from "@/elements/spacer/Spacer";
-import SearchListPicker from "@/components/searchListPicker/SearchListPicker";
-
-interface SearchItem {
-  id: string;
-  name: string;
-}
+import { Box, Stack, Text } from "@mantine/core";
+import { UseFormReturnType } from "@mantine/form";
+import { FormValues } from "../RecordForm";
+import SearchListPicker, {
+  SearchItem,
+} from "@/components/searchListPicker/SearchListPicker";
 
 const MEDICINES = [
   { id: "1", name: "타이레놀 시럽" },
@@ -29,37 +26,32 @@ const MEDICINES = [
 ];
 
 interface MedicineFieldsProps {
-  data: any;
-  onChange: (data: any) => void;
+  form: UseFormReturnType<FormValues>;
 }
 
-const MedicineFields = ({ data, onChange }: MedicineFieldsProps) => {
-  const [medicine, setMedicine] = useState(data.medicine ?? "");
-
-  useEffect(() => {
-    onChange({
-      medicine,
-    });
-  }, [medicine, onChange]);
+const MedicineFields = ({ form }: MedicineFieldsProps) => {
+  // 선택된 약품 찾기
+  const selectedMedicine = form.values.medicine
+    ? MEDICINES.find((item) => item.name === form.values.medicine)
+    : undefined;
 
   return (
-    <>
-      <Label text="어떤 약을 먹었나요?" css="inputForm" />
-      <Spacer height={10} />
-      <SearchListPicker
-        items={MEDICINES}
-        mode="single"
-        onSelect={(selected: SearchItem | SearchItem[]) => {
-          const items = Array.isArray(selected) ? selected : [selected];
-          setMedicine(items[0]?.name || "");
-        }}
-        selectedItems={
-          medicine
-            ? MEDICINES.find((item) => item.name === medicine)
-            : undefined
-        }
-      />
-    </>
+    <Stack gap="md">
+      <Box>
+        <Text fw={600} fz="md" mb="xs">
+          어떤 약을 먹었나요?
+        </Text>
+        <SearchListPicker
+          items={MEDICINES}
+          mode="single"
+          onSelect={(selected: SearchItem | SearchItem[]) => {
+            const items = Array.isArray(selected) ? selected : [selected];
+            form.setFieldValue("medicine", items[0]?.name || "");
+          }}
+          selectedItems={selectedMedicine}
+        />
+      </Box>
+    </Stack>
   );
 };
 

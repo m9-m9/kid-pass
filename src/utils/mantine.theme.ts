@@ -25,7 +25,7 @@ export const bottomModalTheme = {
       alignItems: "flex-end",
     },
     content: {
-      height: "60%",
+      height: "50%",
       width: "100%",
       maxWidth: "100%",
       padding: 0,

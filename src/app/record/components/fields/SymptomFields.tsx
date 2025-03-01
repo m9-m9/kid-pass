@@ -1,16 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Label } from "@/elements/label/Label";
-import Grid from "@/elements/grid/Grid";
-import Spacer from "@/elements/spacer/Spacer";
-import SearchListPicker from "@/components/searchListPicker/SearchListPicker";
-import SelectableButton from "@/app/components/button/SelectableButton";
-
-interface SearchItem {
-  id: string;
-  name: string;
-}
+import { Box, Stack, Text, SimpleGrid } from "@mantine/core";
+import { UseFormReturnType } from "@mantine/form";
+import { FormValues } from "../RecordForm";
+import SearchListPicker, {
+  SearchItem,
+} from "@/components/searchListPicker/SearchListPicker";
 
 const SYMPTOMS = [
   { id: "1", name: "수유 거부" },
@@ -38,52 +33,63 @@ const SYMPTOMS = [
 const SEVERITY = ["약함", "보통", "심함"];
 
 interface SymptomFieldsProps {
-  data: any;
-  onChange: (data: any) => void;
+  form: UseFormReturnType<FormValues>;
 }
 
-const SymptomFields = ({ data, onChange }: SymptomFieldsProps) => {
-  const [symptom, setSymptom] = useState(data.symptom ?? "");
-  const [severity, setSeverity] = useState(data.severity ?? "");
-
-  useEffect(() => {
-    onChange({
-      symptom,
-      severity,
-    });
-  }, [symptom, severity, onChange]);
-
-  const severityButtons = SEVERITY.map((v, i) => (
-    <SelectableButton
-      key={i}
-      isSelected={severity === v}
-      onClick={() => setSeverity(v)}
-    >
-      {v}
-    </SelectableButton>
-  ));
+const SymptomFields = ({ form }: SymptomFieldsProps) => {
+  // 선택된 증상 찾기
+  const selectedSymptom = form.values.symptom
+    ? SYMPTOMS.find((item) => item.name === form.values.symptom)
+    : undefined;
 
   return (
-    <>
-      <Label text="특이증상" css="inputForm" />
-      <Spacer height={10} />
-      <SearchListPicker
-        items={SYMPTOMS}
-        mode="single"
-        onSelect={(selected: SearchItem | SearchItem[]) => {
-          const items = Array.isArray(selected) ? selected : [selected];
-          setSymptom(items[0]?.name || "");
-        }}
-        selectedItems={
-          symptom ? SYMPTOMS.find((item) => item.name === symptom) : undefined
-        }
-      />
+    <Stack gap="md">
+      <Box>
+        <Text fw={600} fz="md" mb="xs">
+          특이증상
+        </Text>
+        <SearchListPicker
+          items={SYMPTOMS}
+          mode="single"
+          onSelect={(selected: SearchItem | SearchItem[]) => {
+            const items = Array.isArray(selected) ? selected : [selected];
+            form.setFieldValue("symptom", items[0]?.name || "");
+          }}
+          selectedItems={selectedSymptom}
+        />
+      </Box>
 
-      <Spacer height={30} />
-      <Label css="inputForm" text="증상 정도" />
-      <Spacer height={10} />
-      <Grid items={severityButtons} column={3} />
-    </>
+      <Box>
+        <Text fw={600} fz="md" mb="xs">
+          증상 정도
+        </Text>
+        <SimpleGrid cols={3} spacing="xs">
+          {SEVERITY.map((severity) => (
+            <Box
+              key={severity}
+              p="md"
+              style={{
+                borderRadius: "8px",
+                border: "1px solid",
+                borderColor:
+                  form.values.severity === severity
+                    ? "var(--mantine-color-blue-6)"
+                    : "var(--mantine-color-gray-3)",
+                color:
+                  form.values.severity === severity
+                    ? "var(--mantine-color-blue-5)"
+                    : "var(--mantine-color-gray-6)",
+                cursor: "pointer",
+                textAlign: "center",
+              }}
+              onClick={() => form.setFieldValue("severity", severity)}
+            >
+              {severity}
+            </Box>
+          ))}
+        </SimpleGrid>
+      </Box>
+    </Stack>
   );
 };
 

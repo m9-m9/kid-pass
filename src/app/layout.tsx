@@ -26,6 +26,10 @@ const geistSans = localFont({
       weight: "500",
     },
     {
+      path: "./fonts/Pretendard-SemiBold.woff",
+      weight: "600",
+    },
+    {
       path: "./fonts/Pretendard-Bold.woff",
       weight: "700",
     },
@@ -71,8 +75,8 @@ const theme = createTheme({
       },
       styles: {
         root: {
-          borderRadius: "8px",
-          padding: "10px 16px",
+          borderRadius: "28px",
+          backgroundColor: "#729bed",
         },
       },
     },

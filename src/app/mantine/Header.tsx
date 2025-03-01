@@ -1,13 +1,32 @@
 import React from "react";
-import { Flex, Title, ActionIcon, Avatar, Box } from "@mantine/core";
+import {
+  Flex,
+  Title,
+  ActionIcon,
+  Avatar,
+  Box,
+  UnstyledButton,
+} from "@mantine/core";
+import { IconChevronLeft } from "@tabler/icons-react";
+import WeeklyDatePicker from "@/components/datePicker/WeekCarousel";
+import useCurrentDateStore from "@/store/useCurrentDateStore";
+import dayjs from "dayjs";
 
 interface HeaderProps {
   type: "back" | "profile";
   title?: string;
   onBack?: () => void;
+  useWeekCarousel?: boolean;
 }
 
-const Header: React.FC<HeaderProps> = ({ type, title, onBack }) => {
+const Header: React.FC<HeaderProps> = ({
+  type,
+  title,
+  onBack,
+  useWeekCarousel,
+}) => {
+  const { currentDate, setCurrentDate } = useCurrentDateStore();
+
   if (type === "back") {
     return (
       <Flex
@@ -17,42 +36,57 @@ const Header: React.FC<HeaderProps> = ({ type, title, onBack }) => {
         justify="space-between"
         style={{ borderBottom: "1px solid var(--mantine-color-gray-2)" }}
       >
-        <Flex align="center">
-          <ActionIcon onClick={onBack} size="lg">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M19 12H5M12 19l-7-7 7-7" />
-            </svg>
-          </ActionIcon>
-          <Title order={3} ml="md">
-            {title}
-          </Title>
-        </Flex>
+        <ActionIcon onClick={onBack} size="lg" bg="transparent">
+          <IconChevronLeft stroke={2} />
+        </ActionIcon>
+        <Title
+          order={4}
+          style={{
+            position: "absolute",
+            left: "50%",
+            transform: "translateX(-50%) translateY(10%)",
+          }}
+        >
+          {title}
+        </Title>
+        <Box w={44}></Box>
       </Flex>
     );
   }
 
   if (type === "profile") {
     return (
-      <Flex
-        h={60}
-        px="md"
-        align="center"
-        justify="space-between"
-        style={{ borderBottom: "1px solid var(--mantine-color-gray-2)" }}
-      >
-        <Title order={3}>{title}</Title>
-        <Avatar color="brand" radius="xl" size="md" />
-      </Flex>
+      <Box>
+        <Flex h={60} px="md" align="center" justify="space-between">
+          <Flex align="flex-end">
+            <Title w={100} order={3}>
+              {currentDate.format("M월 D일")}
+            </Title>
+            <UnstyledButton
+              ml="xs"
+              px="xs"
+              py={1}
+              bg="brand.1"
+              c="brand.7"
+              fw={600}
+              style={{
+                borderRadius: "4px",
+              }}
+              onClick={() => setCurrentDate(dayjs())}
+            >
+              오늘
+            </UnstyledButton>
+          </Flex>
+          <Avatar color="brand" radius="xl" size="md" />
+        </Flex>
+
+        {useWeekCarousel && (
+          <WeeklyDatePicker
+            currentDate={currentDate}
+            onSelect={setCurrentDate}
+          />
+        )}
+      </Box>
     );
   }
 

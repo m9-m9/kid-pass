@@ -1,8 +1,17 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import "remixicon/fonts/remixicon.css";
-import styles from "./searchListPicker.module.css";
+import {
+  Box,
+  TextInput,
+  Paper,
+  List,
+  Pill,
+  Group,
+  Text,
+  UnstyledButton,
+} from "@mantine/core";
+import { IconSearch } from "@tabler/icons-react";
 
 export interface SearchItem {
   id: string;
@@ -93,11 +102,7 @@ const SearchListPicker = ({
     }
   };
 
-  const handleRemoveItem = (
-    itemToRemove: SearchItem,
-    event: React.MouseEvent
-  ) => {
-    event.stopPropagation();
+  const handleRemoveItem = (itemToRemove: SearchItem) => {
     if (mode === "multi") {
       const newSelected = selected.filter(
         (item) => item.id !== itemToRemove.id
@@ -114,60 +119,78 @@ const SearchListPicker = ({
   };
 
   return (
-    <div className={styles.container} ref={containerRef}>
-      <div className={styles.inputWrapper}>
-        <input
-          type="text"
-          className={styles.input}
-          value={displayValue()}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          onClick={handleInputClick}
-          placeholder={placeholder}
-        />
-        {/* <RemixIcon className={styles.searchIcon} size={20} /> */}
-        <i className={`ri-search-line ${styles.searchIcon}`} />
-      </div>
+    <Box pos="relative" ref={containerRef}>
+      <TextInput
+        value={displayValue()}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        onClick={handleInputClick}
+        placeholder={placeholder}
+        leftSection={<IconSearch size={16} stroke={1.5} />}
+        styles={{
+          wrapper: {
+            width: "100%",
+          },
+        }}
+        size="md"
+      />
 
       {/* Multi 모드에서 선택된 아이템 태그 표시 */}
       {mode === "multi" && selected.length > 0 && (
-        <div className={styles.selectedTags}>
+        <Group gap="xs" mt="xs" wrap="wrap">
           {selected.map((item) => (
-            <span key={item.id} className={styles.tag}>
+            <Pill
+              key={item.id}
+              withRemoveButton
+              onRemove={() => handleRemoveItem(item)}
+            >
               {item.name}
-              {/* <X
-                size={14}
-                className={styles.removeIcon}
-                onClick={(e) => handleRemoveItem(item, e)}
-              /> */}
-              <i
-                className={`ri-close-line removeIcon`}
-                onClick={(e) => handleRemoveItem(item, e)}
-              />
-            </span>
+            </Pill>
           ))}
-        </div>
+        </Group>
       )}
 
       {isOpen && (
-        <ul className={styles.dropdown}>
-          {filteredItems.length > 0 ? (
-            filteredItems.map((item) => (
-              <li
-                key={item.id}
-                className={`${styles.item} ${
-                  isItemSelected(item) ? styles.selected : ""
-                }`}
-                onClick={() => handleItemSelect(item)}
-              >
-                {item.name}
-              </li>
-            ))
-          ) : (
-            <li className={styles.noResults}>검색 결과가 없습니다</li>
-          )}
-        </ul>
+        <Paper
+          shadow="md"
+          mt={5}
+          p={0}
+          pos="absolute"
+          w="100%"
+          withBorder
+          h={300}
+          style={{ zIndex: 100, overflowY: "auto" }}
+        >
+          <List spacing="xs" size="sm" p="xs">
+            {filteredItems.length > 0 ? (
+              filteredItems.map((item) => (
+                <List.Item key={item.id} onClick={() => handleItemSelect(item)}>
+                  <UnstyledButton
+                    w="100%"
+                    p="xs"
+                    style={{
+                      borderRadius: "4px",
+                      backgroundColor: isItemSelected(item)
+                        ? "var(--mantine-color-blue-0)"
+                        : "transparent",
+                    }}
+                  >
+                    <Text fw={isItemSelected(item) ? 600 : 400}>
+                      {item.name}
+                    </Text>
+                  </UnstyledButton>
+                </List.Item>
+              ))
+            ) : (
+              <List.Item>
+                <Text c="dimmed" ta="center" p="xs">
+                  검색 결과가 없습니다
+                </Text>
+              </List.Item>
+            )}
+          </List>
+        </Paper>
       )}
-    </div>
+    </Box>
   );
 };
 

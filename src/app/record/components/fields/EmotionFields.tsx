@@ -1,11 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Label } from "@/elements/label/Label";
-import Grid from "@/elements/grid/Grid";
-import Spacer from "@/elements/spacer/Spacer";
+import { Box, Stack, Text, SimpleGrid, Center } from "@mantine/core";
+import { UseFormReturnType } from "@mantine/form";
+import { FormValues } from "../RecordForm";
 import Image from "next/image";
-import SelectableButton from "@/app/components/button/SelectableButton";
 
 const EMOTIONS = [
   "행복해요",
@@ -26,58 +24,82 @@ const SPECIALS = [
 ];
 
 interface EmotionFieldsProps {
-  data: any;
-  onChange: (data: any) => void;
+  form: UseFormReturnType<FormValues>;
 }
 
-const EmotionFields = ({ data, onChange }: EmotionFieldsProps) => {
-  const [emotion, setEmotion] = useState(data.emotion ?? "");
-  const [special, setSpecial] = useState(data.special ?? "");
-
-  useEffect(() => {
-    onChange({
-      emotion,
-      special,
-    });
-  }, [emotion, special, onChange]);
-
-  const emotions = EMOTIONS.map((v, i) => (
-    <SelectableButton
-      key={i}
-      isSelected={emotion === v}
-      onClick={() => setEmotion(v)}
-    >
-      <Image
-        src={`/images/emotion${i + 1}.png`}
-        alt={v}
-        width={64}
-        height={64}
-      />
-      {v}
-    </SelectableButton>
-  ));
-
-  const specials = SPECIALS.map((v, i) => (
-    <SelectableButton
-      key={i}
-      isSelected={special === v}
-      onClick={() => setSpecial(v)}
-    >
-      {v}
-    </SelectableButton>
-  ));
-
+const EmotionFields = ({ form }: EmotionFieldsProps) => {
   return (
-    <>
-      <Label css="inputForm" text="아이의 기분은 어떤가요?" />
-      <Spacer height={10} />
-      <Grid items={emotions} column={3} />
+    <Stack gap="md">
+      <Box>
+        <Text fw={600} fz="md" mb="xs">
+          아이의 기분은 어떤가요?
+        </Text>
+        <SimpleGrid cols={3} spacing="xs">
+          {EMOTIONS.map((emotion, index) => (
+            <Box
+              key={index}
+              p="sm"
+              style={{
+                borderRadius: "8px",
+                border: "1px solid",
+                borderColor:
+                  form.values.emotion === emotion
+                    ? "var(--mantine-color-blue-6)"
+                    : "var(--mantine-color-gray-3)",
+                color:
+                  form.values.emotion === emotion
+                    ? "var(--mantine-color-blue-6)"
+                    : "var(--mantine-color-gray-6)",
+                cursor: "pointer",
+                textAlign: "center",
+              }}
+              onClick={() => form.setFieldValue("emotion", emotion)}
+            >
+              <Center>
+                <Image
+                  src={`/images/emotion${index + 1}.png`}
+                  alt={emotion}
+                  width={64}
+                  height={64}
+                />
+              </Center>
+              <Text mt="xs">{emotion}</Text>
+            </Box>
+          ))}
+        </SimpleGrid>
+      </Box>
 
-      <Spacer height={30} />
-      <Label css="inputForm" text="특별한 일이 있나요?" />
-      <Spacer height={10} />
-      <Grid items={specials} column={2} />
-    </>
+      <Box>
+        <Text fw={600} fz="md" mb="xs">
+          특별한 일이 있나요?
+        </Text>
+        <SimpleGrid cols={2} spacing="xs">
+          {SPECIALS.map((special) => (
+            <Box
+              key={special}
+              p="md"
+              style={{
+                borderRadius: "8px",
+                border: "1px solid",
+                borderColor:
+                  form.values.special === special
+                    ? "var(--mantine-color-blue-6)"
+                    : "var(--mantine-color-gray-3)",
+                color:
+                  form.values.special === special
+                    ? "var(--mantine-color-blue-6)"
+                    : "var(--mantine-color-gray-6)",
+                cursor: "pointer",
+                textAlign: "center",
+              }}
+              onClick={() => form.setFieldValue("special", special)}
+            >
+              {special}
+            </Box>
+          ))}
+        </SimpleGrid>
+      </Box>
+    </Stack>
   );
 };
 

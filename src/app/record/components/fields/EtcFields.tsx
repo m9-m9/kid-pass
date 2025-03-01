@@ -1,14 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Label } from "@/elements/label/Label";
-import SearchListPicker from "@/components/searchListPicker/SearchListPicker";
-import Spacer from "@/elements/spacer/Spacer";
-
-interface SearchItem {
-  id: string;
-  name: string;
-}
+import { Box, Stack, Text } from "@mantine/core";
+import { UseFormReturnType } from "@mantine/form";
+import { FormValues } from "../RecordForm";
+import SearchListPicker, {
+  SearchItem,
+} from "@/components/searchListPicker/SearchListPicker";
 
 const CATEGORIES = [
   { id: "1", name: "신생아 반사행동" },
@@ -17,37 +14,32 @@ const CATEGORIES = [
 ];
 
 interface EtcFieldsProps {
-  data: any;
-  onChange: (data: any) => void;
+  form: UseFormReturnType<FormValues>;
 }
 
-const EtcFields = ({ data, onChange }: EtcFieldsProps) => {
-  const [category, setCategory] = useState(data.category ?? "");
-
-  useEffect(() => {
-    onChange({
-      category,
-    });
-  }, [category, onChange]);
+const EtcFields = ({ form }: EtcFieldsProps) => {
+  // 선택된 카테고리 찾기
+  const selectedCategory = form.values.category
+    ? CATEGORIES.find((item) => item.name === form.values.category)
+    : undefined;
 
   return (
-    <>
-      <Label text="카테고리" css="inputForm" />
-      <Spacer height={10} />
-      <SearchListPicker
-        items={CATEGORIES}
-        mode="single"
-        onSelect={(selected: SearchItem | SearchItem[]) => {
-          const items = Array.isArray(selected) ? selected : [selected];
-          setCategory(items[0]?.name || "");
-        }}
-        selectedItems={
-          category
-            ? CATEGORIES.find((item) => item.name === category)
-            : undefined
-        }
-      />
-    </>
+    <Stack gap="md">
+      <Box>
+        <Text fw={600} fz="md" mb="xs">
+          카테고리
+        </Text>
+        <SearchListPicker
+          items={CATEGORIES}
+          mode="single"
+          onSelect={(selected: SearchItem | SearchItem[]) => {
+            const items = Array.isArray(selected) ? selected : [selected];
+            form.setFieldValue("category", items[0]?.name || "");
+          }}
+          selectedItems={selectedCategory}
+        />
+      </Box>
+    </Stack>
   );
 };
 

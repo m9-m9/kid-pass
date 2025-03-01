@@ -1,43 +1,49 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Label } from "@/elements/label/Label";
-import Grid from "@/elements/grid/Grid";
-import Spacer from "@/elements/spacer/Spacer";
-import ButtonChecked from "@/elements/button/Button.checked";
+import { Box, Stack, Text, SimpleGrid } from "@mantine/core";
+import { UseFormReturnType } from "@mantine/form";
+import { FormValues } from "../RecordForm";
 
 const TYPES = ["낮잠", "밤잠"];
 
 interface SleepFieldsProps {
-  data: any;
-  onChange: (data: any) => void;
+  form: UseFormReturnType<FormValues>;
 }
 
-const SleepFields = ({ data, onChange }: SleepFieldsProps) => {
-  const [sleepType, setSleepType] = useState(data.sleepType ?? "");
-
-  useEffect(() => {
-    onChange({
-      sleepType,
-    });
-  }, [sleepType, onChange]);
-
-  const types = TYPES.map((v, i) => (
-    <ButtonChecked
-      key={i}
-      v={v}
-      i={i}
-      state={sleepType}
-      setState={setSleepType}
-    />
-  ));
-
+const SleepFields = ({ form }: SleepFieldsProps) => {
   return (
-    <>
-      <Label css="inputForm" text="취침 종류" />
-      <Spacer height={10} />
-      <Grid items={types} column={2} />
-    </>
+    <Stack gap="md">
+      <Box>
+        <Text fw={600} fz="md" mb="xs">
+          취침 종류
+        </Text>
+        <SimpleGrid cols={2} spacing="xs">
+          {TYPES.map((type) => (
+            <Box
+              key={type}
+              p="md"
+              style={{
+                borderRadius: "8px",
+                border: "1px solid",
+                borderColor:
+                  form.values.sleepType === type
+                    ? "var(--mantine-color-blue-6)"
+                    : "var(--mantine-color-gray-3)",
+                color:
+                  form.values.sleepType === type
+                    ? "var(--mantine-color-blue-6)"
+                    : "var(--mantine-color-gray-6)",
+                cursor: "pointer",
+                textAlign: "center",
+              }}
+              onClick={() => form.setFieldValue("sleepType", type)}
+            >
+              {type}
+            </Box>
+          ))}
+        </SimpleGrid>
+      </Box>
+    </Stack>
   );
 };
 

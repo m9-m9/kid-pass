@@ -198,12 +198,17 @@ export async function GET(request: Request) {
         type: record.type,
         startTime: record.startTime,
         endTime: record.endTime,
-        memo: record.memo,
-        mealType: record.mealType,
-        amount: record.amount,
-        unit: record.unit,
-        diaperType: record.diaperType,
-        diaperState: record.diaperState,
+        mealType: record?.mealType,
+        unit: record?.unit,
+        amount: record?.amount,
+        diaperType: record?.diaperType,
+        sleepType: record?.sleepType,
+        temperature: record?.temperature,
+        headSize: record?.headSize,
+        weight: record?.weight,
+        height: record?.height,
+        emotion: record?.emotion,
+        medicine: record?.medicine,
       });
       return acc;
     }, {} as Record<string, any[]>);
