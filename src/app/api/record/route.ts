@@ -52,6 +52,11 @@ export async function POST(request: Request) {
       medicine,
       // 기타 관련
       category,
+      // 병원 관련
+      diagnoses,
+      hospital,
+      doctor,
+      treatmentMethod,
     } = await request.json();
 
     // 사용자 확인 및 아이와의 관계 확인
@@ -106,6 +111,11 @@ export async function POST(request: Request) {
         medicine,
         // 기타 관련
         category,
+        // 병원 관련
+        diagnoses,
+        hospital,
+        doctor,
+        treatmentMethod,
       },
     });
 

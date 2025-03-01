@@ -1,12 +1,11 @@
 "use client";
 
 import { useEffect } from "react";
-import { Box, Text, SimpleGrid, NumberInput, Group, Flex } from "@mantine/core";
-import { Carousel } from "@mantine/carousel";
+import { Box, Text, SimpleGrid, NumberInput, Flex } from "@mantine/core";
 import { UseFormReturnType } from "@mantine/form";
 import { FormValues } from "../RecordForm";
 
-enum MealType {
+export enum MealType {
   MHRSM = "모유",
   FOMULA = "분유",
   BABYFD = "이유식",
@@ -14,10 +13,10 @@ enum MealType {
 }
 
 const MEALTYPES = [
-  { key: MealType.MHRSM, value: "모유" },
-  { key: MealType.FOMULA, value: "분유" },
-  { key: MealType.BABYFD, value: "이유식" },
-  { key: MealType.MIXED, value: "혼합" },
+  MealType.MHRSM,
+  MealType.FOMULA,
+  MealType.BABYFD,
+  MealType.MIXED,
 ];
 
 const SLIDES = ["30ml", "90ml", "120ml", "150ml"];
@@ -63,37 +62,35 @@ const FeedingFields = ({ form }: FeedingFieldsProps) => {
         <SimpleGrid cols={2} spacing="xs">
           {MEALTYPES.map((type) => (
             <Box
-              key={type.key}
+              key={type}
               p="md"
               style={{
                 borderRadius: "8px",
                 border: "1px solid",
                 borderColor:
-                  selectedMealType === type.key
+                  selectedMealType === type
                     ? "var(--mantine-color-blue-6)"
                     : "var(--mantine-color-gray-3)",
                 color:
-                  selectedMealType === type.key
+                  selectedMealType === type
                     ? "var(--mantine-color-blue-6)"
                     : "var(--mantine-color-gray-6)",
                 cursor: "pointer",
                 textAlign: "center",
-                fontWeight: selectedMealType === type.key ? 600 : 400,
+                fontWeight: selectedMealType === type ? 600 : 400,
                 lineHeight: 1.6,
               }}
-              onClick={() => form.setFieldValue("mealType", type.key)}
+              onClick={() => form.setFieldValue("mealType", type)}
             >
-              {type.value}
+              {type}
             </Box>
           ))}
         </SimpleGrid>
       </Box>
 
       <Box mb="md">
-        <Text fw={600} fz="md" mb="xs">
-          수유량
-        </Text>
         <NumberInput
+          label="수유량"
           placeholder="60"
           value={form.values.amount}
           size="md"

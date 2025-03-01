@@ -28,6 +28,7 @@ import DiaperFields from "./fields/DiaperFields";
 import MobileLayout from "@/app/mantine/MobileLayout";
 import { IconCalendar } from "@tabler/icons-react";
 import { IconClock } from "@tabler/icons-react";
+import HospitalFields from "./fields/HospitalFields";
 
 interface RecordFormProps {
   type: string;
@@ -143,6 +144,8 @@ const RecordForm = ({ type }: RecordFormProps) => {
         return <EmotionFields form={form} />;
       case "DIAPER":
         return <DiaperFields form={form} />;
+      case "HOSPITAL":
+        return <HospitalFields form={form} />;
       default:
         return null;
     }
@@ -199,6 +202,7 @@ const RecordForm = ({ type }: RecordFormProps) => {
                     borderColor: "var(--mantine-color-gray-3)",
                   }}
                   gap={0}
+                  aria-label="기록 날짜"
                 >
                   <DateTimePicker
                     label="시작"
@@ -252,39 +256,33 @@ const RecordForm = ({ type }: RecordFormProps) => {
                 </Group>
               </>
             ) : (
-              <>
-                <Text fw={600} fz="md" mb="xs">
-                  기록 날짜
-                </Text>
-                <DateTimePicker
-                  placeholder="날짜 및 시간 선택"
-                  value={form.values.startDate}
-                  onChange={(date) =>
-                    form.setFieldValue("startDate", date || undefined)
-                  }
-                  size="md"
-                  clearable={false}
-                  valueFormat="YYYY-MM-DD HH:mm"
-                  leftSection={<IconCalendar size={16} />}
-                  error={form.errors.startDate}
-                  styles={{
-                    input: {
-                      lineHeight: 2.1,
-                    },
-                  }}
-                  lang="ko"
-                />
-              </>
+              <DateTimePicker
+                label="기록 날짜"
+                placeholder="날짜 및 시간 선택"
+                value={form.values.startDate}
+                onChange={(date) =>
+                  form.setFieldValue("startDate", date || undefined)
+                }
+                size="md"
+                clearable={false}
+                valueFormat="YYYY-MM-DD HH:mm"
+                leftSection={<IconCalendar size={16} />}
+                error={form.errors.startDate}
+                styles={{
+                  input: {
+                    lineHeight: 2.1,
+                  },
+                }}
+                lang="ko"
+              />
             )}
           </Box>
 
           {renderFields()}
 
           <Box>
-            <Text fw={600} fz="md" mb="xs">
-              메모
-            </Text>
             <Textarea
+              label="메모"
               {...form.getInputProps("memo")}
               placeholder="메모를 입력해주세요"
               minRows={4}
@@ -292,7 +290,7 @@ const RecordForm = ({ type }: RecordFormProps) => {
               variant="filled"
               styles={{ input: { height: "120px" } }}
             />
-            <Text fz="xs" ta="right" c="dimmed" mt={4}>
+            <Text fz="sm" ta="right" c="dimmed" mt={4}>
               {form.values.memo.length}/200
             </Text>
           </Box>

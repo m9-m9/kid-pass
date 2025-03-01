@@ -73,6 +73,12 @@ model Record {
   // 기타 관련
   category    String?   // 신생아 반사행동, 성장 행동
 
+  // 병원 관련
+  diagnoses   String?   // 감기, 코로나19, 장염, 인플루엔자, 기관지염
+  hospital    String?   // 서울대학교 병원
+  doctor      String?   // 김철수 선생님
+  treatmentMethod String? // 처방받은 약
+
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 

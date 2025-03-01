@@ -11,10 +11,8 @@ const GrowthFields = ({ form }: GrowthFieldsProps) => {
   return (
     <Stack gap="md">
       <Box>
-        <Text fw={600} fz="md" mb="xs">
-          몸무게
-        </Text>
         <NumberInput
+          label="몸무게"
           {...form.getInputProps("weight")}
           placeholder="몸무게를 입력하세요"
           rightSection={
@@ -30,10 +28,8 @@ const GrowthFields = ({ form }: GrowthFieldsProps) => {
       </Box>
 
       <Box>
-        <Text fw={600} fz="md" mb="xs">
-          키
-        </Text>
         <NumberInput
+          label="키"
           {...form.getInputProps("height")}
           placeholder="키를 입력하세요"
           rightSection={
@@ -49,10 +45,8 @@ const GrowthFields = ({ form }: GrowthFieldsProps) => {
       </Box>
 
       <Box>
-        <Text fw={600} fz="md" mb="xs">
-          두위 (머리둘레)
-        </Text>
         <NumberInput
+          label="두위 (머리둘레)"
           {...form.getInputProps("headSize")}
           placeholder="두위를 입력하세요"
           rightSection={

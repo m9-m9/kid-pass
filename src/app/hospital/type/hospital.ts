@@ -8,4 +8,5 @@ export interface hospitalRecord {
   file: string;
   chldrnNo: string;
   drugNm: string; // 약 이름
+  hospital: string; // 병원 이름
 }

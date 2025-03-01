@@ -188,7 +188,7 @@ const RecordPage = () => {
         }}
         onClick={openRecordModal}
       >
-        <IconPlus size={24} stroke={4} />
+        <IconPlus size={24} stroke={3} />
       </Button>
     </MobileLayout>
   );

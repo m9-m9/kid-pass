@@ -14,6 +14,9 @@ importers:
       '@mantine/carousel':
         specifier: ^7.17.0
         version: 7.17.0(@mantine/core@7.17.0(@mantine/hooks@7.17.0(react@19.0.0-rc-66855b96-20241106))(@types/react@18.3.12)(react-dom@19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106))(react@19.0.0-rc-66855b96-20241106))(@mantine/hooks@7.17.0(react@19.0.0-rc-66855b96-20241106))(embla-carousel-react@7.1.0(react@19.0.0-rc-66855b96-20241106))(react-dom@19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106))(react@19.0.0-rc-66855b96-20241106)
+      '@mantine/charts':
+        specifier: ^7.17.1
+        version: 7.17.1(@mantine/core@7.17.0(@mantine/hooks@7.17.0(react@19.0.0-rc-66855b96-20241106))(@types/react@18.3.12)(react-dom@19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106))(react@19.0.0-rc-66855b96-20241106))(@mantine/hooks@7.17.0(react@19.0.0-rc-66855b96-20241106))(react-dom@19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106))(react@19.0.0-rc-66855b96-20241106)(recharts@2.15.1(react-dom@19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106))(react@19.0.0-rc-66855b96-20241106))
       '@mantine/code-highlight':
         specifier: ^7.17.0
         version: 7.17.0(@mantine/core@7.17.0(@mantine/hooks@7.17.0(react@19.0.0-rc-66855b96-20241106))(@types/react@18.3.12)(react-dom@19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106))(react@19.0.0-rc-66855b96-20241106))(@mantine/hooks@7.17.0(react@19.0.0-rc-66855b96-20241106))(react-dom@19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106))(react@19.0.0-rc-66855b96-20241106)
@@ -781,6 +784,15 @@ packages:
       embla-carousel-react: '>=7.0.0'
       react: ^18.x || ^19.x
       react-dom: ^18.x || ^19.x
+
+  '@mantine/charts@7.17.1':
+    resolution: {integrity: sha512-qS6UOF1wayF86h+s1pI/rUJiZVkj4244JTgFToLsgvYIKoQaSibHjUjdBDfsMTLEIz4nunfPct0r75JR9YBBVQ==}
+    peerDependencies:
+      '@mantine/core': 7.17.1
+      '@mantine/hooks': 7.17.1
+      react: ^18.x || ^19.x
+      react-dom: ^18.x || ^19.x
+      recharts: ^2.13.3
 
   '@mantine/code-highlight@7.17.0':
     resolution: {integrity: sha512-i6MvxW+PtdRNYHCm8Qa/aiMkLr47EYS0+12rf5XhDVdYZy+0+XiRkwBsxnvzQfKqv0QtH2dchBJDEBMmPB/nVw==}
@@ -3642,6 +3654,14 @@ snapshots:
       embla-carousel-react: 7.1.0(react@19.0.0-rc-66855b96-20241106)
       react: 19.0.0-rc-66855b96-20241106
       react-dom: 19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106)
+
+  '@mantine/charts@7.17.1(@mantine/core@7.17.0(@mantine/hooks@7.17.0(react@19.0.0-rc-66855b96-20241106))(@types/react@18.3.12)(react-dom@19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106))(react@19.0.0-rc-66855b96-20241106))(@mantine/hooks@7.17.0(react@19.0.0-rc-66855b96-20241106))(react-dom@19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106))(react@19.0.0-rc-66855b96-20241106)(recharts@2.15.1(react-dom@19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106))(react@19.0.0-rc-66855b96-20241106))':
+    dependencies:
+      '@mantine/core': 7.17.0(@mantine/hooks@7.17.0(react@19.0.0-rc-66855b96-20241106))(@types/react@18.3.12)(react-dom@19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106))(react@19.0.0-rc-66855b96-20241106)
+      '@mantine/hooks': 7.17.0(react@19.0.0-rc-66855b96-20241106)
+      react: 19.0.0-rc-66855b96-20241106
+      react-dom: 19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106)
+      recharts: 2.15.1(react-dom@19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106))(react@19.0.0-rc-66855b96-20241106)
 
   '@mantine/code-highlight@7.17.0(@mantine/core@7.17.0(@mantine/hooks@7.17.0(react@19.0.0-rc-66855b96-20241106))(@types/react@18.3.12)(react-dom@19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106))(react@19.0.0-rc-66855b96-20241106))(@mantine/hooks@7.17.0(react@19.0.0-rc-66855b96-20241106))(react-dom@19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106))(react@19.0.0-rc-66855b96-20241106)':
     dependencies:

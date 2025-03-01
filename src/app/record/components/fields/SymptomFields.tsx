@@ -1,33 +1,30 @@
 "use client";
 
-import { Box, Stack, Text, SimpleGrid } from "@mantine/core";
+import { Box, Stack, Text, SimpleGrid, Select } from "@mantine/core";
 import { UseFormReturnType } from "@mantine/form";
 import { FormValues } from "../RecordForm";
-import SearchListPicker, {
-  SearchItem,
-} from "@/components/searchListPicker/SearchListPicker";
 
 const SYMPTOMS = [
-  { id: "1", name: "수유 거부" },
-  { id: "2", name: "설사" },
-  { id: "3", name: "발진" },
-  { id: "4", name: "발열" },
-  { id: "5", name: "콧물" },
-  { id: "6", name: "기침" },
-  { id: "7", name: "구토" },
-  { id: "8", name: "보챔" },
-  { id: "9", name: "식욕 부진" },
-  { id: "10", name: "잦은 울음" },
-  { id: "11", name: "수면 장애" },
-  { id: "12", name: "코막힘" },
-  { id: "13", name: "가래" },
-  { id: "14", name: "젖병 거부" },
-  { id: "15", name: "이유식 거부" },
-  { id: "16", name: "묽은 변" },
-  { id: "17", name: "땀이 많음" },
-  { id: "18", name: "눈곱" },
-  { id: "19", name: "열성 경련" },
-  { id: "20", name: "중이염" },
+  "수유 거부",
+  "설사",
+  "발진",
+  "발열",
+  "콧물",
+  "기침",
+  "구토",
+  "보챔",
+  "식욕 부진",
+  "잦은 울음",
+  "수면 장애",
+  "코막힘",
+  "가래",
+  "젖병 거부",
+  "이유식 거부",
+  "묽은 변",
+  "땀이 많음",
+  "눈곱",
+  "열성 경련",
+  "중이염",
 ];
 
 const SEVERITY = ["약함", "보통", "심함"];
@@ -37,27 +34,17 @@ interface SymptomFieldsProps {
 }
 
 const SymptomFields = ({ form }: SymptomFieldsProps) => {
-  // 선택된 증상 찾기
-  const selectedSymptom = form.values.symptom
-    ? SYMPTOMS.find((item) => item.name === form.values.symptom)
-    : undefined;
-
   return (
     <Stack gap="md">
-      <Box>
-        <Text fw={600} fz="md" mb="xs">
-          특이증상
-        </Text>
-        <SearchListPicker
-          items={SYMPTOMS}
-          mode="single"
-          onSelect={(selected: SearchItem | SearchItem[]) => {
-            const items = Array.isArray(selected) ? selected : [selected];
-            form.setFieldValue("symptom", items[0]?.name || "");
-          }}
-          selectedItems={selectedSymptom}
-        />
-      </Box>
+      <Select
+        label="특이증상"
+        placeholder="특이증상을 선택해주세요"
+        data={SYMPTOMS}
+        value={form.values.symptom}
+        onChange={(value) => form.setFieldValue("symptom", value || "")}
+        searchable
+        size="md"
+      />
 
       <Box>
         <Text fw={600} fz="md" mb="xs">

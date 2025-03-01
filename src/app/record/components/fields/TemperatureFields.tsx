@@ -11,25 +11,21 @@ interface TemperatureFieldsProps {
 const TemperatureFields = ({ form }: TemperatureFieldsProps) => {
   return (
     <Stack gap="md">
-      <Box>
-        <Text fw={600} fz="md" mb="xs">
-          체온
-        </Text>
-        <NumberInput
-          placeholder="체온을 입력하세요"
-          value={form.values.temperature}
-          onChange={(value) => form.setFieldValue("temperature", value)}
-          rightSection={
-            <Text fz="sm" c="dimmed">
-              ℃
-            </Text>
-          }
-          min={35}
-          max={42}
-          step={0.1}
-          size="md"
-        />
-      </Box>
+      <NumberInput
+        label="체온"
+        placeholder="체온을 입력하세요"
+        value={form.values.temperature}
+        onChange={(value) => form.setFieldValue("temperature", value)}
+        rightSection={
+          <Text fz="sm" c="dimmed">
+            ℃
+          </Text>
+        }
+        min={35}
+        max={42}
+        step={0.1}
+        size="md"
+      />
     </Stack>
   );
 };
