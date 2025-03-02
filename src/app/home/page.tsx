@@ -287,7 +287,7 @@ const App: React.FC = () => {
 						src="/record.png"
 						alt=""
 						pos="absolute"
-						right="md"
+						right={10}
 						w={80}
 						h={80}
 					/>
