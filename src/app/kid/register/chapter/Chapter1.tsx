@@ -14,7 +14,6 @@ import {
 	Box,
 } from '@mantine/core';
 
-// Item 컴포넌트를 부모 컴포넌트 외부로 분리
 const Item = ({
 	children,
 	index,
@@ -157,7 +156,7 @@ const Chapter1: React.FC<ChapterProps> = ({ onNext }) => {
 			<Spacer height={54} />
 			<Grid gutter="md">
 				{texts.map((text, index) => (
-					<Grid.Col span={6} key={index}>
+					<Grid.Col span={6} key={ageTypes[index]}>
 						<Item
 							index={index}
 							handleAgeSelection={handleAgeSelection}

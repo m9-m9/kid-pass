@@ -1,66 +1,110 @@
-"use client";
+'use client';
 
-import React from "react";
-import { useChldrnInfoStore } from "@/store/useChldrnInfoStore";
-import { Label } from "@/elements/label/Label";
-import { ChapterProps } from "@/hook/useChapter";
-import styles from "../kid.module.css";
-import Grid from "@/elements/grid/Grid";
-import Spacer from "@/elements/spacer/Spacer";
+import React from 'react';
+import { useChldrnInfoStore } from '@/store/useChldrnInfoStore';
+import { ChapterProps } from '@/hook/useChapter';
+import Spacer from '@/elements/spacer/Spacer';
+import { Flex, Text, Grid, useMantineTheme, Image, Stack } from '@mantine/core';
 
-const Chapter1: React.FC<ChapterProps> = ({ onNext }) => {
-    const setChldrnSexdstn = useChldrnInfoStore((state) => state.setChldrnSexdstn);
-    const chldrnSexdstnType = ["M", "F"] as const;
+const Item = ({
+	children,
+	index,
+	handleSexSelection,
+	theme,
+}: {
+	children: React.ReactNode;
+	index: number;
+	handleSexSelection: (index: number) => void;
+	theme: any;
+}) => (
+	<Flex
+		direction="column"
+		justify="center"
+		align="center"
+		bg="#ffffff"
+		gap={24}
+		styles={{
+			root: {
+				border: `1px solid ${theme.colors[theme.primaryColor][6]}`,
+				borderRadius: '10px',
+			},
+		}}
+		ta="center"
+		lh={1.2}
+		p="40px 0 16px 0"
+		onClick={() => handleSexSelection(index)}
+	>
+		{children}
+	</Flex>
+);
 
-    const texts = [
-        <>
-            <div className={styles.genderSelection}>
-                <img src="/boySign.png" />
-                남자
-            </div>
-        </>,
-        <>
-            <div className={styles.genderSelection}>
-                <img src="/girlSign.png" />
-                여자
-            </div>
-        </>,
-    ];
+const Chapter2: React.FC<ChapterProps> = ({ onNext }) => {
+	const theme = useMantineTheme();
 
-    const handleSexSelection = (index: number) => {
-        setChldrnSexdstn(chldrnSexdstnType[index]);
-        onNext();
-    };
+	const setChldrnSexdstn = useChldrnInfoStore(
+		(state) => state.setChldrnSexdstn
+	);
+	const chldrnSexdstnType = ['M', 'F'] as const;
 
-    const Item = ({
-        children,
-        index,
-    }: {
-        children: React.ReactNode;
-        index: number;
-    }) => (
-        <div
-            className={styles.gender_item}
-            onClick={() => handleSexSelection(index)}
-        >
-            {children}
-        </div>
-    );
+	const texts = [
+		<Stack gap={12} justify="center" key="male">
+			<Image
+				src="/boySign.png"
+				style={{
+					width: '80px',
+					height: 'auto',
+					alignSelf: 'center',
+				}}
+				alt="남자 아이콘"
+			/>
+			<Text c={theme.colors[theme.primaryColor][6]} fz="lg" fw={700}>
+				남자
+			</Text>
+		</Stack>,
+		<Stack gap={12} justify="center" key="female">
+			<Image
+				src="/girlSign.png"
+				style={{
+					width: '80px',
+					height: 'auto',
+					alignSelf: 'center',
+				}}
+				alt="여자 아이콘"
+			/>
+			<Text c={theme.colors[theme.primaryColor][6]} fz="lg" fw={700}>
+				여자
+			</Text>
+		</Stack>,
+	];
 
-    return (
-        <div>
-            <Label css="profileLabel" text="아이의 성별은<br/>무엇인가요?" />
-            <Spacer height={56} />
-            <Grid
-                items={texts.map((text, index) => (
-                    <Item key={index} index={index}>
-                        {text}
-                    </Item>
-                ))}
-                column={2}
-            />
-        </div>
-    );
+	const handleSexSelection = (index: number) => {
+		setChldrnSexdstn(chldrnSexdstnType[index]);
+		onNext();
+	};
+
+	return (
+		<Flex direction="column">
+			<Text fz="xl" c="#222222" fw={700}>
+				아이의 성별은
+				<br />
+				무엇인가요?
+			</Text>
+			<Spacer height={56} />
+			<Grid gutter="md">
+				{texts.map((text, index) => (
+					<Grid.Col span={6} key={chldrnSexdstnType[index]}>
+						<Item
+							index={index}
+							handleSexSelection={handleSexSelection}
+							theme={theme}
+						>
+							{text}
+						</Item>
+					</Grid.Col>
+				))}
+			</Grid>
+		</Flex>
+	);
 };
 
-export default Chapter1;
+export default Chapter2;
