@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { hospitalRecord } from "./type/hospital";
-import MobileLayout from "../mantine/MobileLayout";
+import MobileLayout from "../../components/mantine/MobileLayout";
 import { Paper, Flex, Text, Stack, ActionIcon, Box } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
 

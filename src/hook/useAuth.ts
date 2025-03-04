@@ -77,7 +77,22 @@ const useAuth = () => {
     return null; // 둘다 없으면 null 반환
   };
 
-  return { getToken, getCrtChldNo };
+  const getUserInfo = async () => {
+    const response = await fetch("/api/auth/user", {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    if (response.ok) {
+      const { user } = await response.json();
+      return user;
+    }
+
+    return null;
+  };
+
+  return { getToken, getCrtChldNo, getUserInfo };
 };
 
 export default useAuth;

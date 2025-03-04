@@ -72,6 +72,7 @@ model Record {
 
   // 기타 관련
   category    String?   // 신생아 반사행동, 성장 행동
+  behavior    String[]  // 모로반사, 파악반사, 바빈스키 반사, 흡철반사, 긴장목 반사, 터미타임, 턱 들기, 가슴 들기, 물건 만지기, 기대 앉기, 물건 잡기, 앉기, 기어가기, 계단 오르기, 서기, 걷기
 
   // 병원 관련
   diagnoses   String?   // 감기, 코로나19, 장염, 인플루엔자, 기관지염
@@ -128,4 +129,13 @@ model VacntnInfo {
   updatedAt       DateTime @updatedAt
 
   @@map("vaccine_info")
+}
+
+model EmailVerification {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  email     String
+  code      String
+  verified  Boolean  @default(false)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
 }

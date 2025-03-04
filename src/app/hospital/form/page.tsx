@@ -5,7 +5,7 @@ import { TextInput, Stack, Box, Button, AppShell, Select } from "@mantine/core";
 import { DateTimePicker } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import { IconCalendar } from "@tabler/icons-react";
-import MobileLayout from "@/app/mantine/MobileLayout";
+import MobileLayout from "@/components/mantine/MobileLayout";
 
 interface Item {
   id: string;
