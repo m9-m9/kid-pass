@@ -129,6 +129,16 @@ const theme = createTheme({
 	focusRing: 'auto',
 	// 시스템 다크모드 감지
 	autoContrast: true,
+	other: {
+		// 커스텀 변수를 저장하는 공간
+		fontColors: {
+			primary: '#222222',
+			sub1: '#646464',
+			sub2: '#707070',
+			sub3: '#9E9E9E',
+			sub4: '#d9d9d9',
+		},
+	},
 });
 
 export const metadata: Metadata = {

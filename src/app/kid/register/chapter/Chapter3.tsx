@@ -1,10 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import Button from '@/elements/button/Button';
 import { ChapterProps } from '@/hook/useChapter';
 import { useChldrnInfoStore } from '@/store/useChldrnInfoStore';
-import { Stack, Text, TextInput } from '@mantine/core';
+import { Box, Button, Stack, Text, TextInput } from '@mantine/core';
 
 const Chapter3: React.FC<ChapterProps> = ({ onNext }) => {
 	const setDetails = useChldrnInfoStore((state) => state.setDetails);
@@ -20,6 +19,15 @@ const Chapter3: React.FC<ChapterProps> = ({ onNext }) => {
 		height: '',
 		head: '',
 	});
+
+	const inputLabelStyle = {
+		label: {
+			fontSize: '1.125rem',
+			fontWeight: 600,
+			color: '#707070',
+			marginBottom: '12px',
+		},
+	};
 
 	const validateBirthDate = (value: string) => {
 		const regex = /^\d{8}$/;
@@ -160,19 +168,20 @@ const Chapter3: React.FC<ChapterProps> = ({ onNext }) => {
 	};
 
 	return (
-		<form onSubmit={handleSubmit}>
+		<Box component="form" onSubmit={handleSubmit}>
 			<Text fz="xl" c="#222222" fw={700}>
 				아이의 정보를
 				<br />
 				등록해주세요
 			</Text>
-			<Stack gap="md">
+			<Stack gap={36} mt={48} mb={80}>
 				<TextInput
 					label="이름"
 					value={name}
 					onChange={(e) => handleNameChange(e.target.value)}
 					placeholder="홍길동"
 					error={errors.name}
+					styles={inputLabelStyle}
 				/>
 				<TextInput
 					label="출생일"
@@ -180,6 +189,7 @@ const Chapter3: React.FC<ChapterProps> = ({ onNext }) => {
 					onChange={(e) => handleBirthDateChange(e.target.value)}
 					placeholder="YYYYMMDD"
 					error={errors.birthDate}
+					styles={inputLabelStyle}
 				/>
 				<TextInput
 					label="몸무게"
@@ -188,6 +198,7 @@ const Chapter3: React.FC<ChapterProps> = ({ onNext }) => {
 					placeholder="8.xx 소수점 2자리까지 입력해주세요"
 					error={errors.weight}
 					rightSection="kg"
+					styles={inputLabelStyle}
 				/>
 				<TextInput
 					label="키"
@@ -196,6 +207,7 @@ const Chapter3: React.FC<ChapterProps> = ({ onNext }) => {
 					placeholder="30.x 소수점 1자리까지 입력해주세요"
 					error={errors.height}
 					rightSection="cm"
+					styles={inputLabelStyle}
 				/>
 				<TextInput
 					label="머리둘레"
@@ -204,10 +216,13 @@ const Chapter3: React.FC<ChapterProps> = ({ onNext }) => {
 					placeholder="50.x 소수점 1자리까지 입력해주세요"
 					error={errors.head}
 					rightSection="cm"
+					styles={inputLabelStyle}
 				/>
 			</Stack>
-			<Button type="submit">다음</Button>
-		</form>
+			<Button fullWidth type="submit" c="#FFFFFF">
+				다음
+			</Button>
+		</Box>
 	);
 };
 

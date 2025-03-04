@@ -153,7 +153,7 @@ const Chapter1: React.FC<ChapterProps> = ({ onNext }) => {
 				<br />
 				어떻게 되나요?
 			</Text>
-			<Spacer height={54} />
+			<Spacer height={48} />
 			<Grid gutter="md">
 				{texts.map((text, index) => (
 					<Grid.Col span={6} key={ageTypes[index]}>
