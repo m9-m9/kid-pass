@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Flex,
   Title,
@@ -6,11 +6,13 @@ import {
   Avatar,
   Box,
   UnstyledButton,
+  Popover,
 } from "@mantine/core";
 import { IconChevronLeft } from "@tabler/icons-react";
 import WeeklyDatePicker from "@/components/datePicker/WeekCarousel";
 import useCurrentDateStore from "@/store/useCurrentDateStore";
 import dayjs from "dayjs";
+import KidsList from "./KidsList";
 
 interface HeaderProps {
   type: "back" | "profile";
@@ -77,7 +79,14 @@ const Header: React.FC<HeaderProps> = ({
               오늘
             </UnstyledButton>
           </Flex>
-          <Avatar color="brand" radius="xl" size="md" />
+          <Popover>
+            <Popover.Target>
+              <Avatar color="brand" radius="xl" size="md" />
+            </Popover.Target>
+            <Popover.Dropdown>
+              <KidsList />
+            </Popover.Dropdown>
+          </Popover>
         </Flex>
 
         {useWeekCarousel && (

@@ -110,7 +110,12 @@ const LoginPage = () => {
           </Box>
 
           <Group gap={rem(15)} justify="center" mt={rem(24)}>
-            <Text size="md" c="#aaa" style={{ cursor: "pointer" }}>
+            <Text
+              size="md"
+              c="#aaa"
+              style={{ cursor: "pointer" }}
+              onClick={() => router.push("/auth/accountRecovery")}
+            >
               계정 찾기
             </Text>
             <Text size="md" c="#aaa" style={{ textAlign: "center" }}>

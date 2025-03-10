@@ -66,10 +66,10 @@ const App = () => {
               </Box>
               <Stack gap={rem(2)}>
                 <Text fw={500} size={rem(14)}>
-                  {userInfo?.name}
+                  프로필 관리
                 </Text>
                 <Text size={rem(12)} c="#6c757d">
-                  {userInfo?.email}
+                  {userInfo?.name}
                 </Text>
               </Stack>
             </Box>
@@ -81,10 +81,10 @@ const App = () => {
             {/* Group 1 */}
             <Box>
               <Text size={rem(12)} fw={500} c="dimmed" px={rem(16)} py={rem(8)}>
-                내 도구함
+                내 보관함
               </Text>
               <Box style={{ backgroundColor: "white" }}>
-                <MenuItem label="웹툴 템플릿" hasArrow />
+                <MenuItem label="찜한 병원/약국" hasArrow />
                 <MenuItem label="건강뉴스 즐겨찾기" hasArrow />
               </Box>
             </Box>
