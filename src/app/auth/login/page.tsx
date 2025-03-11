@@ -1,19 +1,22 @@
 "use client";
 
-import { Box, Stack, Text, Button, Group } from "@mantine/core";
+import { Box, Stack, Text, Button, Group, Loader } from "@mantine/core";
 import { useRouter, useSearchParams } from "next/navigation";
 import MobileLayout from "@/components/mantine/MobileLayout";
 import Image from "next/image";
 import { useViewportSize } from "@mantine/hooks";
 import { KakaoLoginProvider } from "../kakao";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useAuthStore from "@/store/useAuthStore";
+import { notifications } from "@mantine/notifications";
 
 const LoginPage = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { height } = useViewportSize();
   const { setAccessToken, setRefreshToken } = useAuthStore();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isKakaoLoading, setIsKakaoLoading] = useState(false);
 
   // 카카오 로그인 provider 초기화
   const kakaoProvider = new KakaoLoginProvider(
@@ -23,6 +26,7 @@ const LoginPage = () => {
   useEffect(() => {
     const code = searchParams.get("code");
     if (code) {
+      setIsKakaoLoading(true);
       handleKakaoCallback(code);
       // URL에서 code 파라미터 제거
       const newUrl = window.location.pathname;
@@ -63,22 +67,41 @@ const LoginPage = () => {
         document.cookie = `refreshToken=${
           data.data.refreshToken
         }; path=/; max-age=${7 * 24 * 60 * 60}; secure`;
+
+        notifications.show({
+          title: "로그인 성공",
+          message: "환영합니다!",
+          color: "green",
+        });
+
         router.push("/home");
       } else {
         throw new Error("토큰이 없습니다.");
       }
     } catch (error) {
       console.error("카카오 로그인 에러:", error);
-      alert("로그인에 실패했습니다.");
+      notifications.show({
+        title: "로그인 실패",
+        message: "로그인에 실패했습니다. 다시 시도해주세요.",
+        color: "red",
+      });
+    } finally {
+      setIsKakaoLoading(false);
     }
   };
 
   const handleKakaoLogin = async () => {
     try {
+      setIsLoading(true);
       await kakaoProvider.loginWithRedirect();
     } catch (error) {
       console.error("카카오 로그인 에러:", error);
-      alert("로그인에 실패했습니다.");
+      notifications.show({
+        title: "로그인 실패",
+        message: "로그인에 실패했습니다. 다시 시도해주세요.",
+        color: "red",
+      });
+      setIsLoading(false);
     }
   };
 
@@ -94,6 +117,28 @@ const LoginPage = () => {
       showBottomNav={false}
       onBack={handleBack}
     >
+      {isKakaoLoading && (
+        <Box
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: "rgba(255, 255, 255, 0.7)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 1000,
+          }}
+        >
+          <Stack align="center">
+            <Loader size="lg" />
+            <Text>로그인 중...</Text>
+          </Stack>
+        </Box>
+      )}
+
       <Box
         p="md"
         style={{
@@ -124,18 +169,23 @@ const LoginPage = () => {
               variant="filled"
               bg="#FEE500"
               leftSection={
-                <Image
-                  src="/images/kakao.icon.png"
-                  alt="카카오 로그인"
-                  width={20}
-                  height={20}
-                  style={{ objectFit: "contain" }}
-                />
+                isLoading ? (
+                  <Loader size="sm" color="dark" />
+                ) : (
+                  <Image
+                    src="/images/kakao.icon.png"
+                    alt="카카오 로그인"
+                    width={20}
+                    height={20}
+                    style={{ objectFit: "contain" }}
+                  />
+                )
               }
               fullWidth
               onClick={handleKakaoLogin}
+              disabled={isLoading || isKakaoLoading}
             >
-              카카오로 계속하기
+              {isLoading ? "로그인 중..." : "카카오로 계속하기"}
             </Button>
 
             <Button
