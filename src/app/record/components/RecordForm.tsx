@@ -25,7 +25,7 @@ import TemperatureFields from "./fields/TemperatureFields";
 import EtcFields from "./fields/EtcFields";
 import EmotionFields from "./fields/EmotionFields";
 import DiaperFields from "./fields/DiaperFields";
-import MobileLayout from "@/app/mantine/MobileLayout";
+import MobileLayout from "@/components/mantine/MobileLayout";
 import { IconCalendar } from "@tabler/icons-react";
 import { IconClock } from "@tabler/icons-react";
 import HospitalFields from "./fields/HospitalFields";

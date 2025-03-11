@@ -1,7 +1,5 @@
 'use client';
 
-import Container from '../../../elements/container/Container';
-import { Label } from '../../../elements/label/Label';
 import VaccineCount, { VaccineStatusInfo } from './components/VaccineCount';
 import ProgressBar from '@/components/progressBar/progressBar';
 import useAuth from '@/hook/useAuth';
@@ -12,6 +10,7 @@ import useChldrnListStore from '@/store/useChldrnListStore';
 import BottomNavigation from '@/components/bottomNavigation/BottomNavigation';
 import Spacer from '@/elements/spacer/Spacer';
 import LoadingFullScreen from '@/components/loading/LoadingFullScreen';
+import { Container, Group, Box, Text, Progress, Flex } from '@mantine/core';
 
 export interface VacntnInfo {
 	id: string; // 백신 기록 ID
@@ -84,7 +83,7 @@ const App = () => {
 	}, [currentKid]);
 
 	return (
-		<>
+		<Box p="0 20">
 			<LoadingFullScreen
 				isVisible={isLoading}
 				text="백신 정보를 불러오는 중입니다..."
@@ -94,48 +93,92 @@ const App = () => {
 				icon={<i className="ri-calendar-line" />}
 				path="/note/calendar"
 			/>
-			<Label text="예방접종 진행률" css="metricsValue" />
-			<Container className="rateContainer" backgroundColor="#F4F4F4">
-				<div className="horizonFlexbox space-between">
-					<div className="horizonFlexbox gap-4">
-						<Container
-							className="vaccinationRate"
-							backgroundColor="#729BED"
+			<Text fw={700} size="md-lg" c="#222222">
+				예방접종 진행률
+			</Text>
+
+			<Box
+				p="16"
+				style={{
+					backgroundColor: '#F4F4F4',
+					width: '100%',
+					borderRadius: '10px',
+				}}
+			>
+				<Group mb="sm" gap={0} justify="space-between" w="100%">
+					<Group gap={0}>
+						<Flex
+							pb="4"
+							pt="4"
+							pl="16"
+							pr="16"
+							gap="4"
+							display="flex"
+							align="center"
+							style={{
+								backgroundColor: '#729BED',
+								borderRadius: '12px',
+								textAlign: 'center',
+							}}
 						>
-							<Label text="완료" css="vaccinationTF" />
-							<Label
-								text={vaccinationData.totalCompletedDoses}
-								css="vaccinationTF"
-							/>
-						</Container>
-						<Container
-							className="vaccinationRate"
-							backgroundColor="#BFBFBF"
+							<Text fw={700} c="white" fz="sm">
+								완료
+							</Text>
+							<Text fw={700} size="lg" c="white" fz="sm">
+								{vaccinationData.totalCompletedDoses}
+							</Text>
+						</Flex>
+
+						<Flex
+							pb="4"
+							pt="4"
+							pl="16"
+							pr="16"
+							gap="4"
+							display="flex"
+							align="center"
+							style={{
+								backgroundColor: '#BFBFBF',
+								borderRadius: '12px',
+								textAlign: 'center',
+							}}
 						>
-							<Label text="미접종" css="vaccinationTF" />
-							<Label
-								text={vaccinationData.totalRequiredDoses}
-								css="vaccinationTF"
-							/>
-						</Container>
-					</div>
-					<Label
-						text={`${vaccinationData.completionPercentage}%`}
-						css="vaccineRate"
-					/>
-				</div>
+							<Text fw={700} c="white" fz="sm">
+								미접종
+							</Text>
+							<Text fw={700} size="lg" c="white" fz="sm">
+								{vaccinationData.totalRequiredDoses}
+							</Text>
+						</Flex>
+					</Group>
+
+					<Text size="xl" fw={700}>
+						{`${vaccinationData.completionPercentage}%`}
+					</Text>
+				</Group>
 
 				<ProgressBar
 					completed={vaccinationData.completionPercentage}
 					total={100}
 				/>
-			</Container>
-			<Label text="예방접종 자세히 보기" css="metricsValue" />
+
+				{/*
+      <Progress
+        value={vaccinationData.completionPercentage}
+        color="#729BED"
+        size="lg"
+      />
+      */}
+			</Box>
+
+			<Text fw={700} size="md-lg" c="#222222">
+				예방접종 자세히 보기
+			</Text>
 			<VaccineCount vaccineStatusMap={vaccinationData.vaccineStatusMap} />
 
 			<Spacer height={50} />
 			<BottomNavigation />
-		</>
+		</Box>
 	);
 };
 

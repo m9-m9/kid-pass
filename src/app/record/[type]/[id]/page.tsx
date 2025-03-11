@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import useAuth from "@/hook/useAuth";
 import { TYPE_PATH_MAP } from "../../constants";
-import MobileLayout from "@/app/mantine/MobileLayout";
+import MobileLayout from "@/components/mantine/MobileLayout";
 import {
   Paper,
   Flex,

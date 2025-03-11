@@ -1,15 +1,21 @@
 "use client";
 
-import InputForm from "@/components/form/InputForm";
-import Header from "@/components/header/Header";
-import LoadingFullScreen from "@/components/loading/LoadingFullScreen";
-import Button from "@/elements/button/Button";
-import Container from "@/elements/container/Container";
-import Spacer from "@/elements/spacer/Spacer";
-import useAuthStore from "@/store/useAuthStore";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
-import styles from "./login.module.css";
+import { useRouter } from "next/navigation";
+import {
+  TextInput,
+  PasswordInput,
+  Button,
+  Text,
+  Box,
+  Group,
+  LoadingOverlay,
+  rem,
+  AppShell,
+} from "@mantine/core";
+import { IconEye, IconEyeOff } from "@tabler/icons-react";
+import useAuthStore from "@/store/useAuthStore";
+import MobileLayout from "@/components/mantine/MobileLayout";
 
 const LoginPage = () => {
   const router = useRouter();
@@ -51,53 +57,98 @@ const LoginPage = () => {
     }
   };
 
-  return (
-    <Container className="container" full>
-      <LoadingFullScreen isVisible={loading} />
-      <Header title="로그인" onBack={() => {}} />
-      <Spacer height={50} />
-      <form
-        onSubmit={handleLogin}
-        style={{ display: "flex", flexDirection: "column", flex: 1 }}
-      >
-        <InputForm
-          labelText="아이디"
-          placeholder="아이디를 입력해주세요"
-          labelCss="inputForm"
-          value={userId}
-          onChange={setUserId}
-        />
-        <Spacer height={32} />
-        <InputForm
-          labelText="비밀번호"
-          placeholder="비밀번호를 입력해주세요"
-          labelCss="inputForm"
-          value={password}
-          onChange={setPassword}
-          type="password"
-        />
+  const handleBack = () => router.push("/");
 
-        <div
+  return (
+    <MobileLayout
+      showHeader={true}
+      headerType="back"
+      title="로그인"
+      showBottomNav={false}
+      onBack={handleBack}
+    >
+      <Box pos="relative" px="md" style={{ height: "100%" }}>
+        <LoadingOverlay visible={loading} />
+
+        <form
+          onSubmit={handleLogin}
           style={{
             display: "flex",
-            border: "none",
-            background: "#fff",
-            justifyContent: "center",
-            marginTop: 24,
+            flexDirection: "column",
+            height: "100%",
           }}
         >
-          <p
-            className={styles.signupButton}
-            onClick={() => router.push("/auth/signup")}
-          >
-            회원가입하기
-          </p>
-        </div>
+          <Box mb="lg">
+            <Text size="md" fw={500} mb={10}>
+              이메일 아이디
+            </Text>
+            <TextInput
+              placeholder="todayschild@mail.com"
+              value={userId}
+              onChange={(e) => setUserId(e.currentTarget.value)}
+              size="md"
+            />
+          </Box>
 
-        <div style={{ flex: 1 }} />
-        <Button type="submit" label="로그인" />
-      </form>
-    </Container>
+          <Box mb="lg">
+            <Text size="md" fw={500} mb={10}>
+              비밀번호
+            </Text>
+            <PasswordInput
+              placeholder="문자와 숫자를 포함한 8~20자"
+              value={password}
+              onChange={(e) => setPassword(e.currentTarget.value)}
+              size="md"
+              visibilityToggleIcon={({ reveal }) =>
+                reveal ? (
+                  <IconEye size={18} color="#888" />
+                ) : (
+                  <IconEyeOff size={18} color="#888" />
+                )
+              }
+            />
+          </Box>
+
+          <Group gap={rem(15)} justify="center" mt={rem(24)}>
+            <Text
+              size="md"
+              c="#aaa"
+              style={{ cursor: "pointer" }}
+              onClick={() => router.push("/auth/accountRecovery")}
+            >
+              계정 찾기
+            </Text>
+            <Text size="md" c="#aaa" style={{ textAlign: "center" }}>
+              |
+            </Text>
+            <Text
+              size="md"
+              c="#aaa"
+              style={{ cursor: "pointer" }}
+              onClick={() => router.push("/auth/signup")}
+            >
+              회원가입
+            </Text>
+          </Group>
+
+          <Box style={{ flex: 1 }} />
+
+          <AppShell.Footer>
+            <Box p="md">
+              <Button
+                type="submit"
+                size="md"
+                fullWidth
+                color="blue"
+                onClick={handleLogin}
+              >
+                로그인
+              </Button>
+            </Box>
+          </AppShell.Footer>
+        </form>
+      </Box>
+    </MobileLayout>
   );
 };
 

@@ -1,13 +1,12 @@
 'use client';
 
 import React from 'react';
-import styles from '../styles/note.module.css';
-import Container from '@/elements/container/Container';
-import { Label } from '@/elements/label/Label';
-import { VacntnInfo } from '../page';
 import { useRouter } from 'next/navigation';
+import { Box, Flex, Group, Text, rem } from '@mantine/core';
+import { IconChevronRight } from '@tabler/icons-react';
 import { VACCINE_LIST } from '../vaccine';
 import useChldrnListStore from '@/store/useChldrnListStore';
+import { VacntnInfo } from '../page';
 
 export interface VaccineStatusInfo {
 	totalDoses: number;
@@ -29,7 +28,16 @@ const VaccineCount = ({ vaccineStatusMap = {} }: VaccineCountProps) => {
 	};
 
 	return (
-		<Container className="vaccineCount">
+		<Box
+			pr="16"
+			pl="16"
+			mb="40"
+			mt="16"
+			style={{
+				borderRadius: 10,
+				boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.15)',
+			}}
+		>
 			{VACCINE_LIST.map((vaccine) => {
 				// 백엔드에서 제공한 상태 정보 사용
 				const status = vaccineStatusMap[vaccine.id.toString()] || {
@@ -38,50 +46,47 @@ const VaccineCount = ({ vaccineStatusMap = {} }: VaccineCountProps) => {
 				};
 
 				return (
-					<div
-						className={styles.vaccineList}
+					<Flex
 						key={vaccine.id}
+						align="center"
+						pb="16"
+						pt="16"
 						onClick={() => handleVaccineClick(vaccine.id)}
+						style={{
+							borderBottom: '1px solid #f4f4f4',
+							cursor: 'pointer',
+						}}
 					>
-						<div style={{ flex: 5 }}>
-							<Label text={vaccine.name} css="vaccine" />
-						</div>
+						<Box style={{ flex: 4 }}>
+							<Text fw={700} size="md" c="#222222">
+								{vaccine.name}
+							</Text>
+						</Box>
 
-						<div
-							className="horizonFlexbox align-center gap-4"
-							style={{ flex: 3 }}
-						>
+						<Group style={{ flex: 4 }} gap="xs">
 							{Array.from(
 								{ length: status.totalDoses },
 								(_, i) => (
-									<span
+									<Box
 										key={`${vaccine.id}-${i}`}
-										className={`${styles.circle} ${
+										w={rem(8)}
+										h={rem(8)}
+										bg={
 											i < status.completedDoses
-												? styles.vaccineComplete
-												: styles.vaccineIncomplete
-										}`}
+												? '#729bed'
+												: '#d9d9d9'
+										}
+										style={{ borderRadius: '50%' }}
 									/>
 								)
 							)}
-						</div>
-						<svg
-							width="24"
-							height="24"
-							viewBox="0 0 24 24"
-							xmlns="http://www.w3.org/2000/svg"
-						>
-							<path
-								d="M8 4l8 8-8 8"
-								stroke="black"
-								strokeWidth="3"
-								fill="none"
-							/>
-						</svg>
-					</div>
+						</Group>
+
+						<IconChevronRight size={24} stroke={1.5} />
+					</Flex>
 				);
 			})}
-		</Container>
+		</Box>
 	);
 };
 

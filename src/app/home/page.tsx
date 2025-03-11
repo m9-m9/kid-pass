@@ -8,7 +8,7 @@ import useAuth from '@/hook/useAuth';
 import { useRouter } from 'next/navigation';
 import BottomNavigation from '@/components/bottomNavigation/BottomNavigation';
 import useChldrnListStore from '@/store/useChldrnListStore';
-import MobileLayout from '@/app/mantine/MobileLayout';
+import MobileLayout from '@/components/mantine/MobileLayout';
 import {
 	Group,
 	Text,
