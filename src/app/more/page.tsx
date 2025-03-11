@@ -1,16 +1,19 @@
 "use client";
 
 import MobileLayout from "@/components/mantine/MobileLayout";
-import { Container, Stack, Text, Box, rem } from "@mantine/core";
+import { Container, Stack, Text, Box, rem, Modal, Button } from "@mantine/core";
 import { IconChevronRight } from "@tabler/icons-react";
 import useAuth from "@/hook/useAuth";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { notifications } from "@mantine/notifications";
 
 const App = () => {
-  const { getUserInfo } = useAuth();
+  const { getUserInfo, getToken } = useAuth();
   const [userInfo, setUserInfo] = useState<any>(null);
   const router = useRouter();
+
+  const [showWithdrawModal, setShowWithdrawModal] = useState(false);
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -19,6 +22,41 @@ const App = () => {
     };
     fetchUserInfo();
   }, []);
+
+  const handleWithdraw = async () => {
+    try {
+      const accessToken = await getToken();
+      const response = await fetch("/api/auth/withdraw", {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "회원탈퇴 실패");
+      }
+
+      // 로그아웃 처리
+      notifications.show({
+        title: "성공",
+        message: "회원탈퇴가 완료되었습니다",
+        color: "green",
+      });
+      localStorage.removeItem("kidlove");
+      router.push("/auth/login");
+    } catch (error) {
+      console.error("회원탈퇴 에러:", error);
+      notifications.show({
+        title: "오류",
+        message: "회원탈퇴에 실패했습니다",
+        color: "red",
+      });
+    }
+    setShowWithdrawModal(false);
+  };
 
   return (
     <MobileLayout
@@ -122,9 +160,57 @@ const App = () => {
                   router.push("/auth/login");
                 }}
               />
+              <MenuItem
+                label="비밀번호 변경"
+                rightElement={null}
+                hasArrow={false}
+                onClick={() => {
+                  router.push("/auth/resetPassword");
+                }}
+              />
+              <MenuItem
+                label="회원탈퇴"
+                rightElement={null}
+                hasArrow={false}
+                onClick={() => setShowWithdrawModal(true)}
+              />
             </Box>
           </Box>
         </Box>
+
+        <Modal
+          opened={showWithdrawModal}
+          onClose={() => setShowWithdrawModal(false)}
+          title="회원탈퇴"
+          centered
+        >
+          <Stack gap="xl">
+            <Text size="sm">
+              정말 탈퇴하시겠습니까?
+              <br />
+              탈퇴 시 모든 데이터가 삭제되며 복구할 수 없습니다.
+            </Text>
+            <Button.Group style={{ gap: "12px" }}>
+              <Button
+                fullWidth
+                onClick={() => setShowWithdrawModal(false)}
+                c="white"
+                size="md"
+              >
+                취소
+              </Button>
+              <Button
+                c="white"
+                bg="red"
+                fullWidth
+                onClick={handleWithdraw}
+                size="md"
+              >
+                탈퇴하기
+              </Button>
+            </Button.Group>
+          </Stack>
+        </Modal>
       </Container>
     </MobileLayout>
   );

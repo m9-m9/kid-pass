@@ -1,46 +1,63 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import {
-  TextInput,
-  PasswordInput,
-  Button,
-  Text,
-  Box,
-  Group,
-  LoadingOverlay,
-  rem,
-  AppShell,
-} from "@mantine/core";
-import { IconEye, IconEyeOff } from "@tabler/icons-react";
-import useAuthStore from "@/store/useAuthStore";
+import { Box, Stack, Text, Button, Group } from "@mantine/core";
+import { useRouter, useSearchParams } from "next/navigation";
 import MobileLayout from "@/components/mantine/MobileLayout";
+import Image from "next/image";
+import { useViewportSize } from "@mantine/hooks";
+import { KakaoLoginProvider } from "../kakao";
+import { useEffect } from "react";
+import useAuthStore from "@/store/useAuthStore";
 
 const LoginPage = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const { height } = useViewportSize();
   const { setAccessToken, setRefreshToken } = useAuthStore();
 
-  const [userId, setUserId] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+  // 카카오 로그인 provider 초기화
+  const kakaoProvider = new KakaoLoginProvider(
+    process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID!
+  );
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
+  useEffect(() => {
+    const code = searchParams.get("code");
+    if (code) {
+      handleKakaoCallback(code);
+      // URL에서 code 파라미터 제거
+      const newUrl = window.location.pathname;
+      window.history.replaceState({}, document.title, newUrl);
+    }
+  }, [searchParams]);
 
+  const handleKakaoCallback = async (code: string) => {
     try {
-      const response = await fetch("/api/auth/login", {
+      // 인가 코드로 토큰 받기
+      const result = await kakaoProvider.handleRedirect(code);
+      if (!result) {
+        throw new Error("카카오 로그인 실패");
+      }
+
+      // 서버에 소셜 로그인 인증 요청
+      const response = await fetch("/api/auth/social-login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ userId, password }),
+        body: JSON.stringify({
+          provider: "kakao",
+          user: result.user,
+        }),
       });
+
+      if (!response.ok) {
+        throw new Error("소셜 로그인 실패");
+      }
 
       const data = await response.json();
 
-      if (response.ok) {
+      // 토큰 저장 및 리다이렉트
+      if (data.data.accessToken) {
         setAccessToken(data.data.accessToken);
         setRefreshToken(data.data.refreshToken);
         document.cookie = `refreshToken=${
@@ -48,105 +65,133 @@ const LoginPage = () => {
         }; path=/; max-age=${7 * 24 * 60 * 60}; secure`;
         router.push("/home");
       } else {
-        alert(data.message);
+        throw new Error("토큰이 없습니다.");
       }
     } catch (error) {
-      alert("로그인 중 오류가 발생했습니다.");
-    } finally {
-      setLoading(false);
+      console.error("카카오 로그인 에러:", error);
+      alert("로그인에 실패했습니다.");
     }
   };
 
-  const handleBack = () => router.push("/");
+  const handleKakaoLogin = async () => {
+    try {
+      await kakaoProvider.loginWithRedirect();
+    } catch (error) {
+      console.error("카카오 로그인 에러:", error);
+      alert("로그인에 실패했습니다.");
+    }
+  };
+
+  const handleBack = () => {
+    router.back();
+  };
 
   return (
     <MobileLayout
-      showHeader={true}
+      showHeader={false}
       headerType="back"
       title="로그인"
       showBottomNav={false}
       onBack={handleBack}
     >
-      <Box pos="relative" px="md" style={{ height: "100%" }}>
-        <LoadingOverlay visible={loading} />
-
-        <form
-          onSubmit={handleLogin}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            height: "100%",
-          }}
-        >
-          <Box mb="lg">
-            <Text size="md" fw={500} mb={10}>
-              이메일 아이디
-            </Text>
-            <TextInput
-              placeholder="todayschild@mail.com"
-              value={userId}
-              onChange={(e) => setUserId(e.currentTarget.value)}
-              size="md"
-            />
-          </Box>
-
-          <Box mb="lg">
-            <Text size="md" fw={500} mb={10}>
-              비밀번호
-            </Text>
-            <PasswordInput
-              placeholder="문자와 숫자를 포함한 8~20자"
-              value={password}
-              onChange={(e) => setPassword(e.currentTarget.value)}
-              size="md"
-              visibilityToggleIcon={({ reveal }) =>
-                reveal ? (
-                  <IconEye size={18} color="#888" />
-                ) : (
-                  <IconEyeOff size={18} color="#888" />
-                )
+      <Box
+        p="md"
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-around",
+          height: height,
+        }}
+      >
+        <Box>
+          <Text fz={24} fw={600} ta="center">
+            아이가 아픈 이유가 뭘까요?
+          </Text>
+          <Text
+            c="dimmed"
+            ta="center"
+            mt="sm"
+            style={{ whiteSpace: "pre-line" }}
+          >
+            날씨처럼 하루하루가 다른{"\n"}
+            아이의 정확한 증상을 알고싶은{"\n"}
+            엄마들에게 도움이 되고싶어요.
+          </Text>
+        </Box>
+        <Stack gap="xl">
+          <Stack gap="md" mt={40}>
+            <Button
+              variant="filled"
+              bg="#FEE500"
+              leftSection={
+                <Image
+                  src="/images/kakao.icon.png"
+                  alt="카카오 로그인"
+                  width={20}
+                  height={20}
+                  style={{ objectFit: "contain" }}
+                />
               }
-            />
-          </Box>
+              fullWidth
+              onClick={handleKakaoLogin}
+            >
+              카카오로 계속하기
+            </Button>
 
-          <Group gap={rem(15)} justify="center" mt={rem(24)}>
-            <Text
-              size="md"
-              c="#aaa"
-              style={{ cursor: "pointer" }}
-              onClick={() => router.push("/auth/accountRecovery")}
+            <Button
+              variant="filled"
+              bg="#000000"
+              leftSection={
+                <Image
+                  src="/images/apple.icon.png"
+                  alt="애플 로그인"
+                  width={20}
+                  height={20}
+                  style={{ objectFit: "contain" }}
+                />
+              }
+              fullWidth
+              c="white"
+              onClick={() => {
+                /* 애플 로그인 처리 */
+              }}
             >
-              계정 찾기
-            </Text>
-            <Text size="md" c="#aaa" style={{ textAlign: "center" }}>
-              |
-            </Text>
-            <Text
-              size="md"
-              c="#aaa"
-              style={{ cursor: "pointer" }}
-              onClick={() => router.push("/auth/signup")}
+              Apple로 계속하기
+            </Button>
+
+            <Button
+              variant="filled"
+              bg="#F2F2F2"
+              leftSection={
+                <Image
+                  src="/images/google.icon.png"
+                  alt="구글 로그인"
+                  width={20}
+                  height={20}
+                  style={{ objectFit: "contain" }}
+                />
+              }
+              fullWidth
+              onClick={() => {
+                /* 구글 로그인 처리 */
+              }}
             >
-              회원가입
-            </Text>
+              Google로 계속하기
+            </Button>
+          </Stack>
+
+          <Group justify="center" gap={4}>
+            <Button
+              variant="filled"
+              bg="white"
+              c="black"
+              size="sm"
+              onClick={() => router.push("/auth/emailLogin")}
+            >
+              이메일로 계속하기
+            </Button>
           </Group>
-
-          <Box style={{ flex: 1 }} />
-
-          <AppShell.Footer>
-            <Box p="md">
-              <Button
-                type="submit"
-                size="md"
-                fullWidth
-                color="blue"
-                onClick={handleLogin}
-              >
-                로그인
-              </Button>
-            </Box>
-          </AppShell.Footer>
-        </form>
+        </Stack>
       </Box>
     </MobileLayout>
   );

@@ -62,26 +62,44 @@ const AccountRecoveryPage = () => {
     setLoading(true);
 
     try {
-      // 여기에 계정 찾기 API 호출 로직 구현
-      // const response = await fetch("/api/auth/recovery", ...);
+      // 비밀번호 찾기는 이메일 인증이 필요
+      if (activeTab === "password" && !emailVerified) {
+        alert("이메일 인증이 필요합니다.");
+        return;
+      }
 
-      // 임시 지연 효과
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const response = await fetch("/api/auth/recovery", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          type: activeTab,
+          name: form.values.name,
+          email: form.values.email,
+          userId: form.values.userId, // 비밀번호 찾기에 사용
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message);
+      }
 
       // 성공 시 처리
       if (activeTab === "id") {
-        // 아이디 찾기 성공 처리
-        router.push("/auth/recovery-result");
+        router.push(
+          `/auth/recoveryResult?type=id&success=true&userId=${data.userId}`
+        );
       } else {
-        // 비밀번호 찾기 성공 처리
-        router.push("/auth/password-reset");
+        router.push(
+          `/auth/recoveryResult?type=password&success=true&email=${form.values.email}`
+        );
       }
     } catch (error) {
-      alert(
-        `${
-          activeTab === "id" ? "아이디" : "비밀번호"
-        } 찾기 중 오류가 발생했습니다.`
-      );
+      alert(error instanceof Error ? error.message : "오류가 발생했습니다.");
+      router.push(`/auth/recovery-result?type=${activeTab}&success=false`);
     } finally {
       setLoading(false);
     }
@@ -91,7 +109,6 @@ const AccountRecoveryPage = () => {
     setLoading(true);
 
     try {
-      // 실제 구현에서는 서버에 요청을 보내 이메일로 인증코드를 전송
       const response = await fetch("/api/auth/send-verification", {
         method: "POST",
         headers: {
@@ -212,7 +229,7 @@ const AccountRecoveryPage = () => {
                 </Text>
                 <TextInput
                   placeholder="todayschild@mail.com"
-                  {...form.getInputProps("email")}
+                  {...form.getInputProps("userId")}
                   size="md"
                 />
               </Box>

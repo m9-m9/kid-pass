@@ -57,7 +57,7 @@ export class KakaoLoginProvider implements SocialLoginProvider {
   async loginWithRedirect(): Promise<void> {
     await this.ensureInitialized();
     window.Kakao.Auth.authorize({
-      redirectUri: window.location.origin,
+      redirectUri: window.location.origin + "/auth/login",
     });
   }
 
@@ -89,6 +89,54 @@ export class KakaoLoginProvider implements SocialLoginProvider {
     }
   }
 
+  async handleRedirect(code: string): Promise<SocialLoginResult | null> {
+    await this.ensureInitialized();
+
+    try {
+      // 인가 코드로 토큰 받기
+      const tokenResponse = await fetch("https://kauth.kakao.com/oauth/token", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
+        },
+        body: new URLSearchParams({
+          grant_type: "authorization_code",
+          client_id: this.clientId,
+          client_secret: process.env.NEXT_PUBLIC_KAKAO_CLIENT_SECRET!,
+          redirect_uri: window.location.origin + "/auth/login",
+          code: code,
+        }),
+      });
+
+      console.log("Token Response:", await tokenResponse.clone().text()); // 디버깅용
+
+      const tokenData = await tokenResponse.json();
+
+      if (!tokenResponse.ok) {
+        throw new Error(
+          `Failed to get access token: ${JSON.stringify(tokenData)}`
+        );
+      }
+
+      // 토큰 설정
+      window.Kakao.Auth.setAccessToken(tokenData.access_token);
+
+      // 사용자 정보 요청
+      return new Promise((resolve, reject) => {
+        window.Kakao.API.request({
+          url: "/v2/user/me",
+          success: (response: any) => {
+            resolve(this.processResult(response, tokenData.access_token));
+          },
+          fail: reject,
+        });
+      });
+    } catch (error) {
+      console.error("Error in handleRedirect:", error);
+      return null;
+    }
+  }
+
   private async ensureInitialized(): Promise<void> {
     if (!this.initialized) {
       await this.initialize();
@@ -98,7 +146,18 @@ export class KakaoLoginProvider implements SocialLoginProvider {
   private processResult(userInfo: any, token: string): SocialLoginResult {
     return {
       provider: "kakao",
-      user: userInfo,
+      user: {
+        id: userInfo.id.toString(),
+        email: userInfo.kakao_account?.email || null,
+        name:
+          userInfo.properties?.nickname ||
+          userInfo.kakao_account?.profile?.nickname ||
+          null,
+        photoURL:
+          userInfo.properties?.profile_image ||
+          userInfo.kakao_account?.profile?.profile_image_url ||
+          null,
+      },
       token: token,
     };
   }
