@@ -1,10 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
-import {
-	VACCINE_LIST,
-	getTotalRequiredVaccinations,
-} from '@/app/(padding-container)/note/vaccine';
+import { VACCINE_LIST, getTotalRequiredVaccinations } from '@/utils/vaccine';
 
 const prisma = new PrismaClient();
 
