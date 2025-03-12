@@ -98,6 +98,8 @@ const App = () => {
 			</Text>
 
 			<Box
+				mt="sm"
+				mb="sm"
 				p="16"
 				style={{
 					backgroundColor: '#F4F4F4',
@@ -106,12 +108,12 @@ const App = () => {
 				}}
 			>
 				<Group mb="sm" gap={0} justify="space-between" w="100%">
-					<Group gap={0}>
+					<Group gap={8}>
 						<Flex
 							pb="4"
 							pt="4"
-							pl="16"
-							pr="16"
+							pl="8"
+							pr="8"
 							gap="4"
 							display="flex"
 							align="center"
@@ -132,8 +134,8 @@ const App = () => {
 						<Flex
 							pb="4"
 							pt="4"
-							pl="16"
-							pr="16"
+							pl="8"
+							pr="8"
 							gap="4"
 							display="flex"
 							align="center"
