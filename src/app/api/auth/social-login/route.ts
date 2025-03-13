@@ -7,6 +7,7 @@ const prisma = new PrismaClient();
 export async function POST(request: Request) {
   try {
     const { provider, user } = await request.json();
+    console.log("소셜 로그인 요청:", { provider, user });
 
     // 기존 사용자 확인
     let dbUser = await prisma.user.findFirst({
@@ -44,18 +45,29 @@ export async function POST(request: Request) {
       });
     }
 
-    // JWT 토큰 생성
+    // JWT 토큰 생성 - userId 필드 사용
     const accessToken = jwt.sign(
-      { userId: dbUser.id },
+      { userId: dbUser.userId }, // userId 필드 사용
       process.env.JWT_SECRET!,
       { expiresIn: "1h" }
+    );
+
+    const refreshToken = jwt.sign(
+      { userId: dbUser.userId }, // userId 필드 사용
+      process.env.JWT_SECRET!,
+      { expiresIn: "7d" }
     );
 
     return NextResponse.json({
       message: "로그인 성공",
       data: {
         accessToken,
-        user: dbUser,
+        refreshToken,
+        user: {
+          userId: dbUser.userId,
+          name: dbUser.name,
+          email: dbUser.email,
+        },
       },
     });
   } catch (error) {

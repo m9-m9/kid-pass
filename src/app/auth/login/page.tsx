@@ -6,9 +6,11 @@ import MobileLayout from "@/components/mantine/MobileLayout";
 import Image from "next/image";
 import { useViewportSize } from "@mantine/hooks";
 import { KakaoLoginProvider } from "../kakao";
+import { GoogleLoginProvider } from "../google";
 import { useEffect, useState } from "react";
 import useAuthStore from "@/store/useAuthStore";
 import { notifications } from "@mantine/notifications";
+import { firebaseConfig } from "../useAuthSocial";
 
 const LoginPage = () => {
   const router = useRouter();
@@ -17,11 +19,13 @@ const LoginPage = () => {
   const { setAccessToken, setRefreshToken } = useAuthStore();
   const [isLoading, setIsLoading] = useState(false);
   const [isKakaoLoading, setIsKakaoLoading] = useState(false);
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
-  // 카카오 로그인 provider 초기화
+  // 소셜 로그인 provider 초기화
   const kakaoProvider = new KakaoLoginProvider(
     process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID!
   );
+  const googleProvider = new GoogleLoginProvider(firebaseConfig);
 
   useEffect(() => {
     const code = searchParams.get("code");
@@ -32,7 +36,82 @@ const LoginPage = () => {
       const newUrl = window.location.pathname;
       window.history.replaceState({}, document.title, newUrl);
     }
+
+    // 구글 리다이렉트 결과 확인
+    const checkGoogleRedirect = async () => {
+      try {
+        await googleProvider.initialize();
+
+        const result = await googleProvider.getRedirectResult();
+
+        if (result) {
+          setIsGoogleLoading(true);
+          await handleSocialLogin("google", result.user);
+          setIsGoogleLoading(false);
+        }
+      } catch (error) {
+        console.error("구글 로그인 에러:", error);
+        setIsGoogleLoading(false);
+      }
+    };
+
+    checkGoogleRedirect();
   }, [searchParams]);
+
+  const handleSocialLogin = async (provider: string, user: any) => {
+    try {
+      // 서버에 소셜 로그인 인증 요청
+      const response = await fetch("/api/auth/social-login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          provider,
+          user,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`${provider} 로그인 실패`);
+      }
+
+      const data = await response.json();
+      console.log("소셜 로그인 응답:", data); // 응답 구조 확인
+
+      // 토큰 저장 및 리다이렉트
+      if (data.data.accessToken) {
+        setAccessToken(data.data.accessToken);
+
+        // refreshToken이 있는지 확인하고 저장
+        if (data.data.refreshToken) {
+          setRefreshToken(data.data.refreshToken);
+          document.cookie = `refreshToken=${
+            data.data.refreshToken
+          }; path=/; max-age=${7 * 24 * 60 * 60}; secure`;
+        }
+
+        notifications.show({
+          title: "로그인 성공",
+          message: "환영합니다!",
+          color: "green",
+        });
+
+        router.push("/home");
+        return true;
+      } else {
+        throw new Error("토큰이 없습니다.");
+      }
+    } catch (error) {
+      console.error(`${provider} 로그인 에러:`, error);
+      notifications.show({
+        title: "로그인 실패",
+        message: "로그인에 실패했습니다. 다시 시도해주세요.",
+        color: "red",
+      });
+      return false;
+    }
+  };
 
   const handleKakaoCallback = async (code: string) => {
     try {
@@ -42,42 +121,7 @@ const LoginPage = () => {
         throw new Error("카카오 로그인 실패");
       }
 
-      // 서버에 소셜 로그인 인증 요청
-      const response = await fetch("/api/auth/social-login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          provider: "kakao",
-          user: result.user,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("소셜 로그인 실패");
-      }
-
-      const data = await response.json();
-
-      // 토큰 저장 및 리다이렉트
-      if (data.data.accessToken) {
-        setAccessToken(data.data.accessToken);
-        setRefreshToken(data.data.refreshToken);
-        document.cookie = `refreshToken=${
-          data.data.refreshToken
-        }; path=/; max-age=${7 * 24 * 60 * 60}; secure`;
-
-        notifications.show({
-          title: "로그인 성공",
-          message: "환영합니다!",
-          color: "green",
-        });
-
-        router.push("/home");
-      } else {
-        throw new Error("토큰이 없습니다.");
-      }
+      await handleSocialLogin("kakao", result.user);
     } catch (error) {
       console.error("카카오 로그인 에러:", error);
       notifications.show({
@@ -105,6 +149,28 @@ const LoginPage = () => {
     }
   };
 
+  const handleGoogleLogin = async () => {
+    try {
+      setIsGoogleLoading(true);
+      await googleProvider.initialize();
+
+      // 팝업 방식으로 시도
+      const result = await googleProvider.loginWithPopup();
+
+      if (result) {
+        await handleSocialLogin("google", result.user);
+      }
+    } catch (error) {
+      notifications.show({
+        title: "로그인 실패",
+        message: "로그인에 실패했습니다. 다시 시도해주세요.",
+        color: "red",
+      });
+    } finally {
+      setIsGoogleLoading(false);
+    }
+  };
+
   const handleBack = () => {
     router.back();
   };
@@ -117,7 +183,7 @@ const LoginPage = () => {
       showBottomNav={false}
       onBack={handleBack}
     >
-      {isKakaoLoading && (
+      {(isKakaoLoading || isGoogleLoading) && (
         <Box
           style={{
             position: "fixed",
@@ -183,7 +249,7 @@ const LoginPage = () => {
               }
               fullWidth
               onClick={handleKakaoLogin}
-              disabled={isLoading || isKakaoLoading}
+              disabled={isLoading || isKakaoLoading || isGoogleLoading}
             >
               {isLoading ? "로그인 중..." : "카카오로 계속하기"}
             </Button>
@@ -202,9 +268,7 @@ const LoginPage = () => {
               }
               fullWidth
               c="white"
-              onClick={() => {
-                /* 애플 로그인 처리 */
-              }}
+              onClick={() => {}}
             >
               Apple로 계속하기
             </Button>
@@ -213,20 +277,23 @@ const LoginPage = () => {
               variant="filled"
               bg="#F2F2F2"
               leftSection={
-                <Image
-                  src="/images/google.icon.png"
-                  alt="구글 로그인"
-                  width={20}
-                  height={20}
-                  style={{ objectFit: "contain" }}
-                />
+                isGoogleLoading ? (
+                  <Loader size="sm" color="dark" />
+                ) : (
+                  <Image
+                    src="/images/google.icon.png"
+                    alt="구글 로그인"
+                    width={20}
+                    height={20}
+                    style={{ objectFit: "contain" }}
+                  />
+                )
               }
               fullWidth
-              onClick={() => {
-                /* 구글 로그인 처리 */
-              }}
+              onClick={handleGoogleLogin}
+              disabled={isLoading || isKakaoLoading || isGoogleLoading}
             >
-              Google로 계속하기
+              {isGoogleLoading ? "로그인 중..." : "Google로 계속하기"}
             </Button>
           </Stack>
 
