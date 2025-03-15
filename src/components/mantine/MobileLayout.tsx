@@ -12,6 +12,7 @@ interface MobileLayoutProps {
 	currentRoute?: string;
 	onBack?: () => void;
 	useWeekCarousel?: boolean;
+	calendar?: boolean;
 }
 
 const MobileLayout: React.FC<MobileLayoutProps> = ({
@@ -23,6 +24,7 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
 	currentRoute = '/',
 	onBack,
 	useWeekCarousel = false,
+	calendar = false,
 }) => {
 	return (
 		<AppShell
@@ -39,6 +41,7 @@ const MobileLayout: React.FC<MobileLayoutProps> = ({
 						title={title}
 						onBack={onBack}
 						useWeekCarousel={useWeekCarousel}
+						calendar={calendar}
 					/>
 				</AppShell.Header>
 			)}

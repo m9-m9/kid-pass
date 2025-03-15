@@ -56,7 +56,6 @@ export default function VaccineDetailPage() {
 	const [error, setError] = useState<string | null>(null);
 	const [vaccineDetail, setVaccineDetail] =
 		useState<VaccineDetailResponse | null>(null);
-	const { openModal, setComp, closeModal } = useModalStore();
 	const handleBack = () => router.push('/');
 
 	// URL에서 vaccineId 추출
@@ -123,18 +122,10 @@ export default function VaccineDetailPage() {
 
 			// 성공 후 데이터 다시 불러오기
 			await fetchVaccineDetail();
-			closeModal();
 		} catch (error) {
 			console.error('백신 접종 기록 생성 중 오류 발생:', error);
 		}
-	}, [
-		vaccineDetail,
-		currentKid,
-		vaccineId,
-		token,
-		fetchVaccineDetail,
-		closeModal,
-	]);
+	}, [vaccineDetail, currentKid, vaccineId, token, fetchVaccineDetail]);
 
 	// 모달 콘텐츠 설정 및 열기
 	const handleOpenVaccineModal = useCallback(() => {

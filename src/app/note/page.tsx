@@ -5,9 +5,7 @@ import ProgressBar from '@/components/progressBar/progressBar';
 import useAuth from '@/hook/useAuth';
 import { useEffect, useState } from 'react';
 import instance from '@/utils/axios';
-import ProfileHeader from '@/components/header/ProfileHeader';
 import useChldrnListStore from '@/store/useChldrnListStore';
-import BottomNavigation from '@/components/bottomNavigation/BottomNavigation';
 import Spacer from '@/elements/spacer/Spacer';
 import LoadingFullScreen from '@/components/loading/LoadingFullScreen';
 import { Group, Box, Text, Progress, Flex } from '@mantine/core';
@@ -94,6 +92,7 @@ const App = () => {
 			title="아기수첩"
 			showBottomNav={true}
 			onBack={handleBack}
+			calendar={true}
 		>
 			<Box p="0 20">
 				<LoadingFullScreen
