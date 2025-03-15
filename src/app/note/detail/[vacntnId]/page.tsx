@@ -1,18 +1,16 @@
 'use client';
 
-import Header from '@/components/header/Header';
 import useAuth from '@/hook/useAuth';
-import styles from '../../styles/note.module.css';
-import { useParams, useSearchParams } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect, useState, useCallback } from 'react';
-import { Label } from '@/elements/label/Label';
 import instance from '@/utils/axios';
 import Spacer from '@/elements/spacer/Spacer';
-import Button from '@/elements/button/Button';
 import { useModalStore } from '@/store/useModalStore';
 import ScrollPicker from '../../components/ScrollPicker';
 import { useDateStore } from '@/store/useDateStore';
-import LoadingFullScreen from '@/components/loading/LoadingFullScreen';
+import MobileLayout from '@/components/mantine/MobileLayout';
+import { Box, Button, Divider, Flex, Group, Image, Text } from '@mantine/core';
+import { modals } from '@mantine/modals';
 
 // 백신 기록 데이터 타입
 interface VacntnInfo {
@@ -49,6 +47,7 @@ interface VaccineDetailResponse {
 }
 
 export default function VaccineDetailPage() {
+	const router = useRouter();
 	const { getToken } = useAuth();
 	const token = getToken();
 	const params = useParams();
@@ -58,6 +57,7 @@ export default function VaccineDetailPage() {
 	const [vaccineDetail, setVaccineDetail] =
 		useState<VaccineDetailResponse | null>(null);
 	const { openModal, setComp, closeModal } = useModalStore();
+	const handleBack = () => router.push('/');
 
 	// URL에서 vaccineId 추출
 	const vaccineId = params?.vacntnId as string;
@@ -138,143 +138,230 @@ export default function VaccineDetailPage() {
 
 	// 모달 콘텐츠 설정 및 열기
 	const handleOpenVaccineModal = useCallback(() => {
-		const ModalContent = (
-			<div className={styles.pickerContainer}>
-				<div className={styles.pickerTitle}>
-					<p>접종일</p>
-				</div>
-				<div className={styles.pickerContents}>
-					<ScrollPicker />
-				</div>
-				<div className={styles.subbitArea}>
-					<Button
-						label="취소"
-						css="pickerCancel"
-						onClick={closeModal}
-					/>
-					<Button
-						label="확인"
-						css="pickerSubmit"
-						onClick={handleConfirm}
-					/>
-				</div>
-			</div>
-		);
-
-		setComp(ModalContent, 'center');
-		openModal();
-	}, [setComp, openModal, closeModal, handleConfirm]);
-
-	// 로딩 중 화면
-	if (loading) {
-		return (
-			<>
-				<Header title="예방접종 기록" />
-				<LoadingFullScreen />
-			</>
-		);
-	}
-
-	// 에러 화면
-	if (error || !vaccineDetail) {
-		return (
-			<>
-				<Header title="예방접종 기록" />
-				<div className={styles.container}>
-					<p>{error || '유효하지 않은 백신 정보입니다.'}</p>
-				</div>
-			</>
-		);
-	}
-
-	// 완료된 백신 렌더링
-	const renderCompletedVaccine = (dose: DoseStatus) => (
-		<div className={styles.completeVaccineRecords}>
-			<Button
-				size="S"
-				label={`${dose.doseNumber}차 (${dose.vaccineCode})`}
-				css="completeVaccnineOrderBtn"
-			/>
-			<div className={styles.completeVaccine}>
-				<p>
-					완료{' '}
-					{dose.vaccinationDate
-						? `(${new Date(
-								dose.vaccinationDate
-						  ).toLocaleDateString()})`
-						: ''}
-				</p>
-			</div>
-		</div>
-	);
-
-	// 미완료 백신 렌더링
-	const renderIncompleteVaccine = (dose: DoseStatus) => (
-		<div className={styles.vaccineRecords} onClick={handleOpenVaccineModal}>
-			<Button
-				size="S"
-				label={`${dose.doseNumber}차 (${dose.vaccineCode})`}
-				css="vaccnineOrderBtn"
-			/>
-			<div className={styles.addVaccine}>
-				<img
-					src="/add_vaccine.svg"
-					width={18}
-					height={18}
-					alt="백신 추가"
-				/>
-				<p>등록하기</p>
-			</div>
-		</div>
-	);
+		// 모달 ID를 통해 모달을 열고 닫을 수 있습니다
+		const modalId = modals.open({
+			// 중앙 모달 테마 적용
+			centered: true,
+			withCloseButton: false,
+			radius: 'md',
+			padding: 0,
+			title: '접종일',
+			styles: {
+				header: {
+					borderBottom: '1px solid #D9D9D9',
+					padding: 0,
+				},
+				title: {
+					width: '100%',
+					padding: '16px',
+					fontWeight: 700,
+					fontSize: '18px',
+					color: '#222',
+				},
+				content: {
+					padding: 0,
+				},
+			},
+			children: (
+				<Box w="100%">
+					<Box>
+						<ScrollPicker />
+					</Box>
+					<Flex>
+						<Button
+							onClick={() => modals.close(modalId)}
+							variant="default"
+							color="gray"
+							radius={0}
+							styles={{
+								root: {
+									flex: 1,
+									backgroundColor: '#F4F4F4',
+									border: 'none',
+									borderRadius: '0',
+								},
+							}}
+						>
+							취소
+						</Button>
+						<Button
+							onClick={() => {
+								handleConfirm();
+								modals.close(modalId);
+							}}
+							variant="filled"
+							color="blue"
+							radius={0}
+							styles={{
+								root: {
+									flex: 1,
+									borderRadius: '0',
+								},
+							}}
+						>
+							확인
+						</Button>
+					</Flex>
+				</Box>
+			),
+		});
+	}, [handleConfirm]);
 
 	return (
 		<>
-			<Header title="예방접종 기록" />
-			<div className={styles.container}>
-				<h1 className={styles.title}>{vaccineDetail.vaccineName}</h1>
-				<Spacer height={36} />
-				<div className={styles.vacccineStatus}>
-					<div className={styles.vacccineStatus_Count}>
-						<Label
-							text={`완료 ${vaccineDetail.completedDoses}`}
-							css="completed"
-						/>
-						<div className="divider"></div>
-						<Label
-							text={`미접종 ${
-								vaccineDetail.totalDoses -
-								vaccineDetail.completedDoses
-							}`}
-							css="incomplete"
-						/>
-					</div>
-					<div className="horizonFlexbox align-center gap-8">
-						{Array.from({ length: vaccineDetail.totalDoses }).map(
-							(_, index) => (
-								<span
-									key={`circle-${index}`}
-									className={`${styles.circle} ${
-										index < vaccineDetail.completedDoses
-											? styles.vaccineComplete
-											: styles.vaccineIncomplete
-									}`}
+			{vaccineDetail ? (
+				<MobileLayout
+					showHeader={true}
+					headerType="back"
+					title={vaccineDetail.vaccineName}
+					showBottomNav={true}
+					onBack={handleBack}
+				>
+					<Box px={16}>
+						<Text fw={700} fz="xl">
+							{vaccineDetail.vaccineName}
+						</Text>
+						<Box
+							mt={32}
+							display="flex"
+							style={{
+								alignItems: 'center',
+								justifyContent: 'space-between',
+							}}
+						>
+							<Flex>
+								<Text fw={600} fz="md-lg" c="#729BED">
+									완료 {vaccineDetail.completedDoses}
+								</Text>
+								<Divider
+									orientation="vertical"
+									mx="md"
+									size="xs"
+									h={16}
+									color="#D9D9D9"
 								/>
-							)
-						)}
-					</div>
-				</div>
-				<Spacer height={16} />
-				{vaccineDetail.doseStatus &&
-					vaccineDetail.doseStatus.map((dose, index) => (
-						<React.Fragment key={`vaccine-${dose.doseNumber}차`}>
-							{dose.isCompleted
-								? renderCompletedVaccine(dose)
-								: renderIncompleteVaccine(dose)}
-							<Spacer height={16} />
-						</React.Fragment>
-					))}
-			</div>
+								<Text fw={600} fz="md-lg" c="#BFBFBF">
+									미접종
+									{vaccineDetail.totalDoses -
+										vaccineDetail.completedDoses}
+								</Text>
+							</Flex>
+							<Flex align="center" gap={8}>
+								{Array.from({
+									length: vaccineDetail.totalDoses,
+								}).map((_, index) => (
+									<Box
+										key={`circle-${index}`}
+										w={12}
+										h={12}
+										bg={
+											index < vaccineDetail.completedDoses
+												? '#729BED'
+												: '#D9D9D9'
+										}
+										style={{ borderRadius: '50%' }}
+									/>
+								))}
+							</Flex>
+						</Box>
+						<Spacer height={16} />
+						{vaccineDetail.doseStatus &&
+							vaccineDetail.doseStatus.map((dose, index) => (
+								<Box
+									key={`vaccine-${dose.doseNumber}차`}
+									mb={16}
+								>
+									{dose.isCompleted ? (
+										<Box
+											w="100%"
+											bg="#BFBFBF"
+											style={{
+												borderRadius: 8,
+												justifyContent: 'space-between',
+											}}
+											py={32}
+											px={16}
+											display="flex"
+										>
+											<Button
+												style={{
+													backgroundColor: '#BFBfBF',
+													border: '1px solid white',
+													color: 'white',
+													padding: '4px 12px',
+												}}
+											>
+												{`${dose.doseNumber}차 (${dose.vaccineCode})`}
+											</Button>
+											<Group gap={20} align="center">
+												<Text
+													fz="md"
+													fw={500}
+													c="white"
+												>
+													{dose.vaccinationDate
+														? `${new Date(
+																dose.vaccinationDate
+														  ).toLocaleDateString()}`
+														: ''}
+												</Text>
+												<Text
+													fz="lg"
+													fw={700}
+													c="white"
+												>
+													완료
+												</Text>
+											</Group>
+										</Box>
+									) : (
+										<Box
+											w="100%"
+											style={{
+												border: '1px solid #729BED',
+												borderRadius: 8,
+												justifyContent: 'space-between',
+											}}
+											py={32}
+											px={16}
+											display="flex"
+											onClick={handleOpenVaccineModal}
+										>
+											<Button
+												size="S"
+												style={{
+													backgroundColor:
+														'rgba(114, 155, 237, 0.1)',
+													color: '#729BED',
+													fontWeight: '700',
+												}}
+											>
+												{`${dose.doseNumber}차 (${dose.vaccineCode})`}
+											</Button>
+											<Group gap={4} align="center">
+												<Image
+													src="/add_vaccine.svg"
+													width={18}
+													height={18}
+													alt="백신 추가"
+												/>
+												<Text
+													fz="xl"
+													fw={700}
+													c="#729BED"
+												>
+													등록하기
+												</Text>
+											</Group>
+										</Box>
+									)}
+								</Box>
+							))}
+					</Box>
+				</MobileLayout>
+			) : (
+				<p>로딩중..</p>
+			)}
 		</>
 	);
 }

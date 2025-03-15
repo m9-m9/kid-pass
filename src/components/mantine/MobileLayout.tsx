@@ -1,69 +1,71 @@
-import React from "react";
-import { AppShell, Box } from "@mantine/core";
-import BottomNavigation from "./BottomNavigation";
-import Header from "./Header";
+import React from 'react';
+import { AppShell, Box } from '@mantine/core';
+import BottomNavigation from './BottomNavigation';
+import Header from './Header';
 
 interface MobileLayoutProps {
-  children: React.ReactNode;
-  showHeader?: boolean;
-  headerType?: "back" | "profile";
-  title?: string;
-  showBottomNav?: boolean;
-  currentRoute?: string;
-  onBack?: () => void;
-  useWeekCarousel?: boolean;
+	children: React.ReactNode;
+	showHeader?: boolean;
+	headerType?: 'back' | 'profile';
+	title?: string;
+	showBottomNav?: boolean;
+	currentRoute?: string;
+	onBack?: () => void;
+	useWeekCarousel?: boolean;
 }
 
 const MobileLayout: React.FC<MobileLayoutProps> = ({
-  children,
-  showHeader = true,
-  headerType = "back",
-  title = "",
-  showBottomNav = true,
-  currentRoute = "/",
-  onBack,
-  useWeekCarousel = false,
+	children,
+	showHeader = true,
+	headerType = 'back',
+	title = '',
+	showBottomNav = true,
+	currentRoute = '/',
+	onBack,
+	useWeekCarousel = false,
 }) => {
-  return (
-    <AppShell
-      padding={0}
-      header={showHeader ? { height: useWeekCarousel ? 140 : 60 } : undefined}
-      footer={showBottomNav ? { height: 60 } : undefined}
-    >
-      {showHeader && (
-        <AppShell.Header>
-          <Header
-            type={headerType}
-            title={title}
-            onBack={onBack}
-            useWeekCarousel={useWeekCarousel}
-          />
-        </AppShell.Header>
-      )}
+	return (
+		<AppShell
+			padding={0}
+			header={
+				showHeader ? { height: useWeekCarousel ? 140 : 60 } : undefined
+			}
+			footer={showBottomNav ? { height: 60 } : undefined}
+		>
+			{showHeader && (
+				<AppShell.Header>
+					<Header
+						type={headerType}
+						title={title}
+						onBack={onBack}
+						useWeekCarousel={useWeekCarousel}
+					/>
+				</AppShell.Header>
+			)}
 
-      <AppShell.Main>
-        <Box
-          pt={showHeader ? 20 : 0}
-          pb={showBottomNav ? 60 : 0}
-          style={
-            {
-              minHeight: "100%",
-              lineHeight: 1,
-              "--mantine-line-height-md": "1",
-            } as React.CSSProperties
-          }
-        >
-          {children}
-        </Box>
-      </AppShell.Main>
+			<AppShell.Main>
+				<Box
+					pt={showHeader ? 20 : 0}
+					pb={showBottomNav ? 60 : 0}
+					style={
+						{
+							minHeight: '100%',
+							lineHeight: 1,
+							'--mantine-line-height-md': '1',
+						} as React.CSSProperties
+					}
+				>
+					{children}
+				</Box>
+			</AppShell.Main>
 
-      {showBottomNav && (
-        <AppShell.Footer>
-          <BottomNavigation currentRoute={currentRoute} />
-        </AppShell.Footer>
-      )}
-    </AppShell>
-  );
+			{showBottomNav && (
+				<AppShell.Footer>
+					<BottomNavigation currentRoute={currentRoute} />
+				</AppShell.Footer>
+			)}
+		</AppShell>
+	);
 };
 
 export default MobileLayout;

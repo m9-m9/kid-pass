@@ -10,7 +10,7 @@ import Chapter5 from './Chapter5';
 import useAuth from '@/hook/useAuth';
 import Chapter6 from './Chapter6';
 import { useChldrnInfoStore } from '@/store/useChldrnInfoStore';
-import MobileLayout from '@/app/mantine/MobileLayout';
+import MobileLayout from '@/components/mantine/MobileLayout';
 
 const Register: React.FC = () => {
 	const { getToken } = useAuth();
