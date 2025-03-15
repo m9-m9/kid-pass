@@ -9,9 +9,9 @@ import useChldrnListStore from '@/store/useChldrnListStore';
 import { VacntnInfo } from '../page';
 
 export interface VaccineStatusInfo {
-	totalDoses: number;
-	completedDoses: number;
 	vaccineName: string;
+	totalDoses: number; // 명시적으로 타입 지정
+	completedDoses: number;
 	vaccineRecords: VacntnInfo[];
 }
 

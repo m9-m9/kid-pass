@@ -71,7 +71,9 @@ export async function GET(request: Request) {
 		const totalRequiredDoses = getTotalRequiredVaccinations();
 
 		// 완료된 접종 횟수
-		const completedDoses = child.vacntnInfo.length;
+		const completedDoses = child.vacntnInfo.filter(
+			(record) => record.isCompleted === true
+		).length;
 
 		// 완료율 계산 (반올림하여 백분율로)
 		const completionPercentage = Math.round(
@@ -95,7 +97,9 @@ export async function GET(request: Request) {
 			);
 
 			// 현재까지 완료된 접종 횟수
-			const completedDoses = vaccineRecords.length;
+			const completedDoses = vaccineRecords.filter(
+				(record) => record.isCompleted === true
+			).length;
 
 			// 백신 상태 정보 저장
 			vaccineStatusMap[vaccine.id.toString()] = {

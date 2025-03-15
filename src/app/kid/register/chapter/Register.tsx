@@ -11,10 +11,13 @@ import useAuth from '@/hook/useAuth';
 import Chapter6 from './Chapter6';
 import { useChldrnInfoStore } from '@/store/useChldrnInfoStore';
 import MobileLayout from '@/components/mantine/MobileLayout';
+import { useRouter } from 'next/navigation';
 
 const Register: React.FC = () => {
+	const router = useRouter();
 	const { getToken } = useAuth();
 	const [token, setToken] = useState();
+	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
 		const fetchToken = async () => {
@@ -29,6 +32,7 @@ const Register: React.FC = () => {
 		totalChapters: 6,
 		onComplete: async () => {
 			try {
+				setLoading(true);
 				const store = useChldrnInfoStore.getState();
 				const [
 					chldrnNm,
@@ -47,6 +51,7 @@ const Register: React.FC = () => {
 					8
 				)}`;
 
+				// 1. 아이 정보 등록
 				const response = await fetch('/api/child/register', {
 					method: 'POST',
 					headers: {
@@ -72,12 +77,41 @@ const Register: React.FC = () => {
 				if (response.ok) {
 					const childId = data.data.id;
 					localStorage.setItem('currentKid', childId);
+
+					// 2. 백신 일정 생성 API 호출
+					const vaccineResponse = await fetch(
+						'/api/vaccine/schedule',
+						{
+							method: 'POST',
+							headers: {
+								'Content-Type': 'application/json',
+								Authorization: `Bearer ${token}`,
+							},
+							body: JSON.stringify({
+								childId: childId,
+								birthDate: formattedBirthday,
+							}),
+						}
+					);
+
+					const vaccineData = await vaccineResponse.json();
+					if (!vaccineResponse.ok) {
+						console.error(
+							'백신 일정 생성 실패:',
+							vaccineData.message
+						);
+					}
+
+					// 등록 완료 후 홈 또는 성공 페이지로 이동
+					router.push('/');
 				} else {
 					throw new Error(data.message);
 				}
 			} catch (error) {
 				console.error('아이 등록 에러:', error);
 				alert('아이 정보 등록에 실패했습니다.');
+			} finally {
+				setLoading(false);
 			}
 		},
 	});
@@ -108,6 +142,11 @@ const Register: React.FC = () => {
 				)}
 				{chapter === 6 && (
 					<Chapter6 onNext={nextChapter} goToChapter={() => {}} />
+				)}
+				{loading && (
+					<div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+						<div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+					</div>
 				)}
 			</div>
 		</MobileLayout>

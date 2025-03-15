@@ -113,7 +113,7 @@ export default function VaccineDetailPage() {
 				},
 			};
 
-			await instance.post('/child/vacntnDetail', body, {
+			await instance.post('/vaccine/detail', body, {
 				headers: {
 					'Content-Type': 'application/json',
 					Authorization: `Bearer ${token}`,

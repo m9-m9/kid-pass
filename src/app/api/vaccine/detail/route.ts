@@ -89,7 +89,9 @@ export async function GET(request: Request) {
 		const totalDoses = getVaccineTotalCount(parseInt(vaccineId));
 
 		// 완료된 접종 횟수
-		const completedDoses = vaccineRecords.length;
+		const completedDoses = vaccineRecords.filter(
+			(record) => record.isCompleted
+		).length;
 
 		// 각 접종 차수별 상태 계산
 		const doseStatus = [];
@@ -109,8 +111,9 @@ export async function GET(request: Request) {
 					doseNumber: currentDoseNumber,
 					vaccineCode: vaccine.code,
 					vaccineName: vaccine.name,
-					isCompleted: !!record,
-					vaccinationDate: record?.vacntnInoclDt || null,
+					isCompleted: record ? record.isCompleted : false,
+					vaccinationDate:
+						record?.actualDate || record?.vacntnInoclDt || null,
 					recordId: record?.id || null,
 				});
 
@@ -217,6 +220,7 @@ export async function POST(request: Request) {
 		}
 
 		// 백신 접종 정보 등록
+		// 백신 접종 정보 등록
 		const vacntnInfo = await prisma.vacntnInfo.create({
 			data: {
 				vacntnId: vaccinationData.vacntnId,
@@ -224,6 +228,8 @@ export async function POST(request: Request) {
 				vacntnDoseNumber: vaccinationData.vacntnDoseNumber,
 				vacntnInoclDt: vaccinationData.vacntnInoclDt,
 				childId: childId,
+				isCompleted: true, // 직접 등록하는 경우 완료로 표시
+				actualDate: vaccinationData.vacntnInoclDt, // 실제 접종일은 등록 날짜와 동일하게
 			},
 		});
 

@@ -13,16 +13,18 @@ import MobileLayout from '@/components/mantine/MobileLayout';
 import { useRouter } from 'next/navigation';
 
 export interface VacntnInfo {
-	id: string; // 백신 기록 ID
-	vacntnId: string; // 백신 질병 ID (VACCINE_LIST의 id 참조)
-	vacntnIctsd: string; // 백신 종류 코드 (DTaP, Tdap 등)
-	vacntnDoseNumber: number; // 현재 접종 차수 (1차, 2차...)
-	vacntnInoclDt: string; // 접종 날짜 (ISO 형식의 날짜 문자열)
-	childId: string; // 연결된 아이 ID
-	createdAt: Date; // 생성 시간
-	updatedAt: Date; // 수정 시간
+	id: string;
+	vacntnId: string;
+	vacntnIctsd: string;
+	vacntnDoseNumber: number;
+	vacntnInoclDt: string;
+	childId: string;
+	createdAt: Date;
+	updatedAt: Date;
+	// 새로 추가된 필드
+	isCompleted?: boolean; // 옵션으로 추가
+	actualDate?: string | null; // 옵션으로 추가
 }
-
 interface VaccinationData {
 	vacntnInfo: VacntnInfo[];
 	totalCompletedDoses: number;
