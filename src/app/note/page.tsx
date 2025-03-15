@@ -55,7 +55,7 @@ const App = () => {
 
 				try {
 					const response = await instance.get(
-						`/child/vacntnInfo?chldrnNo=${currentKid}`,
+						`/vaccine/info?chldrnNo=${currentKid}`,
 						{
 							headers: {
 								Authorization: `Bearer ${token}`,

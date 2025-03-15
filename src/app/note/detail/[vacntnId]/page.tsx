@@ -69,7 +69,7 @@ export default function VaccineDetailPage() {
 		try {
 			setLoading(true);
 			const response = await instance.get(
-				`/child/vacntnDetail?chldrnNo=${currentKid}&vaccineId=${vaccineId}`,
+				`/vaccine/detail?chldrnNo=${currentKid}&vaccineId=${vaccineId}`,
 				{
 					headers: {
 						Authorization: `Bearer ${token}`,
