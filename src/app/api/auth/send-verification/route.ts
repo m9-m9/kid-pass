@@ -40,6 +40,13 @@ export async function POST(request: Request) {
       },
     });
 
+    // 개발 환경에서 이메일 발송 대신 콘솔에 출력
+    if (process.env.NODE_ENV === "development") {
+      console.log("인증 코드:", verificationCode);
+      // 이메일 발송 성공으로 처리
+      return NextResponse.json({ message: "인증코드가 발송되었습니다." });
+    }
+
     return NextResponse.json({ message: "인증코드가 발송되었습니다." });
   } catch (error) {
     console.error("인증코드 발송 에러:", error);
