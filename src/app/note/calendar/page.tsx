@@ -110,6 +110,9 @@ const VaccineCalendar = () => {
 		'11월',
 		'12월',
 	];
+	const [monthsWithVaccines, setMonthsWithVaccines] = useState<
+		{ year: number; month: number }[]
+	>([]);
 
 	// 백신 일정 조회
 	useEffect(() => {
@@ -136,6 +139,7 @@ const VaccineCalendar = () => {
 
 				if (response.ok) {
 					const data = await response.json();
+					console.log('백신 일정 데이터:', data.data); // 로그 추가로 데이터 확인
 					setVaccineSchedules(data.data);
 				} else {
 					console.error('백신 일정 조회 실패');
@@ -148,7 +152,7 @@ const VaccineCalendar = () => {
 		};
 
 		fetchVaccineSchedules();
-	}, [currentDate]);
+	}, [year, month]); // currentDate가 변경될 때마다 새로운 데이터 요청
 
 	// 달력에 표시할 날짜 배열 생성
 	const getDatesArray = () => {
@@ -237,12 +241,74 @@ const VaccineCalendar = () => {
 		}));
 	};
 
+	// 이전 백신 일정이 있는 달로 이동
 	const handlePrevMonth = () => {
-		setCurrentDate(new Date(year, month - 1, 1));
+		// 백신 일정이 있는 달 정보가 아직 로드되지 않았으면 기본 동작
+		if (monthsWithVaccines.length === 0) {
+			setCurrentDate(new Date(year, month - 1, 1));
+			return;
+		}
+
+		// 현재 표시 중인 달의 이전에 백신 일정이 있는 달 찾기
+		const currentYearMonth = { year, month: month + 1 }; // JavaScript month는 0부터 시작
+
+		// 이전 달 중 가장 가까운 백신 일정이 있는 달 찾기
+		const prevMonths = monthsWithVaccines
+			.filter(
+				(m) =>
+					m.year < currentYearMonth.year ||
+					(m.year === currentYearMonth.year &&
+						m.month < currentYearMonth.month)
+			)
+			.sort((a, b) => {
+				// 역순 정렬로 가장 가까운 이전 달이 마지막에 오도록
+				if (a.year !== b.year) return b.year - a.year;
+				return b.month - a.month;
+			});
+
+		if (prevMonths.length > 0) {
+			// 가장 가까운 이전 백신 일정이 있는 달로 이동
+			const prevMonth = prevMonths[0];
+			setCurrentDate(new Date(prevMonth.year, prevMonth.month - 1, 1));
+		} else {
+			// 이전 백신 일정이 없으면 기본 동작
+			setCurrentDate(new Date(year, month - 1, 1));
+		}
 	};
 
+	// 다음 백신 일정이 있는 달로 이동
 	const handleNextMonth = () => {
-		setCurrentDate(new Date(year, month + 1, 1));
+		// 백신 일정이 있는 달 정보가 아직 로드되지 않았으면 기본 동작
+		if (monthsWithVaccines.length === 0) {
+			setCurrentDate(new Date(year, month + 1, 1));
+			return;
+		}
+
+		// 현재 표시 중인 달의 다음에 백신 일정이 있는 달 찾기
+		const currentYearMonth = { year, month: month + 1 }; // JavaScript month는 0부터 시작
+
+		// 다음 달 중 가장 가까운 백신 일정이 있는 달 찾기
+		const nextMonths = monthsWithVaccines
+			.filter(
+				(m) =>
+					m.year > currentYearMonth.year ||
+					(m.year === currentYearMonth.year &&
+						m.month > currentYearMonth.month)
+			)
+			.sort((a, b) => {
+				// 오름차순 정렬로 가장 가까운 다음 달이 첫번째에 오도록
+				if (a.year !== b.year) return a.year - b.year;
+				return a.month - b.month;
+			});
+
+		if (nextMonths.length > 0) {
+			// 가장 가까운 다음 백신 일정이 있는 달로 이동
+			const nextMonth = nextMonths[0];
+			setCurrentDate(new Date(nextMonth.year, nextMonth.month - 1, 1));
+		} else {
+			// 다음 백신 일정이 없으면 기본 동작
+			setCurrentDate(new Date(year, month + 1, 1));
+		}
 	};
 
 	// 백신 표시를 위한 인디케이터 렌더링
@@ -319,7 +385,7 @@ const VaccineCalendar = () => {
 						</Box>
 					</Group>
 
-					<SegmentedControl
+					{/* <SegmentedControl
 						value={viewType}
 						onChange={setViewType}
 						data={[
@@ -353,7 +419,7 @@ const VaccineCalendar = () => {
 								height: '100%',
 							},
 						}}
-					/>
+					/> */}
 				</Group>
 
 				{/* 백신 필터 */}
