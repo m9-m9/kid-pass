@@ -1,45 +1,64 @@
 "use client";
 
-import FloatingBtn from "@/components/floatingBtn/FloatingBtn";
-import styles from "./hostpial.module.css";
-import Header from "@/components/header/Header";
 import { useRouter } from "next/navigation";
 import { hospitalRecord } from "./type/hospital";
-import Container from "@/elements/container/Container";
-import BottomNavigation from "@/components/bottomNavigation/BottomNavigation";
-import ProfileHeader from "@/components/header/ProfileHeader";
+import MobileLayout from "../../components/mantine/MobileLayout";
+import { Paper, Flex, Text, Stack, ActionIcon, Box } from "@mantine/core";
+import { IconPlus } from "@tabler/icons-react";
+
+export interface HospitalRecord {
+  hsptlNo: string;
+  mdexmnDgnssNm: string;
+  hospital: string;
+  mdexmnRcordDt: string;
+}
 
 const Hospital = () => {
   const router = useRouter();
 
   return (
-    <Container className="container">
-      <ProfileHeader
-        icon={<i className="ri-calendar-line" />}
-        path="/hospital"
-      />
-      {sampleRecords.map((record, index) => (
-        <Item key={record.hsptlNo} {...record} />
-      ))}
+    <MobileLayout
+      showHeader={true}
+      headerType="profile"
+      title="병원 처방전"
+      showBottomNav={true}
+      currentRoute="/hospital"
+    >
+      <Stack p="md" gap="md">
+        {sampleRecords.map((record) => (
+          <Item key={record.hsptlNo} {...record} />
+        ))}
+      </Stack>
 
-      <FloatingBtn
-        onClick={() => router.push("/hospital/form")}
-        children={undefined}
-      />
-      <BottomNavigation />
-    </Container>
+      <Box pos="fixed" bottom={80} right={16} style={{ zIndex: 10 }}>
+        <ActionIcon
+          size="xl"
+          radius="xl"
+          color="blue"
+          onClick={() => router.push("/hospital/form")}
+        >
+          <IconPlus size={24} />
+        </ActionIcon>
+      </Box>
+    </MobileLayout>
   );
 };
 
-const Item = (item: hospitalRecord) => {
+const Item = (item: HospitalRecord) => {
   return (
-    <div className={styles.medicineCard}>
-      <div className={styles.header}>
-        <div className={styles.title}>{item.mdexmnDgnssNm}</div>
-        <div className={styles.actionButton}>처방전</div>
-      </div>
-      <div className={styles.date}>{item.mdexmnRcordDt}</div>
-    </div>
+    <Paper withBorder p="md" radius="md" bg="white">
+      <Flex justify="space-between" align="center" mb="xs">
+        <Text fw={600} fz="md">
+          {item.mdexmnDgnssNm}
+        </Text>
+        <Text fz="md" c="dimmed">
+          {item.hospital}
+        </Text>
+      </Flex>
+      <Text fz="sm" c="gray.6">
+        {item.mdexmnRcordDt}
+      </Text>
+    </Paper>
   );
 };
 
@@ -54,6 +73,7 @@ const sampleRecords: hospitalRecord[] = [
     file: "file1.pdf",
     chldrnNo: "C001",
     drugNm: "타이레놀 시럽",
+    hospital: "서울대학교 병원",
   },
   {
     mdexmnRcordDt: "2024.11.29",
@@ -65,6 +85,7 @@ const sampleRecords: hospitalRecord[] = [
     file: "file2.pdf",
     chldrnNo: "C001",
     drugNm: "정장제",
+    hospital: "서울대학교 병원",
   },
   {
     mdexmnRcordDt: "2024.11.28",
@@ -76,6 +97,7 @@ const sampleRecords: hospitalRecord[] = [
     file: "file3.pdf",
     chldrnNo: "C001",
     drugNm: "파스",
+    hospital: "서울대학교 병원",
   },
 ];
 

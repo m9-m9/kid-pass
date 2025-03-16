@@ -1,15 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Label } from "@/elements/label/Label";
-import Grid from "@/elements/grid/Grid";
-import InputForm from "@/components/form/InputForm";
-import Carousel from "@/components/carousel/Carousel";
-import Spacer from "@/elements/spacer/Spacer";
-import SelectableButton from "@/app/components/button/SelectableButton";
+import { useEffect } from "react";
+import { Box, Text, SimpleGrid, NumberInput, Flex } from "@mantine/core";
+import { UseFormReturnType } from "@mantine/form";
+import { FormValues } from "../RecordForm";
 
-const SLIDES = ["30ml", "90ml", "120ml", "150ml", "모름"];
-enum MealType {
+export enum MealType {
   MHRSM = "모유",
   FOMULA = "분유",
   BABYFD = "이유식",
@@ -17,76 +13,127 @@ enum MealType {
 }
 
 const MEALTYPES = [
-  { key: MealType.MHRSM, value: "모유" },
-  { key: MealType.FOMULA, value: "분유" },
-  { key: MealType.BABYFD, value: "이유식" },
-  { key: MealType.MIXED, value: "혼합" },
+  MealType.MHRSM,
+  MealType.FOMULA,
+  MealType.BABYFD,
+  MealType.MIXED,
 ];
 
+const SLIDES = ["30ml", "90ml", "120ml", "150ml"];
+
 interface FeedingFieldsProps {
-  data: any;
-  onChange: (data: any) => void;
+  form: UseFormReturnType<FormValues>;
 }
 
-const FeedingFields = ({ data, onChange }: FeedingFieldsProps) => {
-  const [mealAmount, setMealAmount] = useState(data.amount?.toString() ?? "");
-  const [selectedItems, setSelectedItems] = useState<number[]>([]);
-  const [mealTy, setMealTy] = useState(data.mealType ?? "");
+const FeedingFields = ({ form }: FeedingFieldsProps) => {
+  const selectedMealType = form.values.mealType || "";
 
   useEffect(() => {
-    onChange({
-      mealType: mealTy,
-      amount: parseFloat(mealAmount),
-      unit: "ml",
-    });
-  }, [mealTy, mealAmount, onChange]);
+    // 컴포넌트 마운트 시 기본값 설정
+    if (!form.values.unit) {
+      form.setFieldValue("unit", "ml");
+    }
+  }, []);
 
-  useEffect(() => {
-    if (selectedItems[0] === 0) setMealAmount("30");
-    else if (selectedItems[0] === 1) setMealAmount("90");
-    else if (selectedItems[0] === 2) setMealAmount("120");
-    else if (selectedItems[0] === 3) setMealAmount("150");
-  }, [selectedItems]);
+  const handleSlideSelect = (index: number) => {
+    if (index === 0) form.setFieldValue("amount", 30);
+    else if (index === 1) form.setFieldValue("amount", 90);
+    else if (index === 2) form.setFieldValue("amount", 120);
+    else if (index === 3) form.setFieldValue("amount", 150);
+    // index 4는 "모름"이므로 값을 설정하지 않음
+  };
 
-  const kinds = MEALTYPES.map((v, i) => (
-    <SelectableButton
-      key={i}
-      isSelected={mealTy === v.key}
-      onClick={() => setMealTy(v.key)}
-    >
-      {v.value}
-    </SelectableButton>
-  ));
+  // 현재 선택된 슬라이드 인덱스 계산
+  const getSelectedSlideIndex = () => {
+    const amount = form.values.amount;
+    if (amount === 30) return 0;
+    if (amount === 90) return 1;
+    if (amount === 120) return 2;
+    if (amount === 150) return 3;
+    return -1; // 해당하는 값이 없음
+  };
 
   return (
-    <>
-      <Label css="inputForm" text="수유 종류" />
-      <Spacer height={10} />
-      <Grid items={kinds} column={2} />
-      <Spacer height={30} />
+    <Box>
+      <Box mb="md">
+        <Text fw={600} fz="md" mb="xs">
+          수유 종류
+        </Text>
+        <SimpleGrid cols={2} spacing="xs">
+          {MEALTYPES.map((type) => (
+            <Box
+              key={type}
+              p="md"
+              style={{
+                borderRadius: "8px",
+                border: "1px solid",
+                borderColor:
+                  selectedMealType === type
+                    ? "var(--mantine-color-blue-6)"
+                    : "var(--mantine-color-gray-3)",
+                color:
+                  selectedMealType === type
+                    ? "var(--mantine-color-blue-6)"
+                    : "var(--mantine-color-gray-6)",
+                cursor: "pointer",
+                textAlign: "center",
+                fontWeight: selectedMealType === type ? 600 : 400,
+                lineHeight: 1.6,
+              }}
+              onClick={() => form.setFieldValue("mealType", type)}
+            >
+              {type}
+            </Box>
+          ))}
+        </SimpleGrid>
+      </Box>
 
-      <InputForm
-        labelText="수유량"
-        placeholder="60"
-        labelCss="inputForm"
-        value={mealAmount}
-        onChange={setMealAmount}
-        unit="ml"
-      />
-      <Spacer height={10} />
-      <div>
-        <Carousel
-          slides={SLIDES}
-          options={{
-            useButton: false,
-            useIndex: false,
-            dragFree: true,
-            selectedItems: selectedItems,
-            onSelect: (index: number) => setSelectedItems([index]),
-          }}
+      <Box mb="md">
+        <NumberInput
+          label="수유량"
+          placeholder="60"
+          value={form.values.amount}
+          size="md"
+          onChange={(value) => form.setFieldValue("amount", value)}
+          rightSection={
+            <Text fz="sm" c="dimmed">
+              ml
+            </Text>
+          }
+          min={0}
+          step={10}
         />
-      </div>
-    </>
+      </Box>
+
+      <Flex>
+        {SLIDES.map((slide, index) => (
+          <Box
+            key={index}
+            onClick={() => handleSlideSelect(index)}
+            w={120}
+            p="sm"
+            mr={4}
+            style={{
+              border: "1px solid",
+              borderColor:
+                getSelectedSlideIndex() === index
+                  ? "var(--mantine-color-blue-6)"
+                  : "var(--mantine-color-gray-3)",
+              color:
+                getSelectedSlideIndex() === index
+                  ? "var(--mantine-color-blue-6)"
+                  : "var(--mantine-color-gray-6)",
+              alignItems: "center",
+              justifyContent: "center",
+              display: "flex",
+              borderRadius: "8px",
+            }}
+          >
+            {slide}
+          </Box>
+        ))}
+      </Flex>
+    </Box>
   );
 };
 

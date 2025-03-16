@@ -1,15 +1,11 @@
 "use client";
 
-import CustomDateTimePicker from "@/components/customDateTimePicker/CustomDateTimePicker";
-import Header from "@/components/header/Header";
-import SearchListPicker from "@/components/searchListPicker/SearchListPicker";
-import Button from "@/elements/button/Button";
-import Container from "@/elements/container/Container";
-import Input from "@/elements/input/Input";
-import { Label } from "@/elements/label/Label";
-import Spacer from "@/elements/spacer/Spacer";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { TextInput, Stack, Box, Button, AppShell, Select } from "@mantine/core";
+import { DateTimePicker } from "@mantine/dates";
+import { useForm } from "@mantine/form";
+import { IconCalendar } from "@tabler/icons-react";
+import MobileLayout from "@/components/mantine/MobileLayout";
 
 interface Item {
   id: string;
@@ -17,81 +13,134 @@ interface Item {
   [key: string]: any;
 }
 
-const diagnoses = [
-  { id: "1", name: "감기" },
-  { id: "2", name: "코로나19" },
-  { id: "3", name: "장염" },
-  { id: "4", name: "인플루엔자" },
-  { id: "5", name: "기관지염" },
-];
+const diagnoses = ["감기", "코로나19", "장염", "인플루엔자", "기관지염"];
 
-const medicines = [
-  { id: "1", name: "타이레놀" },
-  { id: "2", name: "써스펜" },
-  { id: "3", name: "판콜에이" },
-  { id: "4", name: "베타딘" },
-  { id: "5", name: "게보린" },
-];
+const medicines = ["타이레놀", "써스펜", "판콜에이", "베타딘", "게보린"];
 
 const HospitalForm = () => {
   const router = useRouter();
-  const [selectedDate, setSelectedDate] = useState<Date>();
-  const [selectedDiagnoses, setSelectedDiagnoses] = useState<Item[]>([]);
-  const [selectedMedicines, setSelectedMedicines] = useState<Item[]>([]);
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id");
+
+  const form = useForm({
+    initialValues: {
+      date: undefined as Date | undefined,
+      hospital: "",
+      doctor: "",
+      treatmentMethod: "",
+      diagnoses: "",
+      medicines: "",
+    },
+    validate: {
+      date: (value) => (value ? null : "날짜를 선택해주세요"),
+    },
+  });
+
+  const handleSubmit = (values: typeof form.values) => {
+    // 저장 로직 구현
+    console.log(values);
+    // 예: API 호출, 상태 업데이트 등
+    router.back();
+  };
 
   return (
-    <Container className="container">
-      <Header title="진료 기록하기" onBack={() => router.back()} />
-      <Spacer height={36} />
+    <MobileLayout
+      showHeader={true}
+      headerType="back"
+      title={`병원 진료 ${id ? "수정" : "등록"}`}
+      onBack={() => router.back()}
+      showBottomNav={false}
+    >
+      <Box component="form" onSubmit={form.onSubmit(handleSubmit)} p="md">
+        <Stack gap="xl">
+          <Box>
+            <DateTimePicker
+              label="진찰 받은 날짜"
+              placeholder="날짜 및 시간 선택"
+              value={form.values.date}
+              onChange={(date) => form.setFieldValue("date", date || undefined)}
+              size="md"
+              clearable={false}
+              valueFormat="YYYY-MM-DD HH:mm"
+              leftSection={<IconCalendar size={16} />}
+              error={form.errors.date}
+              styles={{
+                input: {
+                  lineHeight: 2.1,
+                },
+              }}
+              lang="ko"
+            />
+          </Box>
 
-      <Label text="진찰 받은 날짜" css="inputForm" />
-      <Spacer height={10} />
-      <CustomDateTimePicker
-        startDate={selectedDate}
-        onStartDateSelect={setSelectedDate}
-      />
+          <Box>
+            <TextInput
+              label="진찰받은 병원"
+              {...form.getInputProps("hospital")}
+              placeholder="병원 이름을 입력해주세요"
+              size="md"
+            />
+          </Box>
 
-      <Spacer height={36} />
-      <Label text="진찰받은 병원" css="inputForm" />
-      <Spacer height={10} />
-      <Input className="inputForm" value={""} />
+          <Box>
+            <TextInput
+              label="선생님 성함"
+              {...form.getInputProps("doctor")}
+              placeholder="선생님 성함을 입력해주세요"
+              size="md"
+            />
+          </Box>
 
-      <Spacer height={36} />
-      <Label text="진료하신 선생님" css="inputForm" />
-      <Spacer height={10} />
-      <Input className="inputForm" value={""} />
+          <Box>
+            <Select
+              label="진단받은 병명"
+              placeholder="병명을 선택해주세요"
+              size="md"
+              data={diagnoses}
+              value={form.values.diagnoses}
+              searchable
+              onChange={(value) => form.setFieldValue("diagnoses", value || "")}
+            />
+          </Box>
 
-      <Spacer height={36} />
-      <Label text="진단받은 병명" css="inputForm" />
-      <Spacer height={10} />
-      <SearchListPicker
-        mode="multi"
-        items={diagnoses}
-        selectedItems={selectedDiagnoses}
-        onSelect={(items) => setSelectedDiagnoses(items as Item[])}
-        placeholder="여러 병원을 선택해주세요"
-        maxSelect={3} // 최대 3개까지 선택 가능
-      />
+          <Box>
+            <TextInput
+              label="치료 방법"
+              {...form.getInputProps("treatmentMethod")}
+              placeholder="치료 방법을 입력해주세요"
+              size="md"
+            />
+          </Box>
 
-      <Spacer height={36} />
-      <Label text="치료 방법" css="inputForm" />
-      <Spacer height={10} />
-      <Input className="inputForm" value={""} />
+          <Box>
+            <Select
+              label="처방받은 약"
+              placeholder="약을 선택해주세요"
+              size="md"
+              data={medicines}
+              value={form.values.medicines}
+              searchable
+              onChange={(value) => form.setFieldValue("medicines", value || "")}
+            />
+          </Box>
+        </Stack>
+      </Box>
 
-      <Spacer height={36} />
-      <Label text="처방받은 약" css="inputForm" />
-      <Spacer height={10} />
-      <SearchListPicker
-        mode="multi"
-        items={medicines}
-        selectedItems={selectedMedicines}
-        onSelect={(items) => setSelectedMedicines(items as Item[])}
-        placeholder="여러 병원을 선택해주세요"
-        maxSelect={3} // 최대 3개까지 선택 가능
-      />
-      <Spacer height={36} />
-      <Button size="L" label="저장" />
-    </Container>
+      <AppShell.Footer>
+        <Box p="md">
+          <Button
+            onClick={() => form.onSubmit(handleSubmit)()}
+            fullWidth
+            size="md"
+            type="submit"
+            variant="filled"
+            color="blue"
+          >
+            {id ? "수정하기" : "등록하기"}
+          </Button>
+        </Box>
+      </AppShell.Footer>
+    </MobileLayout>
   );
 };
 

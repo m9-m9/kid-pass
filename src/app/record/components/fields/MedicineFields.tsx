@@ -1,65 +1,46 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Label } from "@/elements/label/Label";
-import Spacer from "@/elements/spacer/Spacer";
-import SearchListPicker from "@/components/searchListPicker/SearchListPicker";
-
-interface SearchItem {
-  id: string;
-  name: string;
-}
+import { Box, Select, Stack } from "@mantine/core";
+import { UseFormReturnType } from "@mantine/form";
+import { FormValues } from "../RecordForm";
 
 const MEDICINES = [
-  { id: "1", name: "타이레놀 시럽" },
-  { id: "2", name: "아티푸스 시럽" },
-  { id: "3", name: "케토라신 시럽" },
-  { id: "4", name: "어린이용 부루펜" },
-  { id: "5", name: "무코판 시럽" },
-  { id: "6", name: "씨프로바이 시럽" },
-  { id: "7", name: "메디퓨드 시럽" },
-  { id: "8", name: "푸로탈 시럽" },
-  { id: "9", name: "액티피드 시럽" },
-  { id: "10", name: "베나돌 시럽" },
-  { id: "11", name: "테라플루 시럽" },
-  { id: "12", name: "페니라민 시럽" },
-  { id: "13", name: "클래리틴 시럽" },
-  { id: "14", name: "진코민 시럽" },
-  { id: "15", name: "데코푸린 시럽" },
+  "타이레놀 시럽",
+  "아티푸스 시럽",
+  "케토라신 시럽",
+  "어린이용 부루펜",
+  "무코판 시럽",
+  "씨프로바이 시럽",
+  "메디퓨드 시럽",
+  "푸로탈 시럽",
+  "액티피드 시럽",
+  "베나돌 시럽",
+  "테라플루 시럽",
+  "페니라민 시럽",
+  "클래리틴 시럽",
+  "진코민 시럽",
+  "데코푸린 시럽",
 ];
 
 interface MedicineFieldsProps {
-  data: any;
-  onChange: (data: any) => void;
+  form: UseFormReturnType<FormValues>;
 }
 
-const MedicineFields = ({ data, onChange }: MedicineFieldsProps) => {
-  const [medicine, setMedicine] = useState(data.medicine ?? "");
-
-  useEffect(() => {
-    onChange({
-      medicine,
-    });
-  }, [medicine, onChange]);
-
+const MedicineFields = ({ form }: MedicineFieldsProps) => {
   return (
-    <>
-      <Label text="어떤 약을 먹었나요?" css="inputForm" />
-      <Spacer height={10} />
-      <SearchListPicker
-        items={MEDICINES}
-        mode="single"
-        onSelect={(selected: SearchItem | SearchItem[]) => {
-          const items = Array.isArray(selected) ? selected : [selected];
-          setMedicine(items[0]?.name || "");
-        }}
-        selectedItems={
-          medicine
-            ? MEDICINES.find((item) => item.name === medicine)
-            : undefined
-        }
-      />
-    </>
+    <Stack gap="md">
+      <Box>
+        <Select
+          label="어떤 약을 먹었나요?"
+          data={MEDICINES}
+          value={form.values.medicine}
+          onChange={(value) => form.setFieldValue("medicine", value || "")}
+          searchable
+          placeholder="약을 선택해주세요"
+          size="md"
+        />
+      </Box>
+    </Stack>
   );
 };
 

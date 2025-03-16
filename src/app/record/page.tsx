@@ -1,34 +1,37 @@
 "use client";
 
-import { DateType } from "@/hook/useDatePicker";
 import { useEffect, useState } from "react";
-import "react-day-picker/dist/style.css";
-import WeeklyCalendar from "@/components/datePicker/DateCarousel";
-import Container from "@/elements/container/Container";
-import Carousel from "@/components/carousel/Carousel";
-import Schedule, { DaySchedule } from "@/components/schedule/Schedule";
-import { useModalStore } from "@/store/useModalStore";
-import Grid from "@/elements/grid/Grid";
-import styles from "./record.module.css";
-import Image from "next/image";
-import FloatingBtn from "@/components/floatingBtn/FloatingBtn";
-import Link from "next/link";
-import BottomNavigation from "@/components/bottomNavigation/BottomNavigation";
+import {
+  Grid,
+  Box,
+  Text,
+  Button,
+  Image,
+  Card,
+  Space,
+  UnstyledButton,
+} from "@mantine/core";
+import { useRouter } from "next/navigation";
 import useAuth from "@/hook/useAuth";
-import Empty from "@/components/empty/Empty";
+import { modals } from "@mantine/modals";
+import Schedule, { DaySchedule } from "@/app/record/components/Schedule";
 import { formatRecordData } from "./utils";
 import { RECORDS, SLIDES } from "./constants";
+import MobileLayout from "@/components/mantine/MobileLayout";
+import { bottomModalTheme } from "@/utils/mantine.theme";
+import { Carousel } from "@mantine/carousel";
+import Empty from "@/components/mantine/Empty";
+import Spacer from "@/elements/spacer/Spacer";
+import useCurrentDateStore from "@/store/useCurrentDateStore";
+import { IconPlus } from "@tabler/icons-react";
 
 const RecordPage = () => {
   const { getToken } = useAuth();
-  const [date, setDate] = useState<DateType>({
-    year: new Date().getFullYear(),
-    month: new Date().getMonth() + 1,
-    date: new Date().getDate(),
-  });
+  const router = useRouter();
+  const { currentDate } = useCurrentDateStore();
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
   const [scheduleData, setScheduleData] = useState<DaySchedule[]>([]);
-  const { openModal, closeModal, setComp } = useModalStore();
+  const [isLoading, setIsLoading] = useState(false);
 
   const fetchRecords = async () => {
     try {
@@ -39,8 +42,11 @@ const RecordPage = () => {
         return;
       }
 
+      setIsLoading(true);
       const response = await fetch(
-        `/api/record?childId=${currentKid}&startDate=${date.year}-${date.month}-${date.date}`,
+        `/api/record?childId=${currentKid}&startDate=${currentDate.format(
+          "YYYY-MM-DD"
+        )}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -55,6 +61,8 @@ const RecordPage = () => {
       }
     } catch (error) {
       console.error("기록 조회 에러:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -67,70 +75,122 @@ const RecordPage = () => {
     });
   };
 
-  const renderRecordItems = () =>
-    RECORDS.map((record) => (
-      <Link key={record.path} href={record.path} onClick={() => closeModal()}>
-        <div className={styles.card}>
-          <Image src={record.src} alt={record.title} width={32} height={32} />
-          <span className={styles.cardText}>{record.title}</span>
-        </div>
-      </Link>
-    ));
-
-  const handleDateChange = (newDate: DateType) => {
-    setDate(newDate);
+  const openRecordModal = () => {
+    modals.open({
+      ...bottomModalTheme,
+      title: "오늘의 아이 기록하기",
+      children: (
+        <Box p="sm">
+          <Grid>
+            {RECORDS.map((record) => (
+              <Grid.Col span={4} key={record.path}>
+                <Card
+                  radius="md"
+                  mah={"88"}
+                  bg="brand.0"
+                  onClick={() => {
+                    modals.closeAll();
+                    router.push(record.path);
+                  }}
+                >
+                  <Image
+                    src={record.src}
+                    alt={record.title}
+                    width={24}
+                    style={{ objectFit: "contain" }}
+                    height={24}
+                  />
+                  <Space h={4} />
+                  <Text size="md" ta="center" fw={600}>
+                    {record.title}
+                  </Text>
+                </Card>
+              </Grid.Col>
+            ))}
+          </Grid>
+        </Box>
+      ),
+    });
   };
 
   useEffect(() => {
     fetchRecords();
-  }, [date]);
-
-  useEffect(() => {
-    setComp(
-      <>
-        <div className={styles.titleContainer}>
-          <span className={styles.modalTitle}>오늘의 아이 기록하기</span>
-        </div>
-        <Grid items={renderRecordItems()} column={3} />
-      </>
-    );
-  }, []);
+  }, [currentDate]);
 
   return (
-    <Container className="mapContainer">
-      <div style={{ backgroundColor: "white" }}>
-        <div
-          style={{
-            position: "sticky",
-            top: 0,
-            zIndex: 10,
-            backgroundColor: "white",
-          }}
-        >
-          <WeeklyCalendar onDateChange={handleDateChange} />
-        </div>
+    <MobileLayout
+      showHeader={true}
+      headerType="profile"
+      title="아이기록"
+      showBottomNav={true}
+      currentRoute="/record"
+      useWeekCarousel={true}
+    >
+      <Box style={{ overflow: "hidden" }}>
         <Carousel
-          slides={SLIDES}
-          options={{
-            useButton: false,
-            useIndex: false,
-            dragFree: true,
-            selectedItems: selectedItems,
-            onSelect: handleSelect,
+          withControls={false}
+          slideGap="md"
+          styles={{
+            container: {
+              display: "flex",
+            },
           }}
-        />
+          align="start"
+          slidesToScroll={3}
+        >
+          {SLIDES.map((slide, index) => (
+            <Carousel.Slide key={slide}>
+              <UnstyledButton
+                onClick={() => handleSelect(index)}
+                w={100}
+                bg={selectedItems.includes(index) ? "brand.7" : "brand.0"}
+                fw={selectedItems.includes(index) ? 700 : 600}
+                p="md"
+                py={10}
+                ml={6}
+                c={selectedItems.includes(index) ? "white" : "black"}
+                style={{
+                  borderRadius: "20px",
+                  textAlign: "center",
+                }}
+              >
+                {slide}
+              </UnstyledButton>
+            </Carousel.Slide>
+          ))}
+        </Carousel>
+      </Box>
 
-        <div style={{ marginBottom: 60 }}>
-          {scheduleData.length > 0 ? (
-            <Schedule schedules={scheduleData} />
-          ) : (
-            <Empty text="아직 기록된 데이터가 없습니다." />
-          )}
-        </div>
-        <FloatingBtn onClick={() => openModal()} />
-        <BottomNavigation />
-      </div>
-    </Container>
+      <Spacer height={16} />
+
+      {scheduleData.length > 0 ? (
+        <Schedule schedules={scheduleData} />
+      ) : isLoading ? (
+        <></>
+      ) : (
+        <Empty
+          title="아직 기록이 없네요!"
+          text={`하루가 다르게 커가는\n아이의 기록을 남겨보세요 :)`}
+        />
+      )}
+
+      <Button
+        w={42}
+        h={42}
+        radius="xl"
+        bg="brand.7"
+        c="white"
+        style={{
+          position: "fixed",
+          bottom: 80,
+          right: 20,
+          padding: 0,
+        }}
+        onClick={openRecordModal}
+      >
+        <IconPlus size={24} stroke={3} />
+      </Button>
+    </MobileLayout>
   );
 };
 

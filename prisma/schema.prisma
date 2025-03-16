@@ -14,14 +14,20 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  userId    String   @unique
-  email     String   @unique
-  password  String
-  name      String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  children  Child[]
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  socialId     String?
+  provider     String?
+  userId       String   @unique
+  email        String   @unique
+  password     String?
+  name         String
+  profileImage String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  children     Child[]
+
+  // socialId와 provider가 모두 있을 때만 unique 제약 적용
+  @@index([socialId, provider])
 
   @@map("users")
 }
@@ -72,6 +78,13 @@ model Record {
 
   // 기타 관련
   category    String?   // 신생아 반사행동, 성장 행동
+  behavior    String[]  // 모로반사, 파악반사, 바빈스키 반사, 흡철반사, 긴장목 반사, 터미타임, 턱 들기, 가슴 들기, 물건 만지기, 기대 앉기, 물건 잡기, 앉기, 기어가기, 계단 오르기, 서기, 걷기
+
+  // 병원 관련
+  diagnoses   String?   // 감기, 코로나19, 장염, 인플루엔자, 기관지염
+  hospital    String?   // 서울대학교 병원
+  doctor      String?   // 김철수 선생님
+  treatmentMethod String? // 처방받은 약
 
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -101,7 +114,6 @@ model Child {
   @@map("children")
 }
 
-
 model VacntnInfo {
   id              String   @id @default(auto()) @map("_id") @db.ObjectId
 
@@ -112,6 +124,8 @@ model VacntnInfo {
   // 접종 상태 정보
   vacntnDoseNumber Int      // 현재 접종 차수 (1차, 2차...)
   vacntnInoclDt   String    // 접종 날짜 (ISO 형식의 날짜 문자열)
+  isCompleted     Boolean   @default(false)  // 접종 완료 여부
+  actualDate      String?   // 실제 접종일 (선택적)
 
   // Child 모델과의 관계 설정
   child           Child    @relation(fields: [childId], references: [id])
@@ -122,4 +136,13 @@ model VacntnInfo {
   updatedAt       DateTime @updatedAt
 
   @@map("vaccine_info")
+}
+
+model EmailVerification {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  email     String
+  code      String
+  verified  Boolean  @default(false)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
 }

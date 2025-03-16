@@ -1,4 +1,4 @@
-import { DaySchedule, ScheduleItem } from "@/components/schedule/Schedule";
+import { DaySchedule, ScheduleItem } from "@/app/record/components/Schedule";
 
 export const formatRecordData = (
   groupedRecords: Record<string, any[]>
@@ -42,6 +42,7 @@ const formatRecordItem = (record: any): ScheduleItem => {
   const minutes = time.getMinutes();
 
   return {
+    ...record,
     id: record.id,
     type: record.type,
     time: `${String(hours).padStart(2, "0")}:${String(minutes).padStart(
@@ -55,6 +56,5 @@ const formatRecordItem = (record: any): ScheduleItem => {
           (new Date(record.endTime).getTime() - time.getTime()) / (1000 * 60)
         )}분`
       : undefined,
-    amount: record.amount ? `${record.amount}${record.unit}` : undefined,
   };
 };

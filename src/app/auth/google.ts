@@ -8,18 +8,27 @@ import {
   User,
   Auth,
 } from "firebase/auth";
-import { initializeApp, FirebaseOptions } from "firebase/app";
+import { initializeApp, FirebaseOptions, getApps } from "firebase/app";
 
 export class GoogleLoginProvider implements SocialLoginProvider {
   private auth: Auth;
 
   constructor(firebaseConfig: FirebaseOptions) {
-    const app = initializeApp(firebaseConfig);
-    this.auth = getAuth(app);
+    try {
+      const existingApp = getApps().find((app) => app.name === "[DEFAULT]");
+      if (existingApp) {
+        this.auth = getAuth(existingApp);
+      } else {
+        const app = initializeApp(firebaseConfig);
+        this.auth = getAuth(app);
+      }
+    } catch (error) {
+      console.error("Firebase 초기화 오류:", error);
+      throw error;
+    }
   }
 
   async initialize(): Promise<void> {
-    // Firebase의 경우 constructor에서 이미 초기화되었으므로 추가 작업 불필요
     return Promise.resolve();
   }
 
@@ -29,14 +38,37 @@ export class GoogleLoginProvider implements SocialLoginProvider {
     return this.processResult(result.user);
   }
 
-  async loginWithRedirect(): Promise<void> {
-    const provider = new GoogleAuthProvider();
-    await signInWithRedirect(this.auth, provider);
+  async loginWithRedirect(redirectUrl?: string): Promise<void> {
+    try {
+      const provider = new GoogleAuthProvider();
+
+      if (redirectUrl) {
+        provider.setCustomParameters({
+          login_hint: "user@example.com",
+          prompt: "select_account",
+        });
+      }
+
+      await signInWithRedirect(this.auth, provider);
+    } catch (error) {
+      console.error("리다이렉트 오류:", error);
+      throw error;
+    }
   }
 
   async getRedirectResult(): Promise<SocialLoginResult | null> {
-    const result = await getRedirectResult(this.auth);
-    return result ? this.processResult(result.user) : null;
+    try {
+      const result = await getRedirectResult(this.auth);
+
+      if (result && result.user) {
+        return this.processResult(result.user);
+      }
+
+      return null;
+    } catch (error) {
+      console.error("리다이렉트 결과 가져오기 오류:", error);
+      return null;
+    }
   }
 
   async logout(): Promise<void> {

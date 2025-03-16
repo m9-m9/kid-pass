@@ -6,13 +6,34 @@ const prisma = new PrismaClient();
 
 export async function POST(request: Request) {
   try {
-    const { userId, email, password, name } = await request.json();
+    const { userId, email, password, name, verificationCode } =
+      await request.json();
     console.log("받은 회원가입 데이터:", { userId, email, password, name }); // 디버깅용 로그
 
-    // 아이디 중복 체크
-    const existingId = await prisma.user.findFirst({
-      where: { userId },
+    // 이메일 인증 확인
+    const verification = await prisma.emailVerification.findFirst({
+      where: {
+        email,
+        code: verificationCode,
+        verified: true,
+        expiresAt: {
+          gt: new Date(),
+        },
+      },
     });
+
+    if (!verification) {
+      return NextResponse.json(
+        { message: "이메일 인증이 필요합니다." },
+        { status: 400 }
+      );
+    }
+
+    // 아이디/이메일 중복 체크
+    const [existingId, existingEmail] = await Promise.all([
+      prisma.user.findFirst({ where: { userId } }),
+      prisma.user.findUnique({ where: { email } }),
+    ]);
 
     if (existingId) {
       return NextResponse.json(
@@ -20,11 +41,6 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
-
-    // 이메일 중복 체크
-    const existingEmail = await prisma.user.findUnique({
-      where: { email },
-    });
 
     if (existingEmail) {
       return NextResponse.json(
