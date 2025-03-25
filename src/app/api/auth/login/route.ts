@@ -21,6 +21,13 @@ export async function POST(request: Request) {
       );
     }
 
+    if (!user || !user.password) {
+      return NextResponse.json(
+        { message: "이메일 또는 비밀번호가 유효하지 않습니다" },
+        { status: 401 }
+      );
+    }
+
     // 비밀번호 확인
     const isValidPassword = await bcrypt.compare(password, user.password);
 

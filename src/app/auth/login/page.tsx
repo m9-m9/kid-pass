@@ -7,12 +7,12 @@ import Image from "next/image";
 import { useViewportSize } from "@mantine/hooks";
 import { KakaoLoginProvider } from "../kakao";
 import { GoogleLoginProvider } from "../google";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import useAuthStore from "@/store/useAuthStore";
 import { notifications } from "@mantine/notifications";
 import { firebaseConfig } from "../useAuthSocial";
 
-const LoginPage = () => {
+function LoginContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { height } = useViewportSize();
@@ -312,6 +312,12 @@ const LoginPage = () => {
       </Box>
     </MobileLayout>
   );
-};
+}
 
-export default LoginPage;
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div>로딩 중...</div>}>
+      <LoginContent />
+    </Suspense>
+  );
+}

@@ -6,6 +6,7 @@ import { DateTimePicker } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import { IconCalendar } from "@tabler/icons-react";
 import MobileLayout from "@/components/mantine/MobileLayout";
+import { Suspense } from "react";
 
 interface Item {
   id: string;
@@ -17,7 +18,7 @@ const diagnoses = ["감기", "코로나19", "장염", "인플루엔자", "기관
 
 const medicines = ["타이레놀", "써스펜", "판콜에이", "베타딘", "게보린"];
 
-const HospitalForm = () => {
+function HospitalFormContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
@@ -142,6 +143,12 @@ const HospitalForm = () => {
       </AppShell.Footer>
     </MobileLayout>
   );
-};
+}
 
-export default HospitalForm;
+export default function HospitalFormPage() {
+  return (
+    <Suspense fallback={<div>로딩 중...</div>}>
+      <HospitalFormContent />
+    </Suspense>
+  );
+}
