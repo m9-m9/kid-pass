@@ -5,7 +5,7 @@ import { KidRecord } from './page';
 import ProfileMetrics from '@/components/metrics/ProfileMetrics';
 import { IconChevronRight } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
-import useAuth from '@/hook/useAuth';
+import useAuthStore from '@/store/useAuthStore';
 
 interface ProfileCarouselProps {
 	profiles: KidRecord[];
@@ -17,15 +17,11 @@ const ProfileCarousel: React.FC<ProfileCarouselProps> = ({
 	onSlideChange,
 }) => {
 	const router = useRouter();
-	const { getCrtChldNo } = useAuth();
-	const chldrnNo = getCrtChldNo();
+	const { setCrtChldrnNo } = useAuthStore();
 
-	useEffect(() => {
-		console.log(chldrnNo);
-	}, []);
-
-	const handleReport = () => {
-		router.push('/report');
+	const handleReport = (chldrnNo: string) => {
+		setCrtChldrnNo(chldrnNo);
+		router.push(`/report?chldrnNo=${chldrnNo}`);
 	};
 
 	return (
@@ -59,6 +55,8 @@ const ProfileCarousel: React.FC<ProfileCarouselProps> = ({
 		>
 			{profiles.map((kidRecord) => {
 				const { profile } = kidRecord;
+
+				console.log(profile);
 				const [physicalStats] = profile.chldrnInfoList;
 
 				return (
@@ -74,7 +72,10 @@ const ProfileCarousel: React.FC<ProfileCarouselProps> = ({
 							<Flex justify="space-between" mb="md">
 								<Stack gap="md">
 									<ProfileMetrics
-										label={`${profile.age} 출생`}
+										label={`${profile.chldrnBrthdy?.substring(
+											0,
+											10
+										)} 출생`}
 										value={profile.chldrnNm}
 									/>
 									<ProfileMetrics
@@ -89,7 +90,9 @@ const ProfileCarousel: React.FC<ProfileCarouselProps> = ({
 											fz="sm"
 											fw="500"
 											c="#9e9e9e"
-											onClick={handleReport}
+											onClick={() =>
+												handleReport(profile.chldrnNo)
+											}
 										>
 											리포트 업데이트
 										</Text>
