@@ -3,8 +3,9 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { Box, Text, Button, Stack, AppShell, Image } from "@mantine/core";
 import MobileLayout from "@/components/mantine/MobileLayout";
+import { Suspense } from "react";
 
-const RecoveryResultPage = () => {
+function RecoveryResultContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const type = searchParams.get("type") || "id";
@@ -108,6 +109,12 @@ const RecoveryResultPage = () => {
       </Box>
     </MobileLayout>
   );
-};
+}
 
-export default RecoveryResultPage;
+export default function RecoveryResultPage() {
+  return (
+    <Suspense fallback={<div>로딩 중...</div>}>
+      <RecoveryResultContent />
+    </Suspense>
+  );
+}

@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Carousel } from '@mantine/carousel';
 import { Box, Flex, Text, Image, Stack, Group } from '@mantine/core';
 import { KidRecord } from './page';
 import ProfileMetrics from '@/components/metrics/ProfileMetrics';
 import { IconChevronRight } from '@tabler/icons-react';
+import { useRouter } from 'next/navigation';
+import useAuthStore from '@/store/useAuthStore';
 
 interface ProfileCarouselProps {
 	profiles: KidRecord[];
@@ -14,12 +16,20 @@ const ProfileCarousel: React.FC<ProfileCarouselProps> = ({
 	profiles,
 	onSlideChange,
 }) => {
+	const router = useRouter();
+	const { setCrtChldrnNo } = useAuthStore();
+
+	const handleReport = (chldrnNo: string) => {
+		setCrtChldrnNo(chldrnNo);
+		router.push(`/report?chldrnNo=${chldrnNo}`);
+	};
+
 	return (
 		<Carousel
 			slideSize="95%"
 			slidesToScroll={1}
 			dragFree={false}
-			containScroll="keepSnaps" // "trimSnaps" 대신 "keepSnaps" 사용
+			containScroll="keepSnaps"
 			skipSnaps={false}
 			loop={false}
 			onSlideChange={onSlideChange}
@@ -45,6 +55,8 @@ const ProfileCarousel: React.FC<ProfileCarouselProps> = ({
 		>
 			{profiles.map((kidRecord) => {
 				const { profile } = kidRecord;
+
+				console.log(profile);
 				const [physicalStats] = profile.chldrnInfoList;
 
 				return (
@@ -60,7 +72,10 @@ const ProfileCarousel: React.FC<ProfileCarouselProps> = ({
 							<Flex justify="space-between" mb="md">
 								<Stack gap="md">
 									<ProfileMetrics
-										label={`${profile.age} 출생`}
+										label={`${profile.chldrnBrthdy?.substring(
+											0,
+											10
+										)} 출생`}
 										value={profile.chldrnNm}
 									/>
 									<ProfileMetrics
@@ -71,7 +86,14 @@ const ProfileCarousel: React.FC<ProfileCarouselProps> = ({
 
 								<Stack gap={8}>
 									<Group align="center" gap={0}>
-										<Text fz="sm" fw="500" c="#9e9e9e">
+										<Text
+											fz="sm"
+											fw="500"
+											c="#9e9e9e"
+											onClick={() =>
+												handleReport(profile.chldrnNo)
+											}
+										>
 											리포트 업데이트
 										</Text>
 										<IconChevronRight

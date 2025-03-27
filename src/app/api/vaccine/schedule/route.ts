@@ -38,11 +38,11 @@ export async function POST(request: Request) {
 		for (const diseaseGroup of VACCINE_LIST) {
 			for (const vaccine of diseaseGroup.vaccines) {
 				for (const dose of vaccine.doses) {
-					// 접종일 계산: 생년월일 + dayOffset (일)
-					const vaccinationDate = new Date(birthDateObj);
-					vaccinationDate.setDate(
-						vaccinationDate.getDate() + dose.dayOffset
-					);
+					// 접종일 계산: 밀리초 단위로 계산하여 오버플로우 방지
+					const birthTime = birthDateObj.getTime();
+					const offsetTime = dose.dayOffset * 24 * 60 * 60 * 1000; // 일 단위를 밀리초로 변환
+					const vaccinationTime = birthTime + offsetTime;
+					const vaccinationDate = new Date(vaccinationTime);
 
 					// ISO 형식으로 변환 (YYYY-MM-DD)
 					const formattedDate = vaccinationDate
@@ -55,8 +55,8 @@ export async function POST(request: Request) {
 						vacntnDoseNumber: dose.doseNumber,
 						vacntnInoclDt: formattedDate,
 						childId: childId,
-						isCompleted: false, // 명시적으로 미완료 상태로 설정
-						actualDate: null, // 실제 접종일은 null로 초기화
+						isCompleted: false,
+						actualDate: null,
 					};
 
 					vaccineSchedules.push(vaccineInfo);

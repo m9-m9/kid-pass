@@ -5,7 +5,6 @@ import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect, useState, useCallback } from 'react';
 import instance from '@/utils/axios';
 import Spacer from '@/elements/spacer/Spacer';
-import { useModalStore } from '@/store/useModalStore';
 import ScrollPicker from '../../components/ScrollPicker';
 import { useDateStore } from '@/store/useDateStore';
 import MobileLayout from '@/components/mantine/MobileLayout';
