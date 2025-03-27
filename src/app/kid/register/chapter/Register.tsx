@@ -102,7 +102,7 @@ const Register: React.FC = () => {
 						);
 					}
 
-					// 등록 완료 후 홈 또는 성공 페이지로 이동
+					// 등록 완료 후 홈
 					router.push('/');
 				} else {
 					throw new Error(data.message);

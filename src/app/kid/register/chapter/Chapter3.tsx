@@ -43,6 +43,22 @@ const Chapter3: React.FC<ChapterProps> = ({ onNext }) => {
 		const month = parseInt(value.substring(4, 6));
 		const day = parseInt(value.substring(6, 8));
 
+		if (month < 1 || month > 12) {
+			setErrors((prev) => ({
+				...prev,
+				birthDate: '월은 01~12 사이로 입력해주세요',
+			}));
+			return false;
+		}
+
+		if (day < 1 || day > 31) {
+			setErrors((prev) => ({
+				...prev,
+				birthDate: '일은 01~31 사이로 입력해주세요',
+			}));
+			return false;
+		}
+
 		const date = new Date(year, month - 1, day);
 		const isValidDate =
 			date.getFullYear() === year &&
@@ -61,6 +77,20 @@ const Chapter3: React.FC<ChapterProps> = ({ onNext }) => {
 		return true;
 	};
 
+	const handleBirthDateChange = (value: string) => {
+		const numbersOnly = value.replace(/[^\d]/g, '').slice(0, 8);
+		setBirthDate(numbersOnly);
+
+		if (numbersOnly.length === 8) {
+			validateBirthDate(numbersOnly);
+		} else {
+			setErrors((prev) => ({
+				...prev,
+				birthDate: '출생일은 YYYYMMDD 형식으로 입력해주세요',
+			}));
+		}
+	};
+
 	const handleNameChange = (value: string) => {
 		setName(value);
 		if (!value) {
@@ -68,37 +98,6 @@ const Chapter3: React.FC<ChapterProps> = ({ onNext }) => {
 		} else {
 			setErrors((prev) => ({ ...prev, name: '' }));
 		}
-	};
-
-	const handleBirthDateChange = (value: string) => {
-		if (/[^\d]/.test(value)) {
-			setErrors((prev) => ({
-				...prev,
-				birthDate: '숫자로만 입력해주세요',
-			}));
-			return;
-		}
-
-		const numbersOnly = value.replace(/[^\d]/g, '');
-		setBirthDate(numbersOnly);
-
-		if (numbersOnly.length > 0 && numbersOnly.length !== 8) {
-			setErrors((prev) => ({
-				...prev,
-				birthDate: '20241212 와 같이 입력해주세요',
-			}));
-			return;
-		}
-
-		if (numbersOnly.length === 0) {
-			setErrors((prev) => ({
-				...prev,
-				birthDate: '출생일을 입력해주세요',
-			}));
-			return;
-		}
-
-		setErrors((prev) => ({ ...prev, birthDate: '' }));
 	};
 
 	const handleWeightChange = (value: string) => {
@@ -189,7 +188,6 @@ const Chapter3: React.FC<ChapterProps> = ({ onNext }) => {
 					onChange={(e) => handleBirthDateChange(e.target.value)}
 					placeholder="YYYYMMDD"
 					error={errors.birthDate}
-					styles={inputLabelStyle}
 				/>
 				<TextInput
 					label="몸무게"

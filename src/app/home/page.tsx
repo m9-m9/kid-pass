@@ -19,6 +19,7 @@ import {
 	useMantineTheme,
 } from '@mantine/core';
 import { IconPlus } from '@tabler/icons-react';
+import useAuthStore from '@/store/useAuthStore';
 
 interface PhysicalStats {
 	chldrnBdwgh: number;
@@ -169,6 +170,7 @@ const processChildData = (
 const App: React.FC = () => {
 	const theme = useMantineTheme();
 	const { getToken } = useAuth();
+	const { setCrtChldrnNo } = useAuthStore();
 	const router = useRouter();
 	const [kidsData, setKidsData] = useState<KidRecord[]>([]);
 	const [currentKidIndex, setCurrentKidIndex] = useState(0);
@@ -206,7 +208,10 @@ const App: React.FC = () => {
 	const handleChildrenData = (children: Child[]) => {
 		if (children.length > 0) {
 			localStorage.setItem('currentKid', children[0].id);
+
+			// 로그인과 동시에 아이번호  zustand 에 저장
 			setCurrentKid(children[0].id);
+			setCrtChldrnNo(children[0].id);
 		}
 
 		const childrenToStore = children.map((child) => ({

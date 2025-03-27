@@ -20,7 +20,6 @@ const useChldrnListStore = create<ChldrnListState>()(
       currentKid: null,
       setChldrnList: (info) => set(() => ({ children: info })),
       setCurrentKid: (kidNo) => {
-        localStorage.setItem("currentkid", kidNo);
         set(() => ({ currentKid: kidNo }));
       },
     }),
